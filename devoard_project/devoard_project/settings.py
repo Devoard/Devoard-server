@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -37,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'user.apps.UserConfig',
+    'devoard_app.apps.DevoardAppConfig',
     'rest_framework',
     'knox',
 ]
@@ -71,6 +74,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'devoard_project.wsgi.application'
 
+AUTH_USER_MODEL = 'user.user_info'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
