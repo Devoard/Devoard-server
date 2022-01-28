@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import datetime
 import os
 import json
 import sys
@@ -35,6 +36,26 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+REST_FRAMEWORK = { # 추가
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  #인증된 회원만 액세스 허용
+        'rest_framework.permissions.AllowAny',         #모든 회원 액세스 허용
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [ #api가 실행됬을 때 인증할 클래스를 정의해주는데 우리는 JWT를 쓰기로 했으니
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication', #이와 같이 추가해준 모습이다.
+
+    ],
+}
+REST_USE_JWT = True
+JWT_AUTH = { # 추가
+   'JWT_SECRET_KEY': secrets,
+   'JWT_ALGORITHM': 'HS256',
+   'JWT_VERIFY_EXPIRATION' : True, #토큰검증
+   'JWT_ALLOW_REFRESH': True, #유효기간이 지나면 새로운 토큰반환의 refresh
+   'JWT_EXPIRATION_DELTA': datetime.timedelta(minutes=30),  # Access Token의 만료 시간
+   'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=3), # Refresh Token의 만료 시간
+   'JWT_RESPONSE_PAYLOAD_HANDLER': 'api.custom_responses.my_jwt_response_handler'
+}
 
 # Application definition
 
@@ -46,11 +67,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user.apps.UserConfig',
+    'django.contrib.sites',
     'devoard_app.apps.DevoardAppConfig',
+    'rest_framework_jwt', # 추가
     'rest_framework',
     'knox',
     'corsheaders',
+    'allauth', 
+    'allauth.account',
+    'rest_auth.registration',
+
 ]
+SITE_ID = 1
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
