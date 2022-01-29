@@ -56,7 +56,7 @@ JWT_AUTH = { # 추가
    'JWT_ALLOW_REFRESH': True, #유효기간이 지나면 새로운 토큰반환의 refresh
    'JWT_EXPIRATION_DELTA': datetime.timedelta(minutes=30),  # Access Token의 만료 시간
    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=3), # Refresh Token의 만료 시간
-   'JWT_RESPONSE_PAYLOAD_HANDLER': 'api.custom_responses.my_jwt_response_handler'
+   'JWT_RESPONSE_PAYLOAD_HANDLER': 'user.custom_response.my_jwt_response_handler'
 }
 
 
@@ -80,7 +80,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'rest_auth.registration',
 ]
-
 SITE_ID = 1
 
 MIDDLEWARE = [
@@ -92,6 +91,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 
@@ -102,7 +102,7 @@ CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
 ]
 
-ROOT_URLCONF = 'user.urls'
+ROOT_URLCONF = 'devoard_project.urls'
 
 TEMPLATES = [
     {
@@ -132,7 +132,7 @@ AUTH_USER_MODEL = 'user.user_info'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(os.path.join(BASE_DIR, "db.sqlite3"))
     }
 }
 
@@ -171,11 +171,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/devoard-client/build/static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'devoard-client', 'build', 'static')
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'devoard-client', 'build', 'static')
+# ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'devoard-client', 'build', 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
