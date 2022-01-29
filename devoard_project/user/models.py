@@ -14,7 +14,7 @@ class user_info(AbstractUser):
     user_join_project = models.TextField(default=0)
     user_connect = models.CharField(max_length=50,blank=True)
     def __str__(self):
-        return self.user_name
+        return self.username
 
 class user_skill(models.Model):
     user_skill_name = models.CharField(max_length=50)
