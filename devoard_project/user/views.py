@@ -36,13 +36,11 @@ class UserList(APIView):
     
     def get(self, request, format=None):
         serializer = UserSerializer(data=request.data)
-        username = serializer.initial_data['username']
-        password = serializer.initial_data['password']
-        user_name = serializer.initial_data['user_name']
         try :
-            user = user_info.objects.get(username=username)
+            username = serializer.initial_data['username']
+            user = user_info.objects.filter(username=username).first()
         except:
-            return Response('존재 하지 않는 사용자입니다.',status=status.HTTP_400_BAD_REQUEST)
+            return Response('등록되지 않은 사용자입니다.',status=status.HTTP_400_BAD_REQUEST)
         user_qd = QueryDict('username='+user.username+'&password='+user.password+'&user_name='+user.user_name+'&user_exp='+str(user.user_exp)+'&user_job='+str(user.user_job)+'&user_import='+str(user.user_import)+'&user_how='+str(user.user_how)+'&user_pf_addr='+str(user.user_pf_addr)+'&user_join_project='+str(user.user_join_project)+'&user_connect='+str(user.user_connect))
         if user_qd is not None:
             user_serializer = UserSerializer(data=user_qd)

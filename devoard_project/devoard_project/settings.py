@@ -30,7 +30,6 @@ SECRET_BASE_FILE = os.path.join(BASE_DIR, 'secrets.json')
 secrets = json.loads(open(SECRET_BASE_FILE).read())
 for key, value in secrets.items():
     setattr(sys.modules[__name__], key, value)
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -50,13 +49,13 @@ REST_FRAMEWORK = { # 추가
 }
 REST_USE_JWT = True
 JWT_AUTH = { # 추가
-   'JWT_SECRET_KEY': secrets,
+   'JWT_SECRET_KEY': SECRET_KEY,
    'JWT_ALGORITHM': 'HS256',
    'JWT_VERIFY_EXPIRATION' : True, #토큰검증
    'JWT_ALLOW_REFRESH': True, #유효기간이 지나면 새로운 토큰반환의 refresh
    'JWT_EXPIRATION_DELTA': datetime.timedelta(minutes=30),  # Access Token의 만료 시간
    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=3), # Refresh Token의 만료 시간
-   'JWT_RESPONSE_PAYLOAD_HANDLER': 'user.custom_response.my_jwt_response_handler'
+#    'JWT_RESPONSE_PAYLOAD_HANDLER': 'user.custom_response.my_jwt_response_handler',
 }
 
 
@@ -79,6 +78,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'rest_auth.registration',
+    
 ]
 SITE_ID = 1
 
