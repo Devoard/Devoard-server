@@ -14,15 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, include
 import rest_framework_jwt.views as rv
 from django.views.generic import TemplateView
+from user import views
 
 urlpatterns = [
+    path('user/',include('user.urls')),
     path('admin/', admin.site.urls),
     path('main/', TemplateView.as_view(template_name='index.html')),
-    path('login/', rv.obtain_jwt_token),
-    path('verify/', rv.verify_jwt_token),
-    path('refresh/', rv.refresh_jwt_token),
+    path('login/', rv.obtain_jwt_token), #토큰 발행
+    path('verify/', rv.verify_jwt_token), #토큰 유효한지 검사
+    path('refresh/', rv.refresh_jwt_token), #토큰 갱신
+    path('validate/', views.validate_jwt_token),
 
-]
+
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
