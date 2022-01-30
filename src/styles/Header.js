@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Button from '../components/Button';
-import { BsBell, BsChatSquareDots } from "react-icons/bs";
+import { BsBellFill, BsChatSquareDotsFill } from "react-icons/bs";
 
 export const HeaderWrapper = styled.div`
   display: flex;
@@ -33,12 +33,12 @@ export const UserMenuWrapper = styled.div`
 
 export const LoginBtn = styled(Button)``;
 
-export const AlertBtn = styled(BsBell)`
+export const AlertBtn = styled(BsBellFill)`
   margin-right: 1rem;
   cursor: pointer;
 `;
 
-export const MessageBtn = styled(BsChatSquareDots)`
+export const ChatBtn = styled(BsChatSquareDotsFill)`
   margin-right: 1rem;
   padding-top: 0.3rem;
   cursor: pointer;
