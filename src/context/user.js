@@ -7,8 +7,10 @@ export const UserContext = createContext({
     imageUrl: ''
   },
   loggedIn: false,
+  activePage: null,
   setLoggedUser: () => {},
-  setLoggedIn: () => {}
+  setLoggedIn: () => {},
+  setActivePage: () => {}
 })
 
 const UserProvider = ({ children }) => {
@@ -30,6 +32,15 @@ const UserProvider = ({ children }) => {
     ))
   }
 
+  const setActivePage = (page) => {
+    setState(prevState => (
+      {
+        ...prevState,
+        activePage: page
+      }
+    ))
+  }
+
   const initialState = {
     loggedUser: {
       username: '',
@@ -37,8 +48,10 @@ const UserProvider = ({ children }) => {
       imageUrl: ''
     },
     loggedIn: false,
+    activePage: null,
     setLoggedUser,
-    setLoggedIn
+    setLoggedIn,
+    setActivePage
   }
 
   const [state, setState] = useState(initialState);

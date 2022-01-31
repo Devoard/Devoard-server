@@ -7,12 +7,32 @@ const colorStyles = css`
     const selected = theme.palette[color];
     return css`
       background: ${selected};
+      border: none;
+
+      ${props =>
+        !props.outline &&
+        css`
+        &:hover { background: ${lighten(0.05, selected)};}
+        &:active { background: ${darken(0.05, selected)};}
+        `
+      }
+
+      
       ${props => 
         props.outline && 
         css`
           color: ${selected};
           background: none;
           border: 2px solid ${selected};
+
+          &:hover { 
+            border-color: ${lighten(0.05, selected)};
+            color: ${lighten(0.05, selected)}
+          };}
+          &:active { 
+            border-color: ${darken(0.05, selected)};
+            color: ${darken(0.05, selected)}
+          }
         `
       }
     `;
