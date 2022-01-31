@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { darken, lighten } from 'polished';
 import Button from '../components/Button';
 import { BsBellFill, BsChatSquareDotsFill } from "react-icons/bs";
 
@@ -36,10 +37,32 @@ export const LoginBtn = styled(Button)``;
 export const AlertBtn = styled(BsBellFill)`
   margin-right: 1rem;
   cursor: pointer;
+  
+  &:hover { fill: ${lighten(0.2, '#FFB200')};}
+  &:active { fill: ${darken(0.05, '#FFB200')};}
+
+  ${props =>
+    props.color === 'white' &&
+    css`
+      &:hover { fill: ${lighten(0.3, 'gray')};}
+      &:active { fill: ${darken(0.05, 'gray')};}
+    `
+  }
 `;
 
 export const ChatBtn = styled(BsChatSquareDotsFill)`
   margin-right: 1rem;
   padding-top: 0.3rem;
   cursor: pointer;
-`
+
+  &:hover { fill: ${lighten(0.2, '#FFB200')};}
+  &:active { fill: ${darken(0.05, '#FFB200')};}
+
+  ${props =>
+    props.color === 'white' &&
+    css`
+      &:hover { fill: ${lighten(0.3, 'gray')};}
+      &:active { fill: ${darken(0.05, 'gray')};}
+    `
+  }
+`;

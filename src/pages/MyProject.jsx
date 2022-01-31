@@ -1,11 +1,11 @@
 import { useEffect, useContext } from 'react';
 import { UserContext } from '../context/user';
 
-const Alert = () => {
+const MyProject = () => {
   const { setActivePage } = useContext(UserContext);
 
   useEffect(()=>{
-    setActivePage('alert');
+    setActivePage('my_project');
   }, [setActivePage])
 
   return (
@@ -13,4 +13,4 @@ const Alert = () => {
   )
 }
 
-export default Alert;
+export default MyProject;

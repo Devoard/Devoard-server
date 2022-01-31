@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import { UserContext } from '../context/user';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import LoginPopUp from '../components/LoginPopUp';
 import ToggleMenu from '../components/ToggleMenu';
 import {
@@ -37,16 +37,13 @@ const Header = () => {
     <>
       <HeaderWrapper>
         <NavLink to='/' style={{textDecoration: 'none'}}>
-          <Logo
-            onClick={()=>setActivePage('home')}
-          >Devoard</Logo>
+          <Logo>Devoard</Logo>
         </NavLink>
         <UserMenuWrapper>
           {loggedIn ? 
           (<>
           <NavLink 
             to="/chat/list"
-            onClick={()=>setActivePage('chat')}
           >
             <ChatBtn 
               color={activePage === 'chat' ? '#FFB200' : 'white'}
@@ -55,7 +52,6 @@ const Header = () => {
           </NavLink>
           <NavLink 
             to="/alert"
-            onClick={()=>setActivePage('alert')}
           >
             <AlertBtn 
               color={activePage === 'alert' ? '#FFB200' : 'white'}

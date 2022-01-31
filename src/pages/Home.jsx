@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { UserContext } from '../context/user';
 import {
   HomeWrapper,
   RecruitDisplayWrapper,
@@ -8,17 +9,21 @@ import {
   ApplyBtn,
   RecruitBtn,
   IntroTextWrapper,
-  IntroText
+  IntroText,
+  PopularTeamWrapper,
+  PopularTeamText
 } from '../styles/Home';
 
 
 
 const Home = () => {
   const [recruitNum, setRecruitNum] = useState(123);
+  const { setActivePage } = useContext(UserContext);
 
   useEffect(() => {
     RecruitNumAnimation();
-  }, []);
+    setActivePage('home');
+  }, [setActivePage]);
 
   const RecruitNumAnimation = () => {
     let num = 0;
@@ -45,6 +50,9 @@ const Home = () => {
       <IntroTextWrapper>
         <IntroText>사이트 소개</IntroText>
       </IntroTextWrapper>
+      <PopularTeamWrapper>
+        <PopularTeamText>현재 인기 있는 모집 팀</PopularTeamText>
+      </PopularTeamWrapper>
     </HomeWrapper>
   );
 }

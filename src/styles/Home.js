@@ -58,3 +58,16 @@ export const IntroText = styled.div`
   color: white;
   font-size: 2rem;
 `
+
+export const PopularTeamWrapper = styled.div`
+  width: 100%;
+  height: 400px;
+  padding: 1rem;
+  box-sizing: border-box;
+`;
+
+export const PopularTeamText = styled.div`
+  color: white;
+  font-weight: bold;
+  font-size: 1.3rem;
+`;
