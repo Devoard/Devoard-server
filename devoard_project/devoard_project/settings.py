@@ -34,7 +34,6 @@ for key, value in secrets.items():
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 #추가
 
 REST_FRAMEWORK = { # 추가
@@ -78,6 +77,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'rest_auth.registration',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.github',
     
 ]
 SITE_ID = 1

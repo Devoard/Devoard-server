@@ -30,5 +30,4 @@ urlpatterns = [
     path('refresh/', refresh_jwt_token), #토큰 갱신 = 얘도 됨
     path('validate/', views.validate_jwt_token),
 
-
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
