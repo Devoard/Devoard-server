@@ -12,4 +12,4 @@ urlpatterns = [
     path('github/callback/', views.github_callback, name='github_callback'),
     path('github/login/finish/', views.GithubLogin.as_view(), name='github_login_todjango'),
 
-]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
