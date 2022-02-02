@@ -17,18 +17,17 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
-import rest_framework_jwt.views as rv
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 from django.views.generic import TemplateView
 from user import views
 
 urlpatterns = [
     path('user/',include('user.urls')),
     path('admin/', admin.site.urls),
-    path('main/', TemplateView.as_view(template_name='index.html')),
-    path('login/', rv.obtain_jwt_token), #토큰 발행
-    path('verify/', rv.verify_jwt_token), #토큰 유효한지 검사
-    path('refresh/', rv.refresh_jwt_token), #토큰 갱신
+    path('', TemplateView.as_view(template_name='index.html')),
+    path('login/', obtain_jwt_token), #토큰 발행 = 됨
+    path('verify/', verify_jwt_token), #토큰 유효한지 검사 = 얘는 됨
+    path('refresh/', refresh_jwt_token), #토큰 갱신 = 얘도 됨
     path('validate/', views.validate_jwt_token),
-
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
