@@ -30,12 +30,16 @@ const TextArea = styled.textarea`
 
 const SurveyComp = ({data, firstAnswer, setFirstAnswer}) => {
     const [select, setSelect] = useState('');
+    const [selectArr, setSelectArr] = useState([]);
     const onFirstAnswer = (e) => {
         setFirstAnswer(e.target.innerHTML);
         setSelect(e.target.innerHTML);
     };
-    const onClick = (e) =>{
+    const onSelect = (e) =>{
         setSelect(e.target.innerHTML);
+    }
+    const onSelectMulti = (e)=>{
+        setSelectArr(prev=>prev.concat(e.target.innerHTML));
     }
     return(
         <>
@@ -46,13 +50,13 @@ const SurveyComp = ({data, firstAnswer, setFirstAnswer}) => {
                 else return <Answer key={i} onClick={onFirstAnswer}>{v}</Answer>})}
 
             {(data.id === 2 && data.a[firstAnswer]) && data.a[firstAnswer].map((v,i)=>{
-                if(select===v) return <Answer key={i} select={true} onClick={onClick}>{v}</Answer>
-                else return <Answer key={i} onClick={onClick}>{v}</Answer>
+                if(selectArr.includes(v)) return <Answer key={i} select={true} onClick={onSelectMulti}>{v}</Answer>
+                else return <Answer key={i} onClick={onSelectMulti}>{v}</Answer>
             })}
             
             {(data.id > 2 && data.a)&& data.a.map((v, i)=>{
-                if(select===v) return <Answer key={i} select={true} onClick={onClick}>{v}</Answer>
-                else return <Answer key={i} onClick={onClick}>{v}</Answer>
+                if(select===v) return <Answer key={i} select={true} onClick={onSelect}>{v}</Answer>
+                else return <Answer key={i} onClick={onSelect}>{v}</Answer>
             })}
             
             {(data.id > 2 && !data.a)&&<TextArea />}

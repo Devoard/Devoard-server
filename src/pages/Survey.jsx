@@ -44,10 +44,12 @@ const Survey = () => {
 
     
     const onPrevClick = () => {
+        if(dataId <= 1) return;
         setDataId(prev=>prev-1);
     }
 
     const onNextClick = () => {
+        if(dataId >= 12) return;
         setDataId(prev=>prev+1);
     }
   
