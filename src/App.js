@@ -9,6 +9,7 @@ import Scrap from './pages/Scrap';
 import MyProject from './pages/MyProject';
 import MyPage from './pages/MyPage';
 import NotFound from './pages/NotFound';
+import Survey from './pages/Survey';
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
               <Route path="/my_project" element={<MyProject />} />
               <Route path="/my_page" element={<MyPage />} />
               <Route path="*" element={<NotFound />} />
+              <Route path="/survey" element={<Survey />} />
             </Route>
           </Routes>
         </ThemeProvider>
