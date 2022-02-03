@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 const Question = styled.h1`
@@ -6,7 +6,7 @@ const Question = styled.h1`
 `;
 
 const Answer = styled.p`
-    background: #fff;
+    background: ${props=>props.select?'var(--color-orange)':'#fff'};
     border-radius: 10px;
     width: 100%;
     padding: 10px;
@@ -29,17 +29,32 @@ const TextArea = styled.textarea`
 `;
 
 const SurveyComp = ({data, firstAnswer, setFirstAnswer}) => {
-
-
+    const [select, setSelect] = useState('');
     const onFirstAnswer = (e) => {
         setFirstAnswer(e.target.innerHTML);
+        setSelect(e.target.innerHTML);
     };
+    const onClick = (e) =>{
+        setSelect(e.target.innerHTML);
+    }
     return(
         <>
             <Question>{data.q}</Question>
-            {data.id === 1 && data.a.map((v, i)=><Answer key={i} onClick={onFirstAnswer}>{v}</Answer>)}
-            {(data.id === 2 && data.a[firstAnswer]) && data.a[firstAnswer].map((v,i)=><Answer key={i}>{v}</Answer>)}
-            {(data.id > 2 && data.a)&& data.a.map((v, i)=><Answer key={i} >{v}</Answer>)}
+            
+            {data.id === 1 && data.a.map((v, i)=>{
+                if(select===v) return <Answer key={i} select={true} onClick={onFirstAnswer}>{v}</Answer>
+                else return <Answer key={i} onClick={onFirstAnswer}>{v}</Answer>})}
+
+            {(data.id === 2 && data.a[firstAnswer]) && data.a[firstAnswer].map((v,i)=>{
+                if(select===v) return <Answer key={i} select={true} onClick={onClick}>{v}</Answer>
+                else return <Answer key={i} onClick={onClick}>{v}</Answer>
+            })}
+            
+            {(data.id > 2 && data.a)&& data.a.map((v, i)=>{
+                if(select===v) return <Answer key={i} select={true} onClick={onClick}>{v}</Answer>
+                else return <Answer key={i} onClick={onClick}>{v}</Answer>
+            })}
+            
             {(data.id > 2 && !data.a)&&<TextArea />}
         </>
     )

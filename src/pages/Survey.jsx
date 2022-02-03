@@ -8,8 +8,7 @@ const SurveyPage = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 30px auto;
-    border: 1px solid red;
+    margin: 100px auto;
     width: 50%;
 `;
 
