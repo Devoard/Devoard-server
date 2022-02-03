@@ -5,6 +5,7 @@ export const HomeWrapper = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
+  padding-bottom: 3rem;
 `;
 
 export const RecruitDisplayWrapper = styled.div`
@@ -64,10 +65,27 @@ export const PopularTeamWrapper = styled.div`
   height: 400px;
   padding: 1rem;
   box-sizing: border-box;
+  position: relative;
+  text-align: center;
 `;
 
 export const PopularTeamText = styled.div`
   color: white;
   font-weight: bold;
   font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  text-align: left;
+`;
+
+export const ProjectDetailWrapper = styled.div`
+  padding: 1rem 0;
+  overflow: scroll;
+  white-space: nowrap;
+  width: 100%;
+  position: absolute;
+
+`;
+
+export const MoreProjectBtn = styled(Button)`
+  margin-top: 310px;
 `;

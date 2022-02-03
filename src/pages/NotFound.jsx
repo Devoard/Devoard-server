@@ -1,3 +1,5 @@
+import { useState, useEffect, useContext } from 'react';
+import { UserContext } from '../context/user';
 import styled from "styled-components";
 
 const NotFoundPage = styled.div`
@@ -15,6 +17,12 @@ const NotFoundPage = styled.div`
 
 
 const NotFound = () => {
+  const { setActivePage } = useContext(UserContext);
+
+  useEffect(() => {
+    setActivePage('home');
+  }, [setActivePage]);
+  
   return (
     <NotFoundPage>
       404
