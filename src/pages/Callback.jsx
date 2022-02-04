@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 import qs from 'qs';
 
-const Callback = ({ history, location }) => {
+const Callback = ({ location }) => {
   const authUri = ``;
 
   useEffect(() => {
@@ -17,12 +18,12 @@ const Callback = ({ history, location }) => {
         localStorage.setItem('token', data.jwt);
         localStorage.setItem('ProfileURL', data.avatar_url);
 
-        history.push('/');
+        return <Navigate to="/" replace={true} />
       } catch (error) {}
     };
 
     getToken();
-  }, [location, history, authUri]);
+  });
 
 };
 

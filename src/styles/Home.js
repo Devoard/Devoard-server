@@ -83,7 +83,6 @@ export const ProjectDetailWrapper = styled.div`
   white-space: nowrap;
   width: 100%;
   position: absolute;
-
 `;
 
 export const MoreProjectBtn = styled(Button)`

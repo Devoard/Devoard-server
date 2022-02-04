@@ -24,11 +24,22 @@ const Home = () => {
   const [recruitNum, setRecruitNum] = useState(123);
   const { setActivePage } = useContext(UserContext);
   const project_wrapper = useRef(null);
+  const text = "TextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextText";
 
   useEffect(() => {
+    const RecruitNumAnimation = () => {
+      let num = 0;
+  
+      setInterval(()=>{
+        if (num === recruitNum) return null;
+        setRecruitNum(++num);
+      }, 1000/recruitNum);
+    };
+
     RecruitNumAnimation();
     setActivePage('home');
     project_wrapper.current.addEventListener('mousewheel', handleHorizontalScroll);
+  
   }, [setActivePage]);
 
   const handleHorizontalScroll = (e) => {
@@ -38,16 +49,6 @@ const Home = () => {
     else
       project_wrapper.current.scrollLeft += 60;
   }
-
-  const RecruitNumAnimation = () => {
-    let num = 0;
-
-    setInterval(()=>{
-      if (num === recruitNum) return null;
-      setRecruitNum(++num);
-    }, 1000/recruitNum);
-  };
-
 
   return (
     <HomeWrapper>
@@ -71,33 +72,39 @@ const Home = () => {
         >
           <ProjectDetail 
             recruitState={true}
-            projectTitle="Title"
-            projectText="Text"
+            projectTitle="Project Title"
+            projectText={text}
+            TagName="TAGTAG"
           />
           <ProjectDetail
             recruitState={false}
             projectTitle="Title"
             projectText="Text"
+            TagName="Tag2"
           />
            <ProjectDetail 
             recruitState={true}
             projectTitle="Title"
             projectText="Text"
+            TagName="Tag"
           />
           <ProjectDetail
             recruitState={false}
             projectTitle="Title"
             projectText="Text"
+            TagName="Tag"
           />
            <ProjectDetail 
             recruitState={true}
             projectTitle="Title"
             projectText="Text"
+            TagName="Tag"
           />
           <ProjectDetail
             recruitState={false}
             projectTitle="Title"
             projectText="Text"
+            TagName="Tag"
           />
         </ProjectDetailWrapper>
         <Link

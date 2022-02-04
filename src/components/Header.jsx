@@ -20,18 +20,18 @@ const Header = () => {
   const userIcon = useRef(null);
 
   useEffect(()=>{
+    const handleCloseMenu = (e) => {
+      if (!isToggleMenuPopUp && (userIcon.current === e.target)){
+        setIsToggleMenuPopUp(true);
+      }
+    }
+
     window.addEventListener('mousedown', handleCloseMenu);
 
     return () => {
       window.removeEventListener('mousedown', handleCloseMenu);
     }
-  }, []);
-  
-  const handleCloseMenu = (e) => {
-    if (!isToggleMenuPopUp && (userIcon.current === e.target)){
-      setIsToggleMenuPopUp(true);
-    }
-  }
+  }, [isToggleMenuPopUp]);
 
   return (
     <>
