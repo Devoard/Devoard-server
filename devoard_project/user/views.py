@@ -20,6 +20,7 @@ import requests
 from allauth.socialaccount.models import SocialAccount
 from django.http import JsonResponse
 from json import JSONDecodeError
+from django.urls import reverse
 
 # from google.oauth2 import id_token
 # from google.auth.transport import requests
@@ -129,6 +130,7 @@ def github_callback(request):
         accept_json = accept.json()
         accept_json.pop('user', None)
         return JsonResponse(accept_json)
+        # return redirect(settings.LOGIN_REDIRECT_URL)
     except user_info.DoesNotExist:
         # 기존에 가입된 유저가 없으면 새로 가입
         data = {'access_token': access_token, 'code': code}
@@ -141,6 +143,8 @@ def github_callback(request):
         accept_json = accept.json()
         accept_json.pop('user', None)
         return JsonResponse(accept_json)
+        # return HttpResponseRedirect(accept_json,settings.LOGIN_REDIRECT_URL)
+        # return redirect(settings.LOGIN_REDIRECT_URL)
 class GithubLogin(SocialLoginView):
     """
     If it's not working
@@ -156,4 +160,15 @@ def complete_login(self, request, app, token, **kwargs):
     """
     adapter_class = github_view.GitHubOAuth2Adapter
     callback_url = GITHUB_CALLBACK_URI
-    client_class = OAuth2Client
+    client_class = OAuth2Client 
+    
+#     def get(self, request, format=None):
+#         return redirect(settings.LOGIN_REDIRECT_URL)
+#     def post(self, request, format=None):
+#         return redirect(settings.LOGIN_REDIRECT_URL)
+
+# def google_callback(request):
+#     url = 'http://localhost:8000/'
+#     return redirect(f'{url}{request.GET.get("code")}')
+#     아시아나 32748366
+#     대한 52748366

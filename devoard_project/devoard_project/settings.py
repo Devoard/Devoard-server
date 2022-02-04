@@ -185,3 +185,4 @@ STATIC_ROOT = '/devoard-client/build/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_REDIRECT_URL = '/'
