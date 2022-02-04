@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import { UserContext } from '../context/user';
-import { NavLink, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import LoginPopUp from '../components/LoginPopUp';
 import ToggleMenu from '../components/ToggleMenu';
 import {
@@ -20,44 +20,44 @@ const Header = () => {
   const userIcon = useRef(null);
 
   useEffect(()=>{
+    const handleCloseMenu = (e) => {
+      if (!isToggleMenuPopUp && (userIcon.current === e.target)){
+        setIsToggleMenuPopUp(true);
+      }
+    }
+
     window.addEventListener('mousedown', handleCloseMenu);
 
     return () => {
       window.removeEventListener('mousedown', handleCloseMenu);
     }
-  }, []);
-  
-  const handleCloseMenu = (e) => {
-    if (!isToggleMenuPopUp && (userIcon.current === e.target)){
-      setIsToggleMenuPopUp(true);
-    }
-  }
+  }, [isToggleMenuPopUp]);
 
   return (
     <>
       <HeaderWrapper>
-        <NavLink to='/' style={{textDecoration: 'none'}}>
+        <Link to='/' style={{textDecoration: 'none'}}>
           <Logo>Devoard</Logo>
-        </NavLink>
+        </Link>
         <UserMenuWrapper>
           {loggedIn ? 
           (<>
-          <NavLink 
+          <Link 
             to="/chat/list"
           >
             <ChatBtn 
               color={activePage === 'chat' ? '#FFB200' : 'white'}
               size='30'
             />
-          </NavLink>
-          <NavLink 
+          </Link>
+          <Link 
             to="/alert"
           >
             <AlertBtn 
               color={activePage === 'alert' ? '#FFB200' : 'white'}
               size='32'
             />
-          </NavLink>
+          </Link>
           <UserIcon 
             ref={userIcon}
             src={loggedUser.imageUrl}

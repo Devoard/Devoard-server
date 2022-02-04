@@ -1,5 +1,7 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { UserContext } from '../context/user';
+import ProjectDetail from '../components/ProjectDetail';
 import {
   HomeWrapper,
   RecruitDisplayWrapper,
@@ -11,7 +13,9 @@ import {
   IntroTextWrapper,
   IntroText,
   PopularTeamWrapper,
-  PopularTeamText
+  PopularTeamText,
+  ProjectDetailWrapper,
+  MoreProjectBtn
 } from '../styles/Home';
 
 
@@ -19,21 +23,32 @@ import {
 const Home = () => {
   const [recruitNum, setRecruitNum] = useState(123);
   const { setActivePage } = useContext(UserContext);
+  const project_wrapper = useRef(null);
+  const text = "TextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextText";
 
   useEffect(() => {
+    const RecruitNumAnimation = () => {
+      let num = 0;
+  
+      setInterval(()=>{
+        if (num === recruitNum) return null;
+        setRecruitNum(++num);
+      }, 1000/recruitNum);
+    };
+
     RecruitNumAnimation();
     setActivePage('home');
+    project_wrapper.current.addEventListener('mousewheel', handleHorizontalScroll);
+  
   }, [setActivePage]);
 
-  const RecruitNumAnimation = () => {
-    let num = 0;
-
-    setInterval(()=>{
-      if (num === recruitNum) return null;
-      setRecruitNum(++num);
-    }, 1000/recruitNum);
+  const handleHorizontalScroll = (e) => {
+    e.preventDefault();
+    if(e.wheelDelta > 0)
+      project_wrapper.current.scrollLeft -= 60;
+    else
+      project_wrapper.current.scrollLeft += 60;
   }
-
 
   return (
     <HomeWrapper>
@@ -52,6 +67,55 @@ const Home = () => {
       </IntroTextWrapper>
       <PopularTeamWrapper>
         <PopularTeamText>현재 인기 있는 모집 팀</PopularTeamText>
+        <ProjectDetailWrapper
+          ref={project_wrapper}
+        >
+          <ProjectDetail 
+            recruitState={true}
+            projectTitle="Project Title"
+            projectText={text}
+            TagName="TAGTAG"
+          />
+          <ProjectDetail
+            recruitState={false}
+            projectTitle="Title"
+            projectText="Text"
+            TagName="Tag2"
+          />
+           <ProjectDetail 
+            recruitState={true}
+            projectTitle="Title"
+            projectText="Text"
+            TagName="Tag"
+          />
+          <ProjectDetail
+            recruitState={false}
+            projectTitle="Title"
+            projectText="Text"
+            TagName="Tag"
+          />
+           <ProjectDetail 
+            recruitState={true}
+            projectTitle="Title"
+            projectText="Text"
+            TagName="Tag"
+          />
+          <ProjectDetail
+            recruitState={false}
+            projectTitle="Title"
+            projectText="Text"
+            TagName="Tag"
+          />
+        </ProjectDetailWrapper>
+        <Link
+          to='/devoard'>
+          <MoreProjectBtn 
+            color="orange"
+            outline
+          >
+            프로젝트 더 보기
+          </MoreProjectBtn>
+        </Link>
       </PopularTeamWrapper>
     </HomeWrapper>
   );

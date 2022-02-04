@@ -1,17 +1,6 @@
 import { createContext, useState } from 'react';
 
-export const UserContext = createContext({
-  loggedUser: {
-    username: '',
-    email: '',
-    imageUrl: ''
-  },
-  loggedIn: false,
-  activePage: null,
-  setLoggedUser: () => {},
-  setLoggedIn: () => {},
-  setActivePage: () => {}
-})
+export const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const setLoggedUser = (data) => {
