@@ -45,7 +45,7 @@ const StyledButton = styled.button`
   height: 2.125rem;
   font-family: var(--font-title);
   font-size: 1.125rem;
-  line-height: 1.7rem;
+  line-height: 1.5rem;
   padding: 0 1.5rem;
   border-radius: 0.5rem;
   cursor: pointer;

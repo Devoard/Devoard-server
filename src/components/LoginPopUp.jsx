@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react";
 import styled from "styled-components";
 import GoogleLogin from 'react-google-login';
 import { UserContext } from '../context/user';
-//import githubIcon from '../assets/images/githubIcon.png';
+import githubIcon from '../assets/images/githubIcon.png';
 import googleIcon from '../assets/images/googleIcon.png';
 import PopUp from './PopUp';
 
@@ -12,7 +12,7 @@ const LoginText = styled.h1`
 
 const IconWrapper = styled.div``;
 
-/*const Icon = styled.img`
+const Icon = styled.img`
   width: 4rem;
   height: 4rem;
   margin: 0 1.5rem;
@@ -24,7 +24,7 @@ const GithubLink = styled.a``;
 
 const GithubIcon = styled(Icon).attrs({
   src: `${githubIcon}`
-})``;*/
+})``;
 
 
 
@@ -48,11 +48,11 @@ const LoginPopUp = ({ isVisible, setIsLoginPopUp }) => {
 
   }, [setLoggedIn, setLoggedUser]);
 
-  const onSuccess = async(res) => {
+  const onSuccess = (res) => {
     setLoggedIn();
     setIsLoginPopUp(false);
 
-    await doSignIn(res);
+    doSignIn(res);
   }
 
   const onFailure = (err) => {
@@ -116,11 +116,11 @@ const LoginPopUp = ({ isVisible, setIsLoginPopUp }) => {
             onFailure={onFailure}
             cookiePolicy={'single_host_origin'}
         />
-        {/*<GithubLink
+        <GithubLink
           href={`https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&redirect_uri=https://localhost:3000`}
         >
           <GithubIcon />
-        </GithubLink>*/}
+        </GithubLink>
       </IconWrapper>
     </PopUp>
   );
