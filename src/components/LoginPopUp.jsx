@@ -1,5 +1,6 @@
 import { useContext, useEffect } from "react";
 import styled from "styled-components";
+import axios from 'axios';
 import GoogleLogin from 'react-google-login';
 import { UserContext } from '../context/user';
 import githubIcon from '../assets/images/githubIcon.png';
@@ -29,7 +30,7 @@ const GithubIcon = styled(Icon).attrs({
 
 
 const LoginPopUp = ({ isVisible, setIsLoginPopUp }) => {
-  const { setLoggedUser, setLoggedIn } = useContext(UserContext);
+  const { loggedUser, setLoggedUser, setLoggedIn } = useContext(UserContext);
 
   useEffect(() => {
     if (window.sessionStorage.getItem('name')) {
@@ -71,6 +72,14 @@ const LoginPopUp = ({ isVisible, setIsLoginPopUp }) => {
         name: name,
         email: email,
         imageUrl: imageUrl
+      })
+
+      axios.post('/user/user_info', loggedUser)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
       })
     }
   }
@@ -117,7 +126,7 @@ const LoginPopUp = ({ isVisible, setIsLoginPopUp }) => {
             cookiePolicy={'single_host_origin'}
         />
         <GithubLink
-          href={`https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&redirect_uri=https://localhost:3000`}
+          href={`https://github.com/login/oauth/authorize?client_id=c3af9d17e5bb52d76a87&redirect_uri=http://localhost:8000/user/github/callback/`}
         >
           <GithubIcon />
         </GithubLink>

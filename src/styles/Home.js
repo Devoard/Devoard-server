@@ -5,7 +5,7 @@ export const HomeWrapper = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding-bottom: 3rem;
+  padding-bottom: 5rem;
 `;
 
 export const RecruitDisplayWrapper = styled.div`
@@ -86,5 +86,5 @@ export const ProjectDetailWrapper = styled.div`
 `;
 
 export const MoreProjectBtn = styled(Button)`
-  margin-top: 310px;
+  margin-top: 23rem;
 `;

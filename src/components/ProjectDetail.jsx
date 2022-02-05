@@ -1,17 +1,29 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import RecruitState from '../components/RecruitState';
 import Tag from '../components/Tag';
+import { FiHeart } from 'react-icons/fi';
 
 const ProjectDetailWrapper = styled.div`
   display: inline-block;
   box-sizing: border-box;
-  width: 25rem;
-  height: 17rem;
+  width: 28rem;
+  height: 20rem;
   background: white;
   border-radius: 0.7rem;
   padding: 0.8rem;
-  margin-right: 2rem;
+  margin: 0.7rem;
+  text-align: center;
   cursor: pointer;
+`;
+
+const StateWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Heart = styled(FiHeart)`
+  &:hover { opacity: 0.8 }
 `;
 
 const ProjectTitle = styled.span`
@@ -26,7 +38,7 @@ const ProjectTitle = styled.span`
 const DividerLine = styled.div`
   background: #666666;
   width: 95%;
-  margin: 0.7rem auto;
+  margin: 1rem auto;
   height: 1.5px;
 `;
 
@@ -43,14 +55,14 @@ const TagWrapper = styled.div`
 
 const ProjectText = styled.div`
   display: -webkit-box;
-  -webkit-line-clamp: 5; 
+  -webkit-line-clamp: 6; 
   -webkit-box-orient: vertical; 
   text-overflow: ellipsis;
   box-sizing: border-box;
-  height: 7.9rem;
+  height: 9.5rem;
   width: 100%;
   padding: 0.5rem;
-  padding-top: 0.2rem;
+  padding-top: 0.4rem;
   margin-left: 0.2rem;
   text-align: left;
   word-wrap:break-word; 
@@ -59,21 +71,27 @@ const ProjectText = styled.div`
 `;
 
 
-const ProjectDetail = ({ recruitState, projectTitle, projectText, TagName }) => {
+const ProjectDetail = ({ isScrapped, recruitState, projectTitle, projectText, tagName }) => {
+  const [isColored, setIsColored] = useState(isScrapped);
+  
   return (
     <ProjectDetailWrapper>
-      <RecruitState 
-        isRecruit={recruitState}
-      />
+      <StateWrapper>
+        <RecruitState 
+          isRecruit={recruitState}
+        />
+        <Heart 
+          size='24'
+          color={isColored ? "#fd4646" : "#3A3D3E"}
+          onClick={()=>setIsColored(!isColored)}
+        />
+      </StateWrapper>
+     
       <ProjectTitle>{projectTitle}</ProjectTitle>
       <DividerLine />
       
       <TagWrapper>
-        <Tag>{TagName}</Tag>
-        <Tag>{TagName}</Tag>
-        <Tag>{TagName}</Tag>
-        <Tag>{TagName}</Tag>
-        <Tag>{TagName}</Tag>
+        <Tag>{tagName}</Tag>
       </TagWrapper>
       <ProjectText>
         {projectText}

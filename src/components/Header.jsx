@@ -5,7 +5,9 @@ import LoginPopUp from '../components/LoginPopUp';
 import ToggleMenu from '../components/ToggleMenu';
 import {
   HeaderWrapper,
+  StaticMenuWrapper,
   Logo,
+  ProjectMenu,
   UserMenuWrapper,
   UserIcon,
   LoginBtn,
@@ -36,23 +38,24 @@ const Header = () => {
   return (
     <>
       <HeaderWrapper>
-        <Link to='/' style={{textDecoration: 'none'}}>
-          <Logo>Devoard</Logo>
-        </Link>
+        <StaticMenuWrapper>
+          <Link to='/' style={{textDecoration: 'none'}}>
+            <Logo>Devoard</Logo>
+          </Link>
+          <Link to='/devoard' style={{textDecoration: 'none'}}>
+            <ProjectMenu>프로젝트</ProjectMenu>
+          </Link>
+        </StaticMenuWrapper>
         <UserMenuWrapper>
           {loggedIn ? 
           (<>
-          <Link 
-            to="/chat/list"
-          >
+          <Link to="/chat/list">
             <ChatBtn 
               color={activePage === 'chat' ? '#FFB200' : 'white'}
               size='30'
             />
           </Link>
-          <Link 
-            to="/alert"
-          >
+          <Link to="/alert">
             <AlertBtn 
               color={activePage === 'alert' ? '#FFB200' : 'white'}
               size='32'
