@@ -10,7 +10,10 @@ import {
   DownIcon,
   ProjectWrapper,
   MenuWrapper,
-  Menu
+  Menu,
+  Search,
+  SearchInput,
+  SearchIcon
 } from '../styles/Devoard';
 
 
@@ -25,9 +28,11 @@ const Devoard = () => {
     setActivePage('devoard');
     
     const handleCloseMenu = (e) => {
-      if (!isMenuOpen && comboBox.current.contains(e.target))
-        setIsMenuOpen(true);
-      else if(isMenuOpen && comboBox.current.contains(e.target)){
+      if (!isMenuOpen) {
+        if (comboBox.current.contains(e.target))
+          setIsMenuOpen(true);
+      }
+      else {
         if (menuWrapper.current.contains(e.target))
           setSelectedMenu(e.target.attributes.getNamedItem("data-value").value);
         setIsMenuOpen(false);
@@ -63,6 +68,10 @@ const Devoard = () => {
             </MenuWrapper>}
           <DownIcon />
         </ComboBox>
+        <Search>
+          <SearchInput />
+          <SearchIcon color='black' size='24'/>
+        </Search>
       </SortingWrapper>
       <ProjectWrapper>
         <ProjectDetail 
