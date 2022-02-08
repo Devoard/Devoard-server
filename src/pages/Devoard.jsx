@@ -1,47 +1,13 @@
-import { useState, useEffect, useRef, useContext } from 'react';
-import { UserContext } from '../context/user';
-import ProjectDetail from '../components/ProjectDetail';
-import {
-  DevoardWrapper,
-  DevoardText,
-  SortingWrapper,
-  ComboBox,
-  SelectedText,
-  DownIcon,
-  ProjectWrapper,
-  MenuWrapper,
-  Menu
-} from '../styles/Devoard';
-
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setActivePage } from '../modules/user';
 
 const Devoard = () => {
-  const { setActivePage } = useContext(UserContext);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedMenu, setSelectedMenu] = useState("전체 보기");
-  const comboBox = useRef(null);
-  const menuWrapper = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(()=>{
-    setActivePage('devoard');
-    
-    const handleCloseMenu = (e) => {
-      if (!isMenuOpen && comboBox.current.contains(e.target))
-        setIsMenuOpen(true);
-      else if(isMenuOpen && comboBox.current.contains(e.target)){
-        if (menuWrapper.current.contains(e.target))
-          setSelectedMenu(e.target.attributes.getNamedItem("data-value").value);
-        setIsMenuOpen(false);
-      } 
-    }
-
-    window.addEventListener('mousedown', handleCloseMenu);
-
-    return () => {
-      window.removeEventListener('mousedown', handleCloseMenu);
-    }
-  }, [setActivePage, isMenuOpen])
-
- 
+    dispatch(setActivePage('devoard'));
+  }, [setActivePage])
 
   return (
     <DevoardWrapper>

@@ -1,6 +1,7 @@
-import { useEffect, useContext } from 'react';
-import { UserContext } from '../context/user';
+import { useEffect } from 'react';
 import styled from "styled-components";
+import { useDispatch } from 'react-redux';
+import { setActivePage } from '../modules/user';
 
 const NotFoundPage = styled.div`
   display: flex;
@@ -17,10 +18,10 @@ const NotFoundPage = styled.div`
 
 
 const NotFound = () => {
-  const { setActivePage } = useContext(UserContext);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    setActivePage('home');
+    dispatch(setActivePage('home'));
   }, [setActivePage]);
   
   return (

@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
 const Question = styled.h1`
     color: #fff;
+    line-height: 1.3;
 `;
 
 const Answer = styled.p`

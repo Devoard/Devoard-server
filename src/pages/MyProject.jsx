@@ -1,11 +1,12 @@
-import { useEffect, useContext } from 'react';
-import { UserContext } from '../context/user';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setActivePage } from '../modules/user';
 
 const MyProject = () => {
-  const { setActivePage } = useContext(UserContext);
+  const dispatch = useDispatch();
 
   useEffect(()=>{
-    setActivePage('my_project');
+    dispatch(setActivePage('my_project'));
   }, [setActivePage])
 
   return (

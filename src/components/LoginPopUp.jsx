@@ -1,11 +1,12 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import axios from 'axios';
 import GoogleLogin from 'react-google-login';
-import { UserContext } from '../context/user';
 import githubIcon from '../assets/images/githubIcon.png';
 import googleIcon from '../assets/images/googleIcon.png';
 import PopUp from './PopUp';
+import { useDispatch } from "react-redux";
+import {setLoggedIn, setLoggedUser} from '../modules/user';
 
 const LoginText = styled.h1`
   margin-bottom: 2.5rem;
@@ -30,29 +31,28 @@ const GithubIcon = styled(Icon).attrs({
 
 
 const LoginPopUp = ({ isVisible, setIsLoginPopUp }) => {
-  const { loggedUser, setLoggedUser, setLoggedIn } = useContext(UserContext);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (window.sessionStorage.getItem('name')) {
-      setLoggedIn();
+      dispatch(setLoggedIn());
 
       const name = window.sessionStorage.getItem('name');
       const email = window.sessionStorage.getItem('email');
       const imageUrl = window.sessionStorage.getItem('imageUrl');
   
-      setLoggedUser({
+      dispatch(setLoggedUser({
         name: name,
         email: email,
         imageUrl: imageUrl
-      })
+      }));
     }
 
   }, [setLoggedIn, setLoggedUser]);
 
   const onSuccess = (res) => {
-    setLoggedIn();
+    dispatch(setLoggedIn());
     setIsLoginPopUp(false);
-
     doSignIn(res);
   }
 
@@ -68,19 +68,11 @@ const LoginPopUp = ({ isVisible, setIsLoginPopUp }) => {
       window.sessionStorage.setItem('email', email);
       window.sessionStorage.setItem('imageUrl', imageUrl);
 
-      setLoggedUser({
+      dispatch(setLoggedUser({
         name: name,
         email: email,
         imageUrl: imageUrl
-      })
-
-      axios.post('/user/user_info', loggedUser)
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
-      })
+      }));
     }
   }
 
