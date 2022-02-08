@@ -25,9 +25,7 @@ url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
 }
 
 @media (max-width: 1400px) {
-  body {
-    width: 1024px;
-  }
+  body {width: 1024px;}
 }
 
 

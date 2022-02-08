@@ -9,8 +9,8 @@ import MyProject from './pages/MyProject';
 import MyPage from './pages/MyPage';
 import Devoard from './pages/Devoard';
 import Callback from './pages/Callback';
-import NotFound from './pages/NotFound';
 import Survey from './pages/Survey';
+import NotFound from './pages/NotFound';
 
 const App = () => {
   return (
@@ -31,9 +31,9 @@ const App = () => {
               <Route path="/my_project" element={<MyProject />} />
               <Route path="/my_page" element={<MyPage />} />
               <Route path="/devoard" element={<Devoard />} />
+              <Route path="/survey" element={<Survey />} />
               <Route path="/callback" element={<Callback />} />
               <Route path="*" element={<NotFound />} />
-              <Route path="/survey" element={<Survey />} />
             </Route>
           </Routes>
         </ThemeProvider>

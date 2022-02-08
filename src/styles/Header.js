@@ -12,11 +12,27 @@ export const HeaderWrapper = styled.div`
   height: 4.5rem;
 `;
 
+export const StaticMenuWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 export const Logo = styled.span`
   color: var(--color-orange);
   font-family: var(--font-logo);
   font-size: 2rem;
   cursor: pointer;
+`;
+
+export const ProjectMenu = styled.span`
+  font-size: 1.2rem;
+  font-weight: bolder;
+  color: white;
+  margin-left: 2.5rem;
+  cursor: pointer;
+
+  &:hover { color: ${lighten(0.3, 'gray')};}
+  &:active { color: ${darken(0.05, 'gray')};}
 `;
 
 export const UserIcon = styled.img`

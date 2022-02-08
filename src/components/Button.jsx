@@ -12,7 +12,7 @@ const colorStyles = css`
       ${props =>
         !props.outline &&
         css`
-        &:hover { background: ${lighten(0.05, selected)};}
+        &:hover { background: ${lighten(0.1, selected)};}
         &:active { background: ${darken(0.05, selected)};}
         `
       }
@@ -26,7 +26,7 @@ const colorStyles = css`
           border: 2px solid ${selected};
 
           &:hover { 
-            border-color: ${lighten(0.05, selected)};
+            border-color: ${lighten(0.1, selected)};
             color: ${lighten(0.05, selected)}
           };}
           &:active { 

@@ -25,7 +25,7 @@ const Home = () => {
   const [recruitNum, setRecruitNum] = useState(123);
   const dispatch = useDispatch();
   const project_wrapper = useRef(null);
-  const text = "TextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextText";
+  const text = "TextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextText";
 
   useEffect(() => {
     const RecruitNumAnimation = () => {
@@ -59,7 +59,9 @@ const Home = () => {
           현재 모집 중
         </RecruitDisplayText>
         <RecruitBtnWrapper>
-          <ApplyBtn color="orange">지원하기</ApplyBtn>
+          <Link to="/devoard">
+            <ApplyBtn color="orange">지원하기</ApplyBtn>
+          </Link>
           <RecruitBtn color="orange">모집하기</RecruitBtn>
         </RecruitBtnWrapper>
       </RecruitDisplayWrapper>
@@ -75,37 +77,37 @@ const Home = () => {
             recruitState={true}
             projectTitle="Project Title"
             projectText={text}
-            TagName="TAGTAG"
+            tagName="TAGTAG"
           />
           <ProjectDetail
             recruitState={false}
             projectTitle="Title"
             projectText="Text"
-            TagName="Tag2"
+            tagName="Tag2"
           />
            <ProjectDetail 
             recruitState={true}
             projectTitle="Title"
             projectText="Text"
-            TagName="Tag"
+            tagName="Tag"
           />
           <ProjectDetail
             recruitState={false}
             projectTitle="Title"
             projectText="Text"
-            TagName="Tag"
+            tagName="Tag"
           />
            <ProjectDetail 
             recruitState={true}
             projectTitle="Title"
             projectText="Text"
-            TagName="Tag"
+            tagName="Tag"
           />
           <ProjectDetail
             recruitState={false}
             projectTitle="Title"
             projectText="Text"
-            TagName="Tag"
+            tagName="Tag"
           />
         </ProjectDetailWrapper>
         <Link
