@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components';
-import UserProvider from './context/user';
 import Home from './pages/Home';
 import Layout from './components/Layout';
 import Alert from './pages/Alert';
@@ -15,7 +14,6 @@ import Survey from './pages/Survey';
 
 const App = () => {
   return (
-    <UserProvider>
       <div className="App">
         <ThemeProvider
           theme={{
@@ -40,7 +38,6 @@ const App = () => {
           </Routes>
         </ThemeProvider>
       </div>
-    </UserProvider>
   );
 }
 

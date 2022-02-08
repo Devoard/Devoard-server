@@ -1,15 +1,16 @@
-import { useEffect, useContext, useState } from 'react';
-import { UserContext } from '../context/user';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { dataList } from './surveyData';
 import SurveyComp from '../components/SurveyComp';
+import Button from '../components/Button';
+
 const SurveyPage = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin: 100px auto;
-    width: 50%;
+    width: 60%;
 `;
 
 const ProgressBar = styled.div`
@@ -25,15 +26,11 @@ const ProgressStatus = styled.div`
     border-radius: 50px;
     background: var(--color-orange);
 `;
+
 const CuntrolBox = styled.div`
     display: flex;
 `;
-const Button = styled.button`
-    background: #fff;
-    border: none;
-    cursor: pointer;
-    margin: 10px;
-`;
+
 const Survey = () => {
     const [progressRate, setProgressRate] = useState(0);
     const [dataId, setDataId] = useState(1);
@@ -64,8 +61,8 @@ const Survey = () => {
                 }
             })}
             <CuntrolBox>
-                <Button onClick={onPrevClick} >이전</Button>
-                <Button onClick={onNextClick} >다음</Button>
+                <Button color='orange' outline onClick={onPrevClick}>이전</Button>
+                <Button color='orange' outline onClick={onNextClick}>다음</Button>
             </CuntrolBox>
         </SurveyPage>
 

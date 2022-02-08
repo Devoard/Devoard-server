@@ -1,7 +1,8 @@
-import { useRef, useEffect, useContext } from 'react';
-import { UserContext } from '../context/user';
+import { useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { setLoggedIn } from '../modules/user';
 
 const MenuWrapper = styled.div`
   position: absolute;
@@ -28,13 +29,13 @@ const Menu = styled.div`
 const ToggleMenu = ({ isVisible, setIsVisible }) => { 
   const menu = useRef(null);
   const logout_menu = useRef(null);
-  const { setLoggedIn } = useContext(UserContext);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  
   const handleCloseMenu = (e) => {
     if (!isVisible) return null;
     if (logout_menu.current === e.target)
-      setLoggedIn();
+    dispatch(setLoggedIn());
     else if (menu.current.contains(e.target))
       navigate(e.target.attributes.getNamedItem("data-link").value)
  

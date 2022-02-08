@@ -1,6 +1,5 @@
-import { useState, useEffect, useContext, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { UserContext } from '../context/user';
 import ProjectDetail from '../components/ProjectDetail';
 import {
   HomeWrapper,
@@ -17,12 +16,14 @@ import {
   ProjectDetailWrapper,
   MoreProjectBtn
 } from '../styles/Home';
+import { useDispatch } from 'react-redux';
+import { setActivePage } from '../modules/user';
 
 
 
 const Home = () => {
   const [recruitNum, setRecruitNum] = useState(123);
-  const { setActivePage } = useContext(UserContext);
+  const dispatch = useDispatch();
   const project_wrapper = useRef(null);
   const text = "TextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextText";
 
@@ -37,7 +38,7 @@ const Home = () => {
     };
 
     RecruitNumAnimation();
-    setActivePage('home');
+    dispatch(setActivePage('home'));
     project_wrapper.current.addEventListener('mousewheel', handleHorizontalScroll);
   
   }, [setActivePage]);
