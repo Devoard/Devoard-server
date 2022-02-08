@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef, useContext } from 'react';
-import { UserContext } from '../context/user';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import LoginPopUp from '../components/LoginPopUp';
 import ToggleMenu from '../components/ToggleMenu';
@@ -14,11 +13,12 @@ import {
   AlertBtn,
   ChatBtn
 } from '../styles/Header'
+import { useSelector } from 'react-redux';
 
 const Header = () => {
   const [isLoginPopUp, setIsLoginPopUp] = useState(false);
   const [isToggleMenuPopUp, setIsToggleMenuPopUp] = useState(false);
-  const { loggedIn, loggedUser, activePage, setActivePage } = useContext(UserContext);
+  const { loggedIn, loggedUser, activePage } = useSelector(state=>state.user);
   const userIcon = useRef(null);
 
   useEffect(()=>{
@@ -77,7 +77,7 @@ const Header = () => {
         <ToggleMenu
           isVisible={isToggleMenuPopUp}
           setIsVisible={setIsToggleMenuPopUp}
-          changeActiveBtn={setActivePage}
+          // changeActiveBtn={setActivePage}
         />
       </HeaderWrapper>
 

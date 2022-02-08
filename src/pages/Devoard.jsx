@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef, useContext } from 'react';
-import { UserContext } from '../context/user';
+import { useState, useEffect, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { setActivePage } from '../modules/user';
 import ProjectDetail from '../components/ProjectDetail';
 import {
   DevoardWrapper,
@@ -16,16 +17,11 @@ import {
   SearchIcon
 } from '../styles/Devoard';
 
-
 const Devoard = () => {
-  const { setActivePage } = useContext(UserContext);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [selectedMenu, setSelectedMenu] = useState("전체 보기");
-  const comboBox = useRef(null);
-  const menuWrapper = useRef(null);
+  const dispatch = useDispatch();
 
   useEffect(()=>{
-    setActivePage('devoard');
+    dispatch(setActivePage('devoard'));
     
     const handleCloseMenu = (e) => {
       if (!isMenuOpen) {
@@ -45,8 +41,6 @@ const Devoard = () => {
       window.removeEventListener('mousedown', handleCloseMenu);
     }
   }, [setActivePage, isMenuOpen])
-
- 
 
   return (
     <DevoardWrapper>
