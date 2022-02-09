@@ -32,11 +32,22 @@ const ToggleMenu = ({ isVisible, setIsVisible }) => {
   const logout_menu = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  
+  const doSignOut = () => {
+    if (!window.sessionStorage.getItem('name')) return null;
+
+    navigate('/');
+    window.sessionStorage.removeItem('name');
+    window.sessionStorage.removeItem('email');
+    window.sessionStorage.removeItem('imageUrl');
+    dispatch(setLoggedIn());
+  }
   
   const handleCloseMenu = (e) => {
     if (!isVisible) return null;
-    if (logout_menu.current === e.target)
-    dispatch(setLoggedIn());
+    if (logout_menu.current === e.target) 
+      doSignOut();
     else if (menu.current.contains(e.target))
       navigate(e.target.attributes.getNamedItem("data-link").value)
  

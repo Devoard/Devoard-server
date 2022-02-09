@@ -19,9 +19,14 @@ import {
 
 const Devoard = () => {
   const dispatch = useDispatch();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [selectedMenu, setSelectedMenu] = useState("전체 보기");
+  const comboBox = useRef(null);
+  const menuWrapper = useRef(null);
 
   useEffect(()=>{
     dispatch(setActivePage('devoard'));
+    
     
     const handleCloseMenu = (e) => {
       if (!isMenuOpen) {
