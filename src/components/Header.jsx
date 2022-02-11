@@ -77,7 +77,6 @@ const Header = () => {
         <ToggleMenu
           isVisible={isToggleMenuPopUp}
           setIsVisible={setIsToggleMenuPopUp}
-          // changeActiveBtn={setActivePage}
         />
       </HeaderWrapper>
 
