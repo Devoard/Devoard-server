@@ -10,10 +10,10 @@ export const DevoardWrapper = styled.div`
   margin-bottom: 2rem;
 `;
 
-export const DevoardText = styled.div`
+export const DevoardTitle = styled.div`
   color: white;
-  font-size: 1.3rem;
-  margin-left: 1rem;
+  font-size: 1.5rem;
+  font-family: var(--font-title);
 `;
 
 export const ProjectWrapper = styled.div`
@@ -50,7 +50,6 @@ export const ComboBox = styled.div`
   height: 1.8rem;
   border-radius: 0.3rem;
   background: white;
-  margin-left: 1rem;
   margin-bottom: 0;
   cursor: pointer;
 `;

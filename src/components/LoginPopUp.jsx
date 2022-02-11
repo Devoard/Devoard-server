@@ -80,7 +80,7 @@ const LoginPopUp = ({ isVisible, setIsLoginPopUp }) => {
 
       axios.post('http://localhost:8000/user_info', loggedUser)
       .then (res => {
-        if(res.status === 201) 
+        if (res.status === 201) 
           navigate('/survey');
       })
       .catch(err => {

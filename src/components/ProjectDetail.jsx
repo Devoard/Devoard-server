@@ -47,9 +47,11 @@ const TagWrapper = styled.div`
   text-align: left;
   overflow: hidden;
   margin: 0 0.8rem;
+  
 
   * {
     margin-right: 0.4rem;
+    margin-bottom: 0.4rem;
   }
 `;
 
@@ -71,7 +73,7 @@ const ProjectText = styled.div`
 `;
 
 
-const ProjectDetail = ({ isScrapped, recruitState, projectTitle, projectText, tagName }) => {
+const ProjectDetail = ({ isScrapped, recruitState, projectTitle, projectText, tags }) => {
   const [isColored, setIsColored] = useState(isScrapped);
   
   return (
@@ -91,7 +93,9 @@ const ProjectDetail = ({ isScrapped, recruitState, projectTitle, projectText, ta
       <DividerLine />
       
       <TagWrapper>
-        <Tag>{tagName}</Tag>
+        {tags && tags.map(tag => (
+          <Tag>{tag}</Tag>
+        ))}
       </TagWrapper>
       <ProjectText>
         {projectText}
