@@ -52,7 +52,7 @@ const PopUp = ({ children, isVisible, setIsLoginPopUp, width, height }) => {
         <IoIosClose 
           className="icon" 
           size="40" 
-          onClick={()=>{setIsLoginPopUp(false)}}
+          onClick={()=>{setIsLoginPopUp(false);}}
         />
         {children}
       </PopUpWrapper>

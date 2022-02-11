@@ -12,6 +12,7 @@ import Devoard from './pages/Devoard';
 import Callback from './pages/Callback';
 import Survey from './pages/Survey';
 import NotFound from './pages/NotFound';
+import ChatList from './pages/ChatList';
 
 const App = () => {
   const { loggedIn } = useSelector(state => state.user);
@@ -37,6 +38,7 @@ const App = () => {
               {loggedIn ? <Route path="/survey" element={<Survey />} /> : ""}
               <Route path="/callback" element={<Callback />} />
               <Route path="*" element={<NotFound />} />
+              <Route path="/chat_list" element={<ChatList />} />
             </Route>
           </Routes>
         </ThemeProvider>
