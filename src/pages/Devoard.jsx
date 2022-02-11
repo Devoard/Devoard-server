@@ -1,10 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
+//import PostAPI from '../api/PostAPI';
 import { setActivePage } from '../modules/user';
 import ProjectDetail from '../components/ProjectDetail';
+import WriteBtn from '../components/WriteBtn';
 import {
   DevoardWrapper,
-  DevoardText,
+  DevoardTitle,
   SortingWrapper,
   ComboBox,
   SelectedText,
@@ -19,6 +23,7 @@ import {
 
 const Devoard = () => {
   const dispatch = useDispatch();
+  const [posts, setPosts] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState("전체 보기");
   const comboBox = useRef(null);
@@ -26,7 +31,6 @@ const Devoard = () => {
 
   useEffect(()=>{
     dispatch(setActivePage('devoard'));
-    
     
     const handleCloseMenu = (e) => {
       if (!isMenuOpen) {
@@ -40,16 +44,28 @@ const Devoard = () => {
       } 
     }
 
+    const getPosts = () => {
+      axios.get("http://localhost:8000/posts")
+      .then(res => {
+        setPosts(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    }
+
     window.addEventListener('mousedown', handleCloseMenu);
+    getPosts();
 
     return () => {
       window.removeEventListener('mousedown', handleCloseMenu);
     }
   }, [setActivePage, isMenuOpen])
 
+
   return (
     <DevoardWrapper>
-      <DevoardText>현재 모집 중인 프로젝트</DevoardText>
+      <DevoardTitle>현재 모집 중인 프로젝트</DevoardTitle>
       <SortingWrapper>
         <ComboBox
           ref={comboBox}
@@ -73,52 +89,19 @@ const Devoard = () => {
         </Search>
       </SortingWrapper>
       <ProjectWrapper>
-        <ProjectDetail 
-          recruitState={true}
-          projectTitle="Title"
-          tagName="tags"
-        />
-        <ProjectDetail 
-          recruitState={true}
-          projectTitle="Title"
-          tagName="tags"
-        />
-        <ProjectDetail 
-          recruitState={true}
-          projectTitle="Title"
-          tagName="tags"
-        />
-        <ProjectDetail 
-          recruitState={true}
-          projectTitle="Title"
-          tagName="tags"
-        />
-        <ProjectDetail 
-          recruitState={true}
-          projectTitle="Title"
-          tagName="tags"
-        />
-        <ProjectDetail 
-          recruitState={true}
-          projectTitle="Title"
-          tagName="tags"
-        />
-        <ProjectDetail 
-          recruitState={true}
-          projectTitle="Title"
-          tagName="tags"
-        />
-        <ProjectDetail 
-          recruitState={true}
-          projectTitle="Title"
-          tagName="tags"
-        />
-        <ProjectDetail 
-          recruitState={true}
-          projectTitle="Title"
-          tagName="tags"
-        />
+        {posts && posts.map(post => (
+          <ProjectDetail 
+            key={post.id}
+            projectTitle={post.title}
+            projectText={post.body}
+            tags={post.tags}
+            recruitState={post.recruitState}
+          />
+        ))}
       </ProjectWrapper>
+      <Link to='/write' style={{ color: '#333333' }}>
+        <WriteBtn />
+      </Link>
     </DevoardWrapper>
   )
 }

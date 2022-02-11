@@ -9,6 +9,7 @@ import Scrap from './pages/Scrap';
 import MyProject from './pages/MyProject';
 import MyPage from './pages/MyPage';
 import Devoard from './pages/Devoard';
+import Write from './pages/Write';
 import Callback from './pages/Callback';
 import Survey from './pages/Survey';
 import NotFound from './pages/NotFound';
@@ -35,6 +36,7 @@ const App = () => {
               <Route path="/my_project" element={<MyProject />} />
               <Route path="/my_page" element={<MyPage />} />
               <Route path="/devoard" element={<Devoard />} />
+              {loggedIn ? <Route path="/write" element={<Write />} /> : ""}
               {loggedIn ? <Route path="/survey" element={<Survey />} /> : ""}
               <Route path="/callback" element={<Callback />} />
               <Route path="*" element={<NotFound />} />

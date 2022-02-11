@@ -9,6 +9,7 @@ const MenuWrapper = styled.div`
   right: 0;
   top: 5rem;
   box-shadow: 0px 0px 12px #444444;
+  z-index: 1;
 `;
 
 const Menu = styled.div`

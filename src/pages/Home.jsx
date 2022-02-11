@@ -62,7 +62,9 @@ const Home = () => {
           <Link to="/devoard">
             <ApplyBtn color="orange">지원하기</ApplyBtn>
           </Link>
-          <RecruitBtn color="orange">모집하기</RecruitBtn>
+          <Link to="/write">
+            <RecruitBtn color="orange">모집하기</RecruitBtn>
+          </Link>
         </RecruitBtnWrapper>
       </RecruitDisplayWrapper>
       <IntroTextWrapper>
@@ -77,37 +79,31 @@ const Home = () => {
             recruitState={true}
             projectTitle="Project Title"
             projectText={text}
-            tagName="TAGTAG"
           />
           <ProjectDetail
             recruitState={false}
             projectTitle="Title"
             projectText="Text"
-            tagName="Tag2"
           />
            <ProjectDetail 
             recruitState={true}
             projectTitle="Title"
             projectText="Text"
-            tagName="Tag"
           />
           <ProjectDetail
             recruitState={false}
             projectTitle="Title"
             projectText="Text"
-            tagName="Tag"
           />
            <ProjectDetail 
             recruitState={true}
             projectTitle="Title"
             projectText="Text"
-            tagName="Tag"
           />
           <ProjectDetail
             recruitState={false}
             projectTitle="Title"
             projectText="Text"
-            tagName="Tag"
           />
         </ProjectDetailWrapper>
         <Link
