@@ -1,7 +1,11 @@
+import { lighten } from 'polished';
 import React, {useState} from 'react';
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Title from '../components/Title';
+import { set_detail_chat } from '../modules/chat';
+import ChatDetail from './ChatDetail';
 
 const ListBox = styled.div`
     width: 65%;
@@ -14,10 +18,14 @@ const ChatItem = styled.div`
     border-bottom: 1px solid #fff;
     padding: 10px;
     margin-bottom: 10px;
+    cursor: pointer;
     &:before{
         content: "ㅁ";
         color: #fff;
         margin-right: 10px;
+    }
+    &:hover { 
+        background: rgba(255, 255, 255, 0.1);
     }
 `;
 const FromId = styled.p`
@@ -60,92 +68,11 @@ const ControlBtn = styled.button`
 const ChatList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pages, setPages] = useState([]);
+    const [detailOpen, setDetailOpen] = useState(false);
     const page_num = 5;  //페이지 숫자 개수 ◀ 1 2 3 ▶
     const message_num = 12;  //한페이지에 보여질 쪽지수
-    const messages = [
-        {from: '사용자1사용자1사용자1사용자1', 
-        content: '지수님 안녕하세요지수님 안녕하세요?지수님 안녕하세요?지수님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: true},
-        {from: '사용자2', 
-        content: '지영님 안녕하세요?지영님 안녕하세요?지영님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: false},
-        {from: '사용자3', 
-        content: '성현님 안녕하세요?성현님 안녕하세요?성현님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: false},
-        {from: '사용자4', 
-        content: '다혜님 안녕하세요?다혜님 안녕하세요?다혜님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: false},
-        {from: '사용자5', 
-        content: '지수님 안녕하세요?지수님 안녕하세요?지수님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: true},
-        {from: '사용자6', 
-        content: '지영님 안녕하세요?지영님 안녕하세요?지영님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: false},
-        {from: '사용자7', 
-        content: '성현님 안녕하세요?성현님 안녕하세요?성현님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: false},
-        {from: '사용자8', 
-        content: '다혜님 안녕하세요?다혜님 안녕하세요?다혜님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: false},
-        {from: '사용자9', 
-        content: '지수님 안녕하세요?지수님 안녕하세요?지수님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: true},
-        {from: '사용자10', 
-        content: '지영님 안녕하세요?지영님 안녕하세요?지영님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: false},
-        {from: '사용자11', 
-        content: '성현님 안녕하세요?성현님 안녕하세요?성현님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: false},
-        {from: '사용자12', 
-        content: '다혜님 안녕하세요?다혜님 안녕하세요?다혜님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: false},
-        {from: '사용자13', 
-        content: '지수님 안녕하세요?지수님 안녕하세요?지수님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: true},
-        {from: '사용자14', 
-        content: '지영님 안녕하세요?지영님 안녕하세요?지영님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: false},
-        {from: '사용자15', 
-        content: '성현님 안녕하세요?성현님 안녕하세요?성현님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: false},
-        {from: '사용자16', 
-        content: '다혜님 안녕하세요?다혜님 안녕하세요?다혜님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: false},
-        {from: '사용자17', 
-        content: '지수님 안녕하세요?지수님 안녕하세요?지수님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: true},
-        {from: '사용자18', 
-        content: '지영님 안녕하세요?지영님 안녕하세요?지영님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: false},
-        {from: '사용자19', 
-        content: '성현님 안녕하세요?성현님 안녕하세요?성현님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: false},
-        {from: '사용자사용자20', 
-        content: '다혜님 안녕하세요?다혜님 안녕하세요?다혜님 안녕하세요?다혜님 안녕하세요?', 
-        date: '2022-02-10 11:19',
-        isRead: false},
-        
-    ]
-    const page = Math.ceil(messages.length / message_num);  //총 페이지 수
+    const {allChat} = useSelector(state=>state.chat);
+    const page = Math.ceil(allChat.length / message_num);  //총 페이지 수
 
     useEffect(()=>{
         for(let i=1; i<=page; i++){
@@ -177,14 +104,20 @@ const ChatList = () => {
         }
         setPages(arr);
     }
+
+    const onDetailClick = (e) => {
+        console.log(e.target.getAttribute('data-from'));
+        setDetailOpen(true);
+    }
+
     return (
         <>
             <Title>쪽지함</Title>
             <ListBox>
-                {messages.map((v, i)=>{
+                {allChat && allChat.map((v, i)=>{
                      if(i+1>(currentPage-1)*message_num && i+1<=(currentPage * message_num)){
                          return(
-                            <ChatItem isRead={v.isRead} key={i}>
+                            <ChatItem data-from={v.from} isRead={v.isRead} key={i} onClick={onDetailClick}>
                                 <FromId>{v.from}</FromId>
                                 <Content>{v.content}</Content>
                                 <Date>{v.date}</Date>
@@ -198,6 +131,7 @@ const ChatList = () => {
                 {pages.map((v, i)=><ControlBtn key={i} onClick={onPageChange}>{v}</ControlBtn>)}
                 <ControlBtn onClick={onNext}>▶</ControlBtn>
             </PageControl> 
+            {detailOpen&&<ChatDetail detailOpen={detailOpen} setDetailOpen={setDetailOpen} />}
         </>
     );
 };

@@ -40,7 +40,7 @@ const PopUpWrapper = styled.div`
   }
 `;
 
-const PopUp = ({ children, isVisible, setIsLoginPopUp, width, height }) => {
+const PopUp = ({ children, isVisible, setIsLoginPopUp, width, height, setDetailOpen }) => {
   if (!isVisible) return null;
 
   return (
@@ -52,7 +52,7 @@ const PopUp = ({ children, isVisible, setIsLoginPopUp, width, height }) => {
         <IoIosClose 
           className="icon" 
           size="40" 
-          onClick={()=>{setIsLoginPopUp(false)}}
+          onClick={()=>{setIsLoginPopUp(false);}}
         />
         {children}
       </PopUpWrapper>
