@@ -40,7 +40,7 @@ const PopUpWrapper = styled.div`
   }
 `;
 
-const PopUp = ({ children, isVisible, setIsLoginPopUp, width, height, setDetailOpen }) => {
+const PopUp = ({ children, isVisible, setIsLoginPopUp, width, height }) => {
   if (!isVisible) return null;
 
   return (

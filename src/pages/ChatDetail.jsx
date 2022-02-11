@@ -1,23 +1,8 @@
 import React, { useEffect } from 'react';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import PopUp from '../components/PopUp';
 
-
-const Wrap = styled.div`
-    width: 60vw;
-    height: 80vh;
-    background: #fff;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`;
 const ListBox = styled.div`
     // border: 1px solid red;
     overflow-y:scroll; 
@@ -29,7 +14,7 @@ const ChatItem = styled.div`
     width: 100%;
     font-size: 18px;
     border-bottom: 1px solid #ACACAC;
-    padding: 10px;
+    padding: 10px 0;
     margin: 10px 0;
 `;
 const Content = styled.p`
@@ -39,6 +24,13 @@ const Content = styled.p`
         font-weight: 600;
         display: block;
         margin: 8px 0;
+    }
+    &:after{
+        content: "${props=>props.date}";
+        position: absolute;
+        right: 40px;
+        font-size: 16px;
+        top: 10px; 
     }
 `;
 
@@ -52,7 +44,7 @@ const ChatDetail = ({setDetailOpen, detailOpen}) => {
         <PopUp width={'60%'} height={'80%'} isVisible={detailOpen} setIsLoginPopUp={setDetailOpen}>
             <ListBox>
             <ChatItem>
-            <Content desc={'받은 쪽지'}>안녕하세요?</Content>
+            <Content desc={'받은 쪽지'} date={'2022-02-10 11:19'}>안녕하세요?</Content>
             </ChatItem>
             <ChatItem>
             <Content desc={'보낸 쪽지'}>안녕하세요?</Content>
