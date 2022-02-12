@@ -24,7 +24,7 @@ from user import views
 urlpatterns = [
     path('user/',include('user.urls')),
     path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='index.html')),
+    path('', TemplateView.as_view(template_name='index.html'), name='home'),
     path('login/', obtain_jwt_token), #토큰 발행 = 됨
     path('verify/', verify_jwt_token), #토큰 유효한지 검사 = 얘는 됨
     path('refresh/', refresh_jwt_token), #토큰 갱신 = 얘도 됨

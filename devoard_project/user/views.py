@@ -106,8 +106,9 @@ def github_callback(request):
     error = user_json.get("error")
     if error is not None:
         raise JSONDecodeError(error)
-    # print(user_json)
+    print(user_json)
     email = user_json.get("email")
+    avatar_url = user_json.get("avatar_url")
     """
     Signup or Signin Request
     """
@@ -138,37 +139,28 @@ def github_callback(request):
             f"{BASE_URL}user/github/login/finish/", data=data)
         accept_status = accept.status_code
         if accept_status != 200:
-            return JsonResponse({'err_msg': 'failed to signup'}, status=accept_status)
+            return JsonResponse({'err_msg': 'failed to signusp'}, status=accept_status)
         # user의 pk, email, first name, last name과 Access Token, Refresh token 가져옴
         accept_json = accept.json()
         accept_json.pop('user', None)
-        return JsonResponse(accept_json)
+        print(accept_json['token'])
+        response = redirect('home')
+        response.set_cookie('git_token',accept_json['token'])
+        response.set_cookie('git_userImg',avatar_url)
+        
+        return response
         # return HttpResponseRedirect(accept_json,settings.LOGIN_REDIRECT_URL)
-        # return redirect(settings.LOGIN_REDIRECT_URL)
+        # return render(request,'index.html',accept_json)
 class GithubLogin(SocialLoginView):
-    """
-    If it's not working
-    You need to customize GitHubOAuth2Adapter
-    use header instead of params
-    -------------------
-    def complete_login(self, request, app, token, **kwargs):
-        params = {'access_token': token.token}
-TO
-def complete_login(self, request, app, token, **kwargs):
-        headers = {'Authorization': 'Bearer {0}'.format(token.token)}
-    -------------------
-    """
     adapter_class = github_view.GitHubOAuth2Adapter
-    callback_url = GITHUB_CALLBACK_URI
+    callback_url = '/'
     client_class = OAuth2Client 
     
 #     def get(self, request, format=None):
 #         return redirect(settings.LOGIN_REDIRECT_URL)
-#     def post(self, request, format=None):
-#         return redirect(settings.LOGIN_REDIRECT_URL)
+    # def post(self, request):
+    #     return redirect(settings.LOGIN_REDIRECT_URL)
 
 # def google_callback(request):
 #     url = 'http://localhost:8000/'
 #     return redirect(f'{url}{request.GET.get("code")}')
-#     아시아나 32748366
-#     대한 52748366
