@@ -5,7 +5,7 @@ import {
   HomeWrapper,
   RecruitDisplayWrapper,
   RecruitDisplayText,
-  RecruitNum,
+  RecruitCnt,
   RecruitBtnWrapper,
   ApplyBtn,
   RecruitBtn,
@@ -22,25 +22,31 @@ import { setActivePage } from '../modules/user';
 
 
 const Home = () => {
-  const [recruitNum, setRecruitNum] = useState(123);
+  const [recruitCnt, setRecruitCnt] = useState(123);
   const dispatch = useDispatch();
   const project_wrapper = useRef(null);
   const text = "TextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextText";
 
   useEffect(() => {
-    const RecruitNumAnimation = () => {
+    let timer = null;
+    
+    const recruitCntAnimation = () => {
       let num = 0;
   
-      setInterval(()=>{
-        if (num === recruitNum) return null;
-        setRecruitNum(++num);
-      }, 1000/recruitNum);
+      timer = setInterval(()=>{
+        if (num === recruitCnt) return null;
+        setRecruitCnt(++num);
+      }, 1000/recruitCnt);
     };
 
-    RecruitNumAnimation();
+    recruitCntAnimation();
     dispatch(setActivePage('home'));
     project_wrapper.current.addEventListener('mousewheel', handleHorizontalScroll);
   
+
+    return () => {
+      clearInterval(timer);
+    }
   }, [setActivePage]);
 
   const handleHorizontalScroll = (e) => {
@@ -55,7 +61,7 @@ const Home = () => {
     <HomeWrapper>
       <RecruitDisplayWrapper>
         <RecruitDisplayText>
-          <RecruitNum>{recruitNum}</RecruitNum> 팀<br/>
+          <RecruitCnt>{recruitCnt}</RecruitCnt> 팀<br/>
           현재 모집 중
         </RecruitDisplayText>
         <RecruitBtnWrapper>

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Button from '../components/Button';
 
 export const WritePageWrapper = styled.div`
@@ -58,6 +58,13 @@ export const ComboBox = styled.select`
   font-family: var(--font-body);
   font-size: 1rem;
   outline: none;
+
+  ${props =>
+    props.isWarning &&
+    css`
+      border: 2px solid #d36262;
+    `
+  }
 `;
 
 export const OptGroup = styled.optgroup``;
@@ -107,12 +114,23 @@ export const TextArea = styled.textarea`
   font-family: var(--font-body);
 `;
 
+export const FieldText = styled.div`
+  width: 30%;
+  font-size: 1.1rem;
+  font-weight: bold;
+`;
+
+export const WarningText = styled.div`
+  color: #d36262;
+  font-weight: bold;
+`;
+
 // Project
 
 export const ProjectWrapper = styled(Wrapper)``;
-export const RecruitNumWrapper = styled(Wrapper)``;
+export const RecruitCntWrapper = styled(Wrapper)``;
 
-// RecruitNum
+// recruitCnt
 
 export const NumText = styled.span`
   margin-left: 0.4rem;

@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
-//import PostAPI from '../api/PostAPI';
+import PostAPI from '../api/PostAPI';
 import { setActivePage } from '../modules/user';
 import ProjectDetail from '../components/ProjectDetail';
 import WriteBtn from '../components/WriteBtn';
@@ -23,6 +22,7 @@ import {
 
 const Devoard = () => {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState("전체 보기");
@@ -33,6 +33,8 @@ const Devoard = () => {
     dispatch(setActivePage('devoard'));
     
     const handleCloseMenu = (e) => {
+      if (loading) return null;
+
       if (!isMenuOpen) {
         if (comboBox.current.contains(e.target))
           setIsMenuOpen(true);
@@ -44,25 +46,25 @@ const Devoard = () => {
       } 
     }
 
-    const getPosts = () => {
-      axios.get("http://localhost:8000/posts")
-      .then(res => {
-        setPosts(res.data);
-      })
-      .catch(err => {
-        console.log(err);
-      })
-    }
-
     window.addEventListener('mousedown', handleCloseMenu);
-    getPosts();
 
     return () => {
       window.removeEventListener('mousedown', handleCloseMenu);
     }
   }, [setActivePage, isMenuOpen])
 
+  useEffect(() => {
+    setLoading(true);
+    const get = async() => {
+      const posts = await PostAPI.getPosts();
+      setPosts(posts);
+      setLoading(false);
+    }
 
+    get();
+  }, []);
+
+  if (loading) return <div style={{color: 'white'}}>로딩 중 ...</div>;
   return (
     <DevoardWrapper>
       <DevoardTitle>현재 모집 중인 프로젝트</DevoardTitle>
@@ -89,13 +91,14 @@ const Devoard = () => {
         </Search>
       </SortingWrapper>
       <ProjectWrapper>
-        {posts && posts.map(post => (
+        {posts &&
+         posts.map(post => (
           <ProjectDetail 
             key={post.id}
             projectTitle={post.title}
             projectText={post.body}
             tags={post.tags}
-            recruitState={post.recruitState}
+            recruitState={post.recruit_state}
           />
         ))}
       </ProjectWrapper>
