@@ -77,7 +77,7 @@ const ChatList = () => {
     useEffect(()=>{
         for(let i=1; i<=page; i++){
             setPages(prev=>prev.concat([i]));
-            if(i>=3) return;
+            if(i>=page_num) return;
         }
     },[]);
     
