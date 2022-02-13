@@ -92,11 +92,11 @@ const ProjectDetail = ({ isScrapped, recruitState, projectTitle, projectText, ta
       <ProjectTitle>{projectTitle}</ProjectTitle>
       <DividerLine />
       
-      <TagWrapper>
-        {tags && tags.map(tag => (
-          <Tag>{tag}</Tag>
+      {tags && <TagWrapper>
+        {tags.map((tag, i) => (
+          <Tag key={i}>{tag}</Tag>
         ))}
-      </TagWrapper>
+      </TagWrapper>}
       <ProjectText>
         {projectText}
       </ProjectText>

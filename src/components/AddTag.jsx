@@ -22,11 +22,15 @@ const CloseIcon = styled(IoIosClose)`
   cursor: pointer;
 `;
 
-const AddTag = ({ children }) => {
+const AddTag = ({ children, setSelectedTag }) => {
   return (
     <AddTagWrapper>
       <TagName>{children}</TagName>
-      <CloseIcon size='24'/>
+      <CloseIcon 
+        name={children}
+        size='24'
+        onClick={() => setSelectedTag(children)}
+      />
     </AddTagWrapper>
   )
 }

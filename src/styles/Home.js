@@ -24,7 +24,7 @@ export const RecruitDisplayText = styled.div`
   line-height: 1.3;
 `;
 
-export const RecruitNum = styled.span`
+export const RecruitCnt = styled.span`
   display: inline-block;
   font-size: 3.1rem!important;
   color: var(--color-orange);
