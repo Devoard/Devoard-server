@@ -93,7 +93,7 @@ const LoginPopUp = ({ isVisible, setIsLoginPopUp }) => {
   return (
     <PopUp
       isVisible={isVisible}
-      setIsLoginPopUp={setIsLoginPopUp}
+      setIsPopUp={setIsLoginPopUp}
       width='25rem'
       height='15rem'
     >

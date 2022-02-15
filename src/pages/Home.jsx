@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import ProjectDetail from '../components/ProjectDetail';
 import {
-  HomeWrapper,
+  PageWrapper,
   RecruitDisplayWrapper,
   RecruitDisplayText,
   RecruitCnt,
@@ -58,7 +58,7 @@ const Home = () => {
   }
 
   return (
-    <HomeWrapper>
+    <PageWrapper>
       <RecruitDisplayWrapper>
         <RecruitDisplayText>
           <RecruitCnt>{recruitCnt}</RecruitCnt> 팀<br/>
@@ -122,7 +122,7 @@ const Home = () => {
           </MoreProjectBtn>
         </Link>
       </PopularTeamWrapper>
-    </HomeWrapper>
+    </PageWrapper>
   );
 }
 

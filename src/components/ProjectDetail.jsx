@@ -73,11 +73,13 @@ const ProjectText = styled.div`
 `;
 
 
-const ProjectDetail = ({ isScrapped, recruitState, projectTitle, projectText, tags }) => {
+const ProjectDetail = ({ isScrapped, recruitState, projectTitle, projectText, tags, ...rest }) => {
   const [isColored, setIsColored] = useState(isScrapped);
   
   return (
-    <ProjectDetailWrapper>
+    <ProjectDetailWrapper
+      {...rest}
+    >
       <StateWrapper>
         <RecruitState 
           isRecruit={recruitState}

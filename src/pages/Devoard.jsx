@@ -6,7 +6,7 @@ import { setActivePage } from '../modules/user';
 import ProjectDetail from '../components/ProjectDetail';
 import WriteBtn from '../components/WriteBtn';
 import {
-  DevoardWrapper,
+  PageWrapper,
   DevoardTitle,
   SortingWrapper,
   ComboBox,
@@ -66,7 +66,7 @@ const Devoard = () => {
 
   if (loading) return <div style={{color: 'white'}}>로딩 중 ...</div>;
   return (
-    <DevoardWrapper>
+    <PageWrapper>
       <DevoardTitle>현재 모집 중인 프로젝트</DevoardTitle>
       <SortingWrapper>
         <ComboBox
@@ -105,7 +105,7 @@ const Devoard = () => {
       <Link to='/write' style={{ color: '#333333' }}>
         <WriteBtn />
       </Link>
-    </DevoardWrapper>
+    </PageWrapper>
   )
 }
 
