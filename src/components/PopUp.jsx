@@ -23,6 +23,8 @@ const PopUpWrapper = styled.div`
   flex-direction: column;
   background: white;  
   border-radius: 0.7rem;
+  padding: 2rem;
+  box-sizing: border-box;
   position: relative;
 
   ${props => {
@@ -40,7 +42,7 @@ const PopUpWrapper = styled.div`
   }
 `;
 
-const PopUp = ({ children, isVisible, setIsLoginPopUp, width, height }) => {
+const PopUp = ({ children, isVisible, setIsPopUp, width, height }) => {
   if (!isVisible) return null;
 
   return (
@@ -52,7 +54,7 @@ const PopUp = ({ children, isVisible, setIsLoginPopUp, width, height }) => {
         <IoIosClose 
           className="icon" 
           size="40" 
-          onClick={()=>{setIsLoginPopUp(false)}}
+          onClick={()=>{setIsPopUp(false)}}
         />
         {children}
       </PopUpWrapper>

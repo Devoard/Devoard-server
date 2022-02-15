@@ -73,11 +73,13 @@ const ProjectText = styled.div`
 `;
 
 
-const ProjectDetail = ({ isScrapped, recruitState, projectTitle, projectText, tags }) => {
+const ProjectDetail = ({ isScrapped, recruitState, projectTitle, projectText, tags, ...rest }) => {
   const [isColored, setIsColored] = useState(isScrapped);
   
   return (
-    <ProjectDetailWrapper>
+    <ProjectDetailWrapper
+      {...rest}
+    >
       <StateWrapper>
         <RecruitState 
           isRecruit={recruitState}
@@ -92,11 +94,11 @@ const ProjectDetail = ({ isScrapped, recruitState, projectTitle, projectText, ta
       <ProjectTitle>{projectTitle}</ProjectTitle>
       <DividerLine />
       
-      <TagWrapper>
-        {tags && tags.map(tag => (
-          <Tag>{tag}</Tag>
+      {tags && <TagWrapper>
+        {tags.map((tag, i) => (
+          <Tag key={i}>{tag}</Tag>
         ))}
-      </TagWrapper>
+      </TagWrapper>}
       <ProjectText>
         {projectText}
       </ProjectText>

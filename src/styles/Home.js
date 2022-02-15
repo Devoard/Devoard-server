@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Button from '../components/Button';
 
-export const HomeWrapper = styled.div`
+export const PageWrapper = styled.div`
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -24,7 +24,7 @@ export const RecruitDisplayText = styled.div`
   line-height: 1.3;
 `;
 
-export const RecruitNum = styled.span`
+export const RecruitCnt = styled.span`
   display: inline-block;
   font-size: 3.1rem!important;
   color: var(--color-orange);
@@ -83,6 +83,8 @@ export const ProjectDetailWrapper = styled.div`
   white-space: nowrap;
   width: 100%;
   position: absolute;
+
+  &::-webkit-scrollbar{ display:none; }
 `;
 
 export const MoreProjectBtn = styled(Button)`

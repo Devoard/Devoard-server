@@ -21,7 +21,7 @@ const NotFound = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setActivePage('home'));
+    dispatch(setActivePage('not_found'));
   }, [setActivePage]);
   
   return (

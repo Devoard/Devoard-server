@@ -1,42 +1,95 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import PostAPI from '../api/PostAPI';
 import AddTag from '../components/AddTag';
+import PopUp from '../components/PopUp';
+import Button from '../components/Button';
 import {
-  WritePageWrapper,
+  PageWrapper,
   WriteTitle,
-  WriteWrapper,
+  Background,
   Input,
   Text,
   AddBtn,
   StackWrapper,
   ColumnAlignWrapper,
   SelectWrapper,
+  FieldText,
+  WarningText,
   NumText,
   ComboBox,
   OptGroup,
   Option,
   TagWrapper,
   TextArea,
-  ProjectWrapper,
-  RecruitNumWrapper,
+  TitleWrapper,
+  RecruitCntWrapper,
   DetailWrapper,
   PeriodWrapper,
   StateWrapper,
   BtnWrapper,
   PostBtn,
+  CheckText,
+  PopUpBtnWrapper
 } from '../styles/Write';
 
 const Write = () => {
-  const [selectedField, setSelectedField] = useState("");
-  const [recruitNum, setRecruitNum] = useState("");
+  const [recruitCnt, setRecruitCnt] = useState({
+    front_end: 0,
+    back_end: 0,
+    android: 0,
+    ios: 0,
+    data: 0,
+    devops: 0
+  });
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [stacks, setStacks] = useState([]);
+  const [period, setPeriod] = useState("");
   const [selectedStack, setSelectedStack] = useState("");
+  const [situation, setSituation] = useState("");
+  const [selectedTag, setSelectedTag] = useState(null);
+  const [isWarning, setIsWarning] = useState(false);
+  const [isExistStack, setIsExistStack] = useState(false);
+  const [isCheckPopUp, setIsCheckPopUp] = useState(false);
+  const navigate = useNavigate();
 
-  const addRecruit = () => { 
-    if (selectedField === "") alert('모집 영역 선택'); 
-    if (isNaN(recruitNum) || recruitNum === "") alert("숫자 다시 입력");
+
+  const createPost = async() => { 
+    await PostAPI.createPost({
+      title: title,
+      body: body,
+      tags: stacks,
+      recruit_cnt: recruitCnt,
+      period: period,
+      situation: situation,
+      recruit_state: true
+    })
+    .then(navigate("/devoard"));
+  }
+
+  const isExistTag = (selected) => {
+    for (let stack of stacks) {
+      if (stack === selected)
+        return true;
+    }
+
+    return false;
   }
 
   const addStack = () => {
-    if (selectedStack === "") alert('기술 스택 선택'); 
+    const selected = selectedStack;
+    setSelectedStack(""); 
+
+    if (selected === "") return null;
+
+    if (isExistTag(selected)){
+      setIsExistStack(true);
+      return null;
+    }
+    
+    setIsExistStack(false);
+    setStacks([ ...stacks, selected ])
   }
 
   const resizeTextArea = (e) => {
@@ -44,42 +97,132 @@ const Write = () => {
     e.target.style.height = (14 + e.target.scrollHeight) + "px";
   }
 
+  const checkForm = () => {
+    if (title === "" || !isValidRecruitCnt() || body === "" || situation === "")
+      setIsWarning(true);
+    else
+      setIsCheckPopUp(true);
+  }
+
+  const isValidRecruitCnt = () => {
+    let total = 0;
+    for (let cnt of Object.values(recruitCnt)) {
+      if (isNaN(cnt)) return false;
+      total += cnt;
+    }
+    
+    return (total === 0 ? false : true);
+  }
+
+
+
+
+  useEffect(() => {
+    const removeStack = () => {
+      setStacks(stacks.filter(stack => stack !== selectedTag));
+    }
+
+    removeStack();
+  }, [selectedTag]);
+
+  useEffect(() => {
+    setTimeout(()=>{
+      setIsExistStack(false);
+    }, 3000);
+  }, [isExistStack]);
+
+  useEffect(() => {
+    isValidRecruitCnt();
+  }, [recruitCnt]);
+
+
   
   return (
-    <WritePageWrapper>
+    <PageWrapper>
       <WriteTitle>모집 글 작성하기</WriteTitle>
-      <WriteWrapper>
-        <ProjectWrapper>
-          <Text>프로젝트 명</Text>
-          <Input style={{ width: '65%' }}/>
-        </ProjectWrapper>
-        <RecruitNumWrapper>
-          <Text>모집 인원</Text>
+      <Background>
+        <WarningText style={{marginBottom: '2rem'}}>* 은 필수 항목입니다</WarningText>
+        <TitleWrapper
+          isWarning={isWarning && title === "" ? true : false}
+        >
+          <Text>* 프로젝트 명</Text>
+          <ColumnAlignWrapper
+            style={{ width: '65%' }}
+          >
+            <Input 
+              onChange={(e)=>setTitle(e.target.value)}
+            />
+          </ColumnAlignWrapper>
+          
+        </TitleWrapper>
+      
+        <RecruitCntWrapper
+          isWarning={isWarning && !isValidRecruitCnt() ? true : false}
+        >
+          <Text>* 모집 인원</Text>
           <ColumnAlignWrapper>
             <SelectWrapper>
-              <ComboBox 
-                id="field" 
-                name="field" 
-                onChange={(e)=>setSelectedField(e.target.value)}
-              >
-                <Option label="-- 선택하세요 --" />
-                <Option value="Front-end">Front-end</Option>
-                <Option value="Back-end">Back-end</Option>
-                <Option value="Android">Android</Option>
-                <Option value="IOS">IOS</Option>
-                <Option value="Data">Data</Option>
-                <Option value="Devops">Devops</Option>
-              </ComboBox>
+              <FieldText>Front-end</FieldText>
               <Input 
                 style={{ width: '4%', textAlign: 'center'}}
                 placeholder="0"
-                onChange={(e)=>setRecruitNum(e.target.value)}
+                onChange={(e)=>setRecruitCnt({ ...recruitCnt, front_end: Number(e.target.value) })}
               />
               <NumText>명</NumText>
-              <AddBtn onClick={addRecruit}>+ 추가</AddBtn>
             </SelectWrapper>
+            <SelectWrapper>
+              <FieldText>Back-end</FieldText>
+              <Input 
+                style={{ width: '4%', textAlign: 'center'}}
+                placeholder="0"
+                onChange={(e)=>setRecruitCnt({ ...recruitCnt, back_end: Number(e.target.value) })}
+              />
+              <NumText>명</NumText>
+            </SelectWrapper>
+            <SelectWrapper>
+              <FieldText>Android</FieldText>
+              <Input 
+                style={{ width: '4%', textAlign: 'center'}}
+                placeholder="0"
+                onChange={(e)=>setRecruitCnt({ ...recruitCnt, android: Number(e.target.value) })}
+              />
+              <NumText>명</NumText>
+            </SelectWrapper>
+            <SelectWrapper>
+              <FieldText>IOS</FieldText>
+              <Input 
+                style={{ width: '4%', textAlign: 'center'}}
+                placeholder="0"
+                onChange={(e)=>setRecruitCnt({ ...recruitCnt, ios: Number(e.target.value) })}
+              />
+              <NumText>명</NumText>
+            </SelectWrapper>
+            <SelectWrapper>
+              <FieldText>Data</FieldText>
+              <Input 
+                style={{ width: '4%', textAlign: 'center'}}
+                placeholder="0"
+                onChange={(e)=>setRecruitCnt({ ...recruitCnt, data: Number(e.target.value) })}
+              />
+              <NumText>명</NumText>
+            </SelectWrapper>
+            <SelectWrapper>
+              <FieldText>Devops</FieldText>
+              <Input 
+                style={{ width: '4%', textAlign: 'center'}}
+                placeholder="0"
+                onChange={(e)=>setRecruitCnt({ ...recruitCnt, devops: Number(e.target.value) })}
+              />
+              <NumText>명</NumText>
+            </SelectWrapper>
+            {isWarning && !isValidRecruitCnt() ?
+              <WarningText
+                style={{ marginTop: '1rem'}}
+              >모집 인원은 최소 1명이며, 숫자로 입력해야 합니다
+              </WarningText> : ""
+            }
           </ColumnAlignWrapper>
-        </RecruitNumWrapper>
+        </RecruitCntWrapper>
         <StackWrapper>
           <Text>기술 스택</Text>
           <ColumnAlignWrapper>
@@ -87,80 +230,132 @@ const Write = () => {
               <ComboBox 
                 id="stack" 
                 name="stack"
+                value={selectedStack}
+                isWarning={isExistStack}
                 onChange={(e)=>setSelectedStack(e.target.value)}
               >
                 <Option label="-- 선택하세요 --" />
                 <OptGroup label="Front-end">
-                  <Option key="1" value="React">React</Option>
-                  <Option key="2" value="TypeScript">TypeScript</Option>
-                  <Option key="3" value="Angular">Angular</Option>
-                  <Option key="4" value="Vue">Vue</Option>
-                  <Option key="5" value="Ember">Ember</Option>
-                  <Option key="6" value="Node">Node</Option>
-                  <Option key="7" value="Nuxt">Nuxt</Option>
-                  <Option key="8" value="Next">Next</Option>
-                  <Option key="0" value="etc">etc</Option>
+                  <Option value="React">React</Option>
+                  <Option value="TypeScript">TypeScript</Option>
+                  <Option value="Angular">Angular</Option>
+                  <Option value="Vue">Vue</Option>
+                  <Option value="Ember">Ember</Option>
+                  <Option value="Node">Node</Option>
+                  <Option value="Nuxt">Nuxt</Option>
+                  <Option value="Next">Next</Option>
+                  <Option value="etc">etc</Option>
                 </OptGroup>
                 <OptGroup label="Back-end">
-                  <Option key="9" value="Flask">Flask</Option>
-                  <Option key="10" value="Django">Django</Option>
-                  <Option key="11" value="Spring">Spring</Option>
-                  <Option key="12" value="Express">Express</Option>
-                  <Option key="13" value="Koa">Koa</Option>
-                  <Option key="0" value="etc">etc</Option>
+                  <Option value="Flask">Flask</Option>
+                  <Option value="Django">Django</Option>
+                  <Option value="Spring">Spring</Option>
+                  <Option value="Express">Express</Option>
+                  <Option value="Koa">Koa</Option>
+                  <Option value="etc">etc</Option>
                 </OptGroup>
                 <OptGroup label="Android">
-                  <Option key="14" value="Android">Android</Option>
+                  <Option value="Android">Android</Option>
                 </OptGroup>
                 <OptGroup label="IOS">
-                  <Option key="15" value="Swift">Swift</Option>
-                  <Option key="16" value="Object-C">Object-C</Option>
-                  <Option key="17" value="etc">etc</Option>
+                  <Option value="Swift">Swift</Option>
+                  <Option value="Object-C">Object-C</Option>
+                  <Option value="etc">etc</Option>
                 </OptGroup>
                 <OptGroup label="Data">
-                  <Option key="18" value="Data">Data</Option>
+                  <Option value="Data">Data</Option>
                 </OptGroup>
                 <OptGroup label="Devops">
-                  <Option key="19" value="Devops">Devops</Option>
+                  <Option value="Devops">Devops</Option>
                 </OptGroup>
               </ComboBox>
               <AddBtn onClick={addStack}>+ 추가</AddBtn>
             </SelectWrapper>
+            {isExistStack ?
+            <WarningText>이미 추가된 태그입니다.</WarningText> : ""
+            }
             <TagWrapper>
-              <AddTag>React</AddTag>
-              <AddTag>React</AddTag>
-              <AddTag>React</AddTag>
-              <AddTag>React</AddTag>
-              <AddTag>React</AddTag>
-              <AddTag>HTML</AddTag>
-              <AddTag>CSS</AddTag>
-              <AddTag>JS</AddTag>
+              {stacks &&
+                stacks.map((tag, i) => (
+                  <AddTag 
+                    key={i}
+                    setSelectedTag={setSelectedTag}
+                  >
+                    {tag}
+                  </AddTag>
+                ))
+              }
             </TagWrapper>
           </ColumnAlignWrapper>
         </StackWrapper>
-        <DetailWrapper>
-          <Text>프로젝트 설명</Text>
-          <TextArea onChange={resizeTextArea} />
+        <DetailWrapper
+          isWarning={isWarning && body === "" ? true : false}
+        >
+          <Text>* 상세 설명</Text>
+          <TextArea 
+            onChange={(e) => {
+              resizeTextArea(e);
+              setBody(e.target.value);
+            }} 
+          />
         </DetailWrapper>
         <PeriodWrapper>
           <Text>예상 개발 기간</Text>
-          <TextArea onChange={resizeTextArea} />
+          <TextArea 
+            onChange={(e) => {
+              resizeTextArea(e);
+              setPeriod(e.target.value);
+            }} 
+          />
         </PeriodWrapper>
-        <StateWrapper>
-          <Text>현재 진행 상황</Text>
-          <TextArea onChange={resizeTextArea} />
+        <StateWrapper
+          isWarning={isWarning && situation === "" ? true : false}
+        >
+          <Text>* 진행 상황</Text>
+          <ComboBox
+            id="situation" 
+            name="situation"
+            value={situation}
+            onChange={(e)=>setSituation(e.target.value)}
+          >
+            <Option label="-- 선택하세요 --" />
+            <Option value="준비 중">준비 중</Option>
+            <Option value="진행 중">진행 중</Option>
+            <Option value="진행 완료">진행 완료</Option>
+          </ComboBox>
         </StateWrapper>
         <BtnWrapper>
           <PostBtn 
             color="orange" 
             large
             style={{marginTop: '2rem'}}
+            onClick={checkForm}
           >
             등록하기
           </PostBtn>
         </BtnWrapper>
-      </WriteWrapper>
-    </WritePageWrapper>
+      </Background>
+      <PopUp
+        isVisible={isCheckPopUp}
+        width={'30rem'}
+        height={'13rem'}
+        setIsPopUp={setIsCheckPopUp}
+      >
+        <CheckText>글을 등록하시겠습니까?</CheckText>
+        <PopUpBtnWrapper>
+          <Button
+            color="gray"
+            onClick={()=>setIsCheckPopUp(false)}
+          >취소</Button>
+          <Button
+            color="orange"
+            style={{marginLeft: '1rem'}}
+            onClick={createPost}
+          >확인</Button>
+
+        </PopUpBtnWrapper>
+      </PopUp>
+    </PageWrapper>
   )
 }
 
