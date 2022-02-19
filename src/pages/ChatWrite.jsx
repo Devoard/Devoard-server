@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import PopUp from '../components/PopUp';
 
 const Form = styled.form`
-    width: 80%;
+    width: 90%;
     height: 70%;
 `;
 const Content = styled.textarea`
@@ -18,7 +18,7 @@ const Content = styled.textarea`
     font-size: 18px;
 `;
 const Div = styled.div`
-    width: 80%;
+    width: 90%;
     margin-bottom: 10px;
     display: flex;
     justify-content: space-between;
