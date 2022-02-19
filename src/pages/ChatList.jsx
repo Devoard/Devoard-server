@@ -4,8 +4,10 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Title from '../components/Title';
+import WriteBtn from '../components/WriteBtn';
 import { set_detail_chat } from '../modules/chat';
 import ChatDetail from './ChatDetail';
+import ChatWrite from './ChatWrite';
 
 const ListBox = styled.div`
     width: 65%;
@@ -69,6 +71,7 @@ const ChatList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pages, setPages] = useState([]);
     const [detailOpen, setDetailOpen] = useState(false);
+    const [writeOpen, setWriteOpen] = useState(false);
     const page_num = 5;  //페이지 숫자 개수 ◀ 1 2 3 ▶
     const message_num = 12;  //한페이지에 보여질 쪽지수
     const {allChat} = useSelector(state=>state.chat);
@@ -109,10 +112,14 @@ const ChatList = () => {
         console.log(e.target.getAttribute('data-from'));
         setDetailOpen(true);
     }
+    const onWriteClick = (e) => {
+        setWriteOpen(true);
+    }
 
     return (
         <>
             <Title>쪽지함</Title>
+            <WriteBtn onClick={onWriteClick} />
             <ListBox>
                 {allChat && allChat.map((v, i)=>{
                      if(i+1>(currentPage-1)*message_num && i+1<=(currentPage * message_num)){
@@ -132,6 +139,7 @@ const ChatList = () => {
                 <ControlBtn onClick={onNext}>▶</ControlBtn>
             </PageControl> 
             {detailOpen&&<ChatDetail detailOpen={detailOpen} setDetailOpen={setDetailOpen} />}
+            {writeOpen&&<ChatWrite writeOpen={writeOpen} setWriteOpen={setWriteOpen} />}
         </>
     );
 };
