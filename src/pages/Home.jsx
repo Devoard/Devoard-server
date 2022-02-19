@@ -60,6 +60,7 @@ const Home = () => {
   return (
     <HomeWrapper>
       <RecruitDisplayWrapper>
+        <button><Link to="survey">설문조사</Link></button>
         <RecruitDisplayText>
           <RecruitCnt>{recruitCnt}</RecruitCnt> 팀<br/>
           현재 모집 중
