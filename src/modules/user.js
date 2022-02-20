@@ -24,11 +24,11 @@ export const setActivePage = (page) => {
 const initialState = {
     loggedUser: {
         username: '',
-        email: '',
+        id: '',
         imageUrl: ''
-      },
-      loggedIn: false,
-      activePage: null,
+    },
+    loggedIn: false,
+    activePage: null,
 }
 export default function userReducer(state=initialState, action){
     switch(action.type){

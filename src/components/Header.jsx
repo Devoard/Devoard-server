@@ -35,6 +35,7 @@ const Header = () => {
     }
   }, [isToggleMenuPopUp]);
 
+  if (!loggedUser) return null;
   return (
     <>
       <HeaderWrapper>

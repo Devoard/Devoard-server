@@ -55,6 +55,7 @@ const Devoard = () => {
 
   useEffect(() => {
     setLoading(true);
+
     const get = async() => {
       const posts = await PostAPI.getPosts();
       setPosts(posts);
@@ -93,13 +94,19 @@ const Devoard = () => {
       <ProjectWrapper>
         {posts &&
          posts.map(post => (
-          <ProjectDetail 
+          <Link 
+            to={'/devoard/detail/' + post.id} 
             key={post.id}
-            projectTitle={post.title}
-            projectText={post.body}
-            tags={post.tags}
-            recruitState={post.recruit_state}
-          />
+            style={{ color: '#333333' }}
+          >
+            <ProjectDetail 
+              key={post.id}
+              projectTitle={post.title}
+              projectText={post.body}
+              tags={post.tags}
+              recruitState={post.recruit_state}
+            />
+          </Link>
         ))}
       </ProjectWrapper>
       <Link to='/write' style={{ color: '#333333' }}>

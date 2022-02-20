@@ -38,10 +38,11 @@ const App = () => {
               <Route path="/my_page" element={<MyPage />} />
               <Route path="/devoard" element={<Devoard />} />
               {loggedIn ? <Route path="/write" element={<Write />} /> : ""}
+              {loggedIn ? <Route path="/write/:id" element={<Write />} /> : ""}
               {loggedIn ? <Route path="/survey" element={<Survey />} /> : ""}
               <Route path="/callback" element={<Callback />} />
               <Route path="*" element={<NotFound />} />
-              <Route path="/detail" element={<DevoardDetail />} />
+              <Route path="/devoard/detail/:id" element={<DevoardDetail />} />
             </Route>
           </Routes>
         </ThemeProvider>
