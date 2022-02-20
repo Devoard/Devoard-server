@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { setLoggedIn } from '../modules/user';
+import { setLoggedIn, setLoggedUser } from '../modules/user';
 
 const MenuWrapper = styled.div`
   position: absolute;
@@ -43,6 +43,11 @@ const ToggleMenu = ({ isVisible, setIsVisible }) => {
     window.sessionStorage.removeItem('email');
     window.sessionStorage.removeItem('imageUrl');
     dispatch(setLoggedIn());
+    dispatch(setLoggedUser({
+      username: '',
+      id: '',
+      imageUrl: ''
+    }))
   }
   
   const handleCloseMenu = (e) => {

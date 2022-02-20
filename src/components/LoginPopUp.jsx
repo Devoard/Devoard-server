@@ -6,7 +6,7 @@ import GoogleLogin from 'react-google-login';
 import githubIcon from '../assets/images/githubIcon.png';
 import googleIcon from '../assets/images/googleIcon.png';
 import PopUp from './PopUp';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLoggedIn, setLoggedUser } from '../modules/user';
 
 const LoginText = styled.h1`
@@ -44,7 +44,7 @@ const LoginPopUp = ({ isVisible, setIsLoginPopUp }) => {
       const imageUrl = window.sessionStorage.getItem('imageUrl');
   
       dispatch(setLoggedUser({
-        name: name,
+        username: name,
         id: id,
         imageUrl: imageUrl
       }));
@@ -71,7 +71,7 @@ const LoginPopUp = ({ isVisible, setIsLoginPopUp }) => {
       window.sessionStorage.setItem('imageUrl', imageUrl);
 
       const loggedUser = {
-        name: name,
+        username: name,
         id: email,
         imageUrl: imageUrl
       }
