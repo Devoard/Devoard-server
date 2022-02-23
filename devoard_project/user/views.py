@@ -110,7 +110,7 @@ def github_callback(request):
     print(user_json)
     email = user_json.get("email")
     login = user_json.get("login")
-    avatar_url = user_json.get("avatar_url")
+    avatar_url = user_json.get("avatar_url") 
     """
     Signup or Signin Request
     """
