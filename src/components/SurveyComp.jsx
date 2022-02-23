@@ -31,13 +31,11 @@ const TextArea = styled.textarea`
 
 const SurveyComp = ({data, setDatas, datas}) => {
     const [selectArr, setSelectArr] = useState([]);
-    const [textValue, setTextValue] = useState('');
     const [id, setId] = useState(0);
     useEffect(()=>{
         if(selectArr.length>0) setDatas({...datas, [id]:selectArr});
     }, [selectArr]);
     const onTextChange = (e) => {
-        setTextValue(e.target.value);
         setDatas({...datas, [e.target.dataset.id]:e.target.value});
     }
     const onFirstAnswer = (e) => {
@@ -74,7 +72,7 @@ const SurveyComp = ({data, setDatas, datas}) => {
                 else return <Answer key={i} onClick={onSelect} data-id={data.id}>{v}</Answer>
             })}
             
-            {(data.id > 8)&&<TextArea data-id={data.id} onChange={onTextChange} value={textValue}/>}
+            {(data.id > 8)&&<TextArea data-id={data.id} onChange={onTextChange} value={datas[data.id]}/>}
         </>
     )
 }
