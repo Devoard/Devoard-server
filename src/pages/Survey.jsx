@@ -37,7 +37,6 @@ const CuntrolBox = styled.div`
 const Survey = () => {
     const [progressRate, setProgressRate] = useState(0);
     const [dataId, setDataId] = useState(1);
-    const [firstAnswer, setFirstAnswer] = useState('');
     const {loggedUser} = useSelector(state=>state.user);
     const [datas, setDatas] = useState({
         0: loggedUser.id,
@@ -83,7 +82,7 @@ const Survey = () => {
             </ProgressBar>
             {dataList.map((v, i)=>{
                 if(i+1===dataId){
-                    return <SurveyComp key={i} data={v} firstAnswer={firstAnswer} setFirstAnswer={setFirstAnswer} setDatas={setDatas} datas={datas}/>
+                    return <SurveyComp key={i} data={v} setDatas={setDatas} datas={datas}/>
                 }
             })}
             <CuntrolBox>

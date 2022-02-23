@@ -29,8 +29,7 @@ const TextArea = styled.textarea`
     box-sizing: border-box;
 `;
 
-const SurveyComp = ({data, firstAnswer, setFirstAnswer, setDatas, datas}) => {
-    const [select, setSelect] = useState('');
+const SurveyComp = ({data, setDatas, datas}) => {
     const [selectArr, setSelectArr] = useState([]);
     const [textValue, setTextValue] = useState('');
     const [id, setId] = useState(0);
@@ -42,12 +41,9 @@ const SurveyComp = ({data, firstAnswer, setFirstAnswer, setDatas, datas}) => {
         setDatas({...datas, [e.target.dataset.id]:e.target.value});
     }
     const onFirstAnswer = (e) => {
-        setFirstAnswer(e.target.innerHTML);
-        setSelect(e.target.innerHTML);
         setDatas({...datas, [e.target.dataset.id]:e.target.innerHTML});
     };
     const onSelect = (e) =>{
-        setSelect(e.target.innerHTML);
         setDatas({...datas, [e.target.dataset.id]:e.target.innerHTML});
     }
     const onSelectMulti = (e)=>{
@@ -60,21 +56,21 @@ const SurveyComp = ({data, firstAnswer, setFirstAnswer, setDatas, datas}) => {
             <Question>{data.q}</Question>
             
             {data.id === 1 && data.a.map((v, i)=>{
-                if(select===v) return <Answer key={i} select={true} onClick={onFirstAnswer} data-id={data.id}>{v}</Answer>
+                if(datas[data.id]===v) return <Answer key={i} select={true} onClick={onFirstAnswer} data-id={data.id}>{v}</Answer>
                 else return <Answer key={i} onClick={onFirstAnswer} data-id={data.id}>{v}</Answer>})}
 
-            {(data.id === 2 && data.a[firstAnswer]) && data.a[firstAnswer].map((v,i)=>{
-                if(selectArr.includes(v)) return <Answer key={i} select={true} onClick={onSelectMulti} data-id={data.id}>{v}</Answer>
+            {(data.id === 2 && data.a[datas[1]]) && data.a[datas[1]].map((v,i)=>{
+                if(datas[data.id].includes(v)) return <Answer key={i} select={true} onClick={onSelectMulti} data-id={data.id}>{v}</Answer>
                 else return <Answer key={i} onClick={onSelectMulti} data-id={data.id}>{v}</Answer>
             })}
 
             {data.id === 8 && data.a.map((v, i)=>{
-                if(selectArr.includes(v)) return <Answer key={i} select={true} onClick={onSelectMulti} data-id={data.id}>{v}</Answer>
+                if(datas[data.id].includes(v)) return <Answer key={i} select={true} onClick={onSelectMulti} data-id={data.id}>{v}</Answer>
                 else return <Answer key={i} onClick={onSelectMulti} data-id={data.id}>{v}</Answer>
             })}
             
             {(data.id > 2 && data.id<8) && data.a.map((v, i)=>{
-                if(select===v) return <Answer key={i} select={true} onClick={onSelect} data-id={data.id}>{v}</Answer>
+                if(datas[data.id]===v) return <Answer key={i} select={true} onClick={onSelect} data-id={data.id}>{v}</Answer>
                 else return <Answer key={i} onClick={onSelect} data-id={data.id}>{v}</Answer>
             })}
             
