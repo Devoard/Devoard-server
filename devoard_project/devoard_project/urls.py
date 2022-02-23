@@ -20,6 +20,8 @@ from django.urls import path, include
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 from django.views.generic import TemplateView
 from user import views
+from rest_framework.urlpatterns import format_suffix_patterns
+from devoard_app.views import devoardList, devoardDetail
 
 urlpatterns = [
     path('user/',include('user.urls')),
@@ -30,5 +32,10 @@ urlpatterns = [
     path('verify/', verify_jwt_token), #토큰 유효한지 검사 = 얘는 됨
     path('refresh/', refresh_jwt_token), #토큰 갱신 = 얘도 됨
     path('validate/', views.validate_jwt_token),
+    #게시판
+    path('devoard/', devoardList.as_view()),
+    path('devoard/<int:pk>/', devoardDetail.as_view()),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+urlpatterns = format_suffix_patterns(urlpatterns)
