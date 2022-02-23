@@ -40,6 +40,8 @@ REST_FRAMEWORK = { # 추가
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',  #인증된 회원만 액세스 허용
         'rest_framework.permissions.AllowAny',         #모든 회원 액세스 허용
+        # 'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [ #api가 실행됬을 때 인증할 클래스를 정의해주는데 우리는 JWT를 쓰기로 했으니
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication', #이와 같이 추가해준 모습이다.
@@ -70,6 +72,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'user.apps.UserConfig',
     'devoard_app.apps.DevoardAppConfig',
+    'survey_app.apps.SurveyAppConfig',
     'rest_framework',
     'knox',
     'corsheaders',
@@ -79,7 +82,7 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
-    
+    'rest_framework.authtoken',
 ]
 SITE_ID = 1
 
