@@ -137,7 +137,7 @@ def github_callback(request):
         response = redirect('home')
         response.set_cookie('git_token',accept_json['token'])
         response.set_cookie('git_userImg',avatar_url)
-        token = Token.objects.create(user=user)
+        token = Token.objects.get(user=user.id)
         print(token)
         response.set_cookie('token',token)
         response.set_cookie('signin','signin')
