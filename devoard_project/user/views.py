@@ -21,6 +21,7 @@ from allauth.socialaccount.models import SocialAccount
 from django.http import JsonResponse
 from json import JSONDecodeError
 from django.urls import reverse
+from rest_framework.authtoken.models import Token
 
 # from google.oauth2 import id_token
 # from google.auth.transport import requests
@@ -108,12 +109,13 @@ def github_callback(request):
         raise JSONDecodeError(error)
     print(user_json)
     email = user_json.get("email")
+    login = user_json.get("login")
     avatar_url = user_json.get("avatar_url")
     """
     Signup or Signin Request
     """
     try:
-        user = user_info.objects.get(email=email)
+        user = user_info.objects.get(username=login)
         # 기존에 가입된 유저의 Provider가 github가 아니면 에러 발생, 맞으면 로그인
         # 다른 SNS로 가입된 유저
         social_user = SocialAccount.objects.get(user=user)
@@ -126,12 +128,21 @@ def github_callback(request):
         accept = requests.post(
             f"{BASE_URL}user/github/login/finish/", data=data)
         accept_status = accept.status_code
+        print('오류: ',accept_status)
         if accept_status != 200:
             return JsonResponse({'err_msg': 'failed to signin'}, status=accept_status)
         accept_json = accept.json()
         accept_json.pop('user', None)
-        return JsonResponse(accept_json)
-        # return redirect(settings.LOGIN_REDIRECT_URL)
+        print(accept_json['token'])
+        response = redirect('home')
+        response.set_cookie('git_token',accept_json['token'])
+        response.set_cookie('git_userImg',avatar_url)
+        token = Token.objects.create(user=user)
+        print(token)
+        response.set_cookie('token',token)
+        response.set_cookie('signin','signin')
+        return response
+        # return JsonResponse(accept_json)
     except user_info.DoesNotExist:
         # 기존에 가입된 유저가 없으면 새로 가입
         data = {'access_token': access_token, 'code': code}
@@ -147,20 +158,26 @@ def github_callback(request):
         response = redirect('home')
         response.set_cookie('git_token',accept_json['token'])
         response.set_cookie('git_userImg',avatar_url)
-        
+        token = Token.objects.create(user=user)
+        print(token)
+        response.set_cookie('token',token)
+        response.set_cookie('signup','signup')
         return response
         # return HttpResponseRedirect(accept_json,settings.LOGIN_REDIRECT_URL)
         # return render(request,'index.html',accept_json)
 class GithubLogin(SocialLoginView):
+    """
+    If it's not working
+    You need to customize GitHubOAuth2Adapter
+    use header instead of params
+    -------------------
+    def complete_login(self, request, app, token, **kwargs):
+        params = {'access_token': token.token}
+TO
+def complete_login(self, request, app, token, **kwargs):
+        headers = {'Authorization': 'Bearer {0}'.format(token.token)}
+    -------------------
+    """
     adapter_class = github_view.GitHubOAuth2Adapter
-    callback_url = '/'
-    client_class = OAuth2Client 
-    
-#     def get(self, request, format=None):
-#         return redirect(settings.LOGIN_REDIRECT_URL)
-    # def post(self, request):
-    #     return redirect(settings.LOGIN_REDIRECT_URL)
-
-# def google_callback(request):
-#     url = 'http://localhost:8000/'
-#     return redirect(f'{url}{request.GET.get("code")}')
+    callback_url = GITHUB_CALLBACK_URI
+    client_class = OAuth2Client
