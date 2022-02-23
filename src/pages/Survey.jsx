@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import { dataList } from './surveyData';
 import SurveyComp from '../components/SurveyComp';
 import Button from '../components/Button';
+import { useDispatch } from 'react-redux';
+import { submit_survey } from '../modules/servey';
+import { useSelector } from 'react-redux';
 
 const SurveyPage = styled.div`
     display: flex;
@@ -35,6 +38,23 @@ const Survey = () => {
     const [progressRate, setProgressRate] = useState(0);
     const [dataId, setDataId] = useState(1);
     const [firstAnswer, setFirstAnswer] = useState('');
+    const {loggedUser} = useSelector(state=>state.user);
+    const [datas, setDatas] = useState({
+        0: loggedUser.id,
+        1: '',
+        2: [],
+        3: '',
+        4: '',
+        5: '',
+        6: '',
+        7: '',
+        8: '',
+        9: '',
+        10: '',
+        11: '',
+        12: '',
+    });
+    const dispatch = useDispatch();
     useEffect(()=>{
         setProgressRate(dataId);
     }, [dataId]);
@@ -46,6 +66,12 @@ const Survey = () => {
     }
 
     const onNextClick = () => {
+        if(dataId===12){
+            if(window.confirm('설문조사를 완료하시겠습니까?')){
+                dispatch(submit_survey(datas));
+                window.alert('전송하였습니다.');
+            }
+        }
         if(dataId >= 12) return;
         setDataId(prev=>prev+1);
     }
@@ -57,7 +83,7 @@ const Survey = () => {
             </ProgressBar>
             {dataList.map((v, i)=>{
                 if(i+1===dataId){
-                    return <SurveyComp key={i} data={v} firstAnswer={firstAnswer} setFirstAnswer={setFirstAnswer}/>
+                    return <SurveyComp key={i} data={v} firstAnswer={firstAnswer} setFirstAnswer={setFirstAnswer} setDatas={setDatas} datas={datas}/>
                 }
             })}
             <CuntrolBox>
