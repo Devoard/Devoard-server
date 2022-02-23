@@ -9,12 +9,14 @@ from django.http import Http404
 
 from .serializers import devoardSerializer
 from .models import devoard
+from rest_framework.authentication import TokenAuthentication
 
 # Create your views here.
 class AboutView(TemplateView):
     template_name = "index.html"
 
 class devoardList(APIView): #목록 보여줌
+    authentication_classes = [TokenAuthentication]
     def get(self, request): # 리스트 보여줄 때
         devoards = devoard.objects.all()
 
