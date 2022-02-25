@@ -54,16 +54,20 @@ const Devoard = () => {
   }, [setActivePage, isMenuOpen])
 
   useEffect(() => {
-    setLoading(true);
-
-    const get = async() => {
-      const posts = await PostAPI.getPosts();
+    const getSortedPosts = async() => {
+      let posts = null;
+      
+      if (selectedMenu === "전체 보기")
+        posts = await PostAPI.getPosts('all');
+      else if (selectedMenu === "모집 중")
+        posts = await PostAPI.getPosts('ongoing');
+      else if (selectedMenu === "모집 완료")
+        posts = await PostAPI.getPosts('done');
       setPosts(posts);
-      setLoading(false);
     }
 
-    get();
-  }, []);
+    getSortedPosts();
+  }, [selectedMenu]);
 
   if (loading) return <div style={{color: 'white'}}>로딩 중 ...</div>;
   return (
