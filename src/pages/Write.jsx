@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import PostAPI from '../api/PostAPI';
 import AddTag from '../components/AddTag';
+import PopUp from '../components/PopUp';
+import Button from '../components/Button';
 import {
-  WritePageWrapper,
+  PageWrapper,
   WriteTitle,
-  WriteWrapper,
+  Background,
   Input,
   Text,
   AddBtn,
@@ -20,36 +23,63 @@ import {
   Option,
   TagWrapper,
   TextArea,
-  ProjectWrapper,
+  TitleWrapper,
   RecruitCntWrapper,
   DetailWrapper,
   PeriodWrapper,
   StateWrapper,
   BtnWrapper,
   PostBtn,
+  CheckText,
+  PopUpBtnWrapper
 } from '../styles/Write';
 
 const Write = () => {
+
   const [recruitCnt, setRecruitCnt] = useState({
-    front_end: 0,
-    back_end: 0,
-    android: 0,
-    ios: 0,
-    data: 0,
-    devops: 0
+    front_end: "",
+    back_end: "",
+    android: "",
+    ios: "",
+    data: "",
+    devops: ""
   });
-  const [title, setTitle] = useState(null);
-  const [body, setBody] = useState(null);
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
   const [stacks, setStacks] = useState([]);
-  const [period, setPeriod] = useState(null);
+  const [period, setPeriod] = useState("");
   const [selectedStack, setSelectedStack] = useState("");
   const [situation, setSituation] = useState("");
   const [selectedTag, setSelectedTag] = useState(null);
+  const [isWarning, setIsWarning] = useState(false);
   const [isExistStack, setIsExistStack] = useState(false);
+  const [isCheckPopUp, setIsCheckPopUp] = useState(false);
+  const { loggedUser } = useSelector(state => state.user);
   const navigate = useNavigate();
+  const params = useParams();
+  const postId = params.id;
 
+
+  const getPostData = async() => {
+    const post = await PostAPI.getDetailPost(postId);
+
+    setTitle(post.title);
+    setBody(post.body);
+    setRecruitCnt(post.recruit_cnt);
+    setStacks(post.tags);
+    setSituation(post.situation);
+    setPeriod(post.period);
+  }
 
   const createPost = async() => { 
+    let today = new Date();
+
+    let year = today.getFullYear();
+    let month = ('0' + (today.getMonth() + 1)).slice(-2);
+    let day = ('0' + today.getDate()).slice(-2);
+
+    const date = year + '-' + month + '-' + day;
+
     await PostAPI.createPost({
       title: title,
       body: body,
@@ -57,7 +87,22 @@ const Write = () => {
       recruit_cnt: recruitCnt,
       period: period,
       situation: situation,
-      recruit_state: true
+      recruit_state: true,
+      writer_info: loggedUser,
+      date: date
+    })
+    .then(navigate("/devoard"));
+  }
+
+  const updatePost = async() => {
+    await PostAPI.updatePost(postId, {
+      id: postId,
+      title: title,
+      body: body,
+      tags: stacks,
+      recruit_cnt: recruitCnt,
+      period: period,
+      sitaution: situation,
     })
     .then(navigate("/devoard"));
   }
@@ -91,6 +136,25 @@ const Write = () => {
     e.target.style.height = (14 + e.target.scrollHeight) + "px";
   }
 
+  const checkForm = () => {
+    if (title === "" || !isValidRecruitCnt() || body === "" || situation === "")
+      setIsWarning(true);
+    else
+      setIsCheckPopUp(true);
+  }
+
+
+  const isValidRecruitCnt = () => {
+    let total = 0;
+    for (let cnt of Object.values(recruitCnt)) {
+      if (isNaN(cnt)) return false;
+      total += cnt;
+    }
+    
+    return (total === 0 ? false : true);
+  }
+
+
   useEffect(() => {
     const removeStack = () => {
       setStacks(stacks.filter(stack => stack !== selectedTag));
@@ -106,77 +170,106 @@ const Write = () => {
   }, [isExistStack]);
 
   useEffect(() => {
-    console.log(stacks);
-  }, [stacks])
+    isValidRecruitCnt();
+  }, [recruitCnt]);
+
+  useEffect(() => {
+    if(postId) getPostData();
+  }, [])
+
+
   
   return (
-    <WritePageWrapper>
+    <PageWrapper>
       <WriteTitle>모집 글 작성하기</WriteTitle>
-      <WriteWrapper>
-        <ProjectWrapper>
-          <Text>프로젝트 명</Text>
-          <Input 
+      <Background>
+        <WarningText style={{marginBottom: '2rem'}}>* 은 필수 항목입니다</WarningText>
+        <TitleWrapper
+          isWarning={isWarning && title === "" ? true : false}
+        >
+          <Text>* 프로젝트 명</Text>
+          <ColumnAlignWrapper
             style={{ width: '65%' }}
-            onChange={(e)=>setTitle(e.target.value)}
-          />
-        </ProjectWrapper>
-        <RecruitCntWrapper>
-          <Text>모집 인원</Text>
+          >
+            <Input 
+              value={title}
+              onChange={(e)=>setTitle(e.target.value)}
+            />
+          </ColumnAlignWrapper>
+          
+        </TitleWrapper>
+      
+        <RecruitCntWrapper
+          isWarning={isWarning && !isValidRecruitCnt() ? true : false}
+        >
+          <Text>* 모집 인원</Text>
           <ColumnAlignWrapper>
             <SelectWrapper>
               <FieldText>Front-end</FieldText>
               <Input 
+                value={recruitCnt.front_end}
                 style={{ width: '4%', textAlign: 'center'}}
                 placeholder="0"
-                onChange={(e)=>setRecruitCnt({ ...recruitCnt, front_end: Number(e.target.value) })}
+                onChange={(e)=>setRecruitCnt({ ...recruitCnt, front_end: e.target.value })}
               />
               <NumText>명</NumText>
             </SelectWrapper>
             <SelectWrapper>
               <FieldText>Back-end</FieldText>
               <Input 
+                value={recruitCnt.back_end}
                 style={{ width: '4%', textAlign: 'center'}}
                 placeholder="0"
-                onChange={(e)=>setRecruitCnt({ ...recruitCnt, back_end: Number(e.target.value) })}
+                onChange={(e)=>setRecruitCnt({ ...recruitCnt, back_end: e.target.value })}
               />
               <NumText>명</NumText>
             </SelectWrapper>
             <SelectWrapper>
               <FieldText>Android</FieldText>
               <Input 
+                value={recruitCnt.android}
                 style={{ width: '4%', textAlign: 'center'}}
                 placeholder="0"
-                onChange={(e)=>setRecruitCnt({ ...recruitCnt, android: Number(e.target.value) })}
+                onChange={(e)=>setRecruitCnt({ ...recruitCnt, android: e.target.value })}
               />
               <NumText>명</NumText>
             </SelectWrapper>
             <SelectWrapper>
               <FieldText>IOS</FieldText>
               <Input 
+                value={recruitCnt.ios}
                 style={{ width: '4%', textAlign: 'center'}}
                 placeholder="0"
-                onChange={(e)=>setRecruitCnt({ ...recruitCnt, ios: Number(e.target.value) })}
+                onChange={(e)=>setRecruitCnt({ ...recruitCnt, ios: e.target.value })}
               />
               <NumText>명</NumText>
             </SelectWrapper>
             <SelectWrapper>
               <FieldText>Data</FieldText>
               <Input 
+                value={recruitCnt.data}
                 style={{ width: '4%', textAlign: 'center'}}
                 placeholder="0"
-                onChange={(e)=>setRecruitCnt({ ...recruitCnt, data: Number(e.target.value) })}
+                onChange={(e)=>setRecruitCnt({ ...recruitCnt, data: e.target.value })}
               />
               <NumText>명</NumText>
             </SelectWrapper>
             <SelectWrapper>
               <FieldText>Devops</FieldText>
               <Input 
+                value={recruitCnt.devops}
                 style={{ width: '4%', textAlign: 'center'}}
                 placeholder="0"
-                onChange={(e)=>setRecruitCnt({ ...recruitCnt, devops: Number(e.target.value) })}
+                onChange={(e)=>setRecruitCnt({ ...recruitCnt, devops: e.target.value })}
               />
               <NumText>명</NumText>
             </SelectWrapper>
+            {isWarning && !isValidRecruitCnt() ?
+              <WarningText
+                style={{ marginTop: '1rem'}}
+              >모집 인원은 최소 1명이며, 숫자로 입력해야 합니다
+              </WarningText> : ""
+            }
           </ColumnAlignWrapper>
         </RecruitCntWrapper>
         <StackWrapper>
@@ -244,9 +337,12 @@ const Write = () => {
             </TagWrapper>
           </ColumnAlignWrapper>
         </StackWrapper>
-        <DetailWrapper>
-          <Text>프로젝트 설명</Text>
+        <DetailWrapper
+          isWarning={isWarning && body === "" ? true : false}
+        >
+          <Text>* 상세 설명</Text>
           <TextArea 
+            value={body}
             onChange={(e) => {
               resizeTextArea(e);
               setBody(e.target.value);
@@ -256,14 +352,17 @@ const Write = () => {
         <PeriodWrapper>
           <Text>예상 개발 기간</Text>
           <TextArea 
+            value={period}
             onChange={(e) => {
               resizeTextArea(e);
               setPeriod(e.target.value);
             }} 
           />
         </PeriodWrapper>
-        <StateWrapper>
-          <Text>현재 진행 상황</Text>
+        <StateWrapper
+          isWarning={isWarning && situation === "" ? true : false}
+        >
+          <Text>* 진행 상황</Text>
           <ComboBox
             id="situation" 
             name="situation"
@@ -281,13 +380,35 @@ const Write = () => {
             color="orange" 
             large
             style={{marginTop: '2rem'}}
-            onClick={createPost}
+            onClick={checkForm}
           >
             등록하기
           </PostBtn>
         </BtnWrapper>
-      </WriteWrapper>
-    </WritePageWrapper>
+      </Background>
+      <PopUp
+        isVisible={isCheckPopUp}
+        width={'30rem'}
+        height={'13rem'}
+        setIsPopUp={setIsCheckPopUp}
+      >
+        <CheckText>글을 {postId ? '수정' : '등록'}하시겠습니까?</CheckText>
+        <PopUpBtnWrapper>
+          <Button
+            color="gray"
+            onClick={()=>setIsCheckPopUp(false)}
+          >취소</Button>
+          <Button
+            color="orange"
+            style={{marginLeft: '1rem'}}
+            onClick={()=>{
+              postId ? updatePost() : createPost()
+            }}
+          >확인</Button>
+
+        </PopUpBtnWrapper>
+      </PopUp>
+    </PageWrapper>
   )
 }
 

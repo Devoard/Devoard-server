@@ -28,7 +28,7 @@ const Heart = styled(FiHeart)`
 
 const ProjectTitle = styled.span`
   display: inline-block;
-  margin-top: 0.7rem;
+  margin-top: 1rem;
   font-size: 1.5rem;
   color: var(--color-title);
   font-family: var(--font-title);
@@ -73,11 +73,13 @@ const ProjectText = styled.div`
 `;
 
 
-const ProjectDetail = ({ isScrapped, recruitState, projectTitle, projectText, tags }) => {
+const ProjectDetail = ({ isScrapped, recruitState, projectTitle, projectText, tags, ...rest }) => {
   const [isColored, setIsColored] = useState(isScrapped);
   
   return (
-    <ProjectDetailWrapper>
+    <ProjectDetailWrapper
+      {...rest}
+    >
       <StateWrapper>
         <RecruitState 
           isRecruit={recruitState}
@@ -91,8 +93,7 @@ const ProjectDetail = ({ isScrapped, recruitState, projectTitle, projectText, ta
      
       <ProjectTitle>{projectTitle}</ProjectTitle>
       <DividerLine />
-      
-      {tags && <TagWrapper>
+      {tags && tags.length !== 0 && <TagWrapper>
         {tags.map((tag, i) => (
           <Tag key={i}>{tag}</Tag>
         ))}

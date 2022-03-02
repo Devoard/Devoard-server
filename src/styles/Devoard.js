@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { GoTriangleDown } from 'react-icons/go';
 import { AiOutlineSearch } from 'react-icons/ai';
 
-export const DevoardWrapper = styled.div`
+export const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;

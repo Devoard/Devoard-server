@@ -6,7 +6,7 @@ import { setActivePage } from '../modules/user';
 import ProjectDetail from '../components/ProjectDetail';
 import WriteBtn from '../components/WriteBtn';
 import {
-  DevoardWrapper,
+  PageWrapper,
   DevoardTitle,
   SortingWrapper,
   ComboBox,
@@ -54,19 +54,24 @@ const Devoard = () => {
   }, [setActivePage, isMenuOpen])
 
   useEffect(() => {
-    setLoading(true);
-    const get = async() => {
-      const posts = await PostAPI.getPosts();
+    const getSortedPosts = async() => {
+      let posts = null;
+      
+      if (selectedMenu === "전체 보기")
+        posts = await PostAPI.getPosts('all');
+      else if (selectedMenu === "모집 중")
+        posts = await PostAPI.getPosts('ongoing');
+      else if (selectedMenu === "모집 완료")
+        posts = await PostAPI.getPosts('done');
       setPosts(posts);
-      setLoading(false);
     }
 
-    get();
-  }, []);
+    getSortedPosts();
+  }, [selectedMenu]);
 
   if (loading) return <div style={{color: 'white'}}>로딩 중 ...</div>;
   return (
-    <DevoardWrapper>
+    <PageWrapper>
       <DevoardTitle>현재 모집 중인 프로젝트</DevoardTitle>
       <SortingWrapper>
         <ComboBox
@@ -93,19 +98,25 @@ const Devoard = () => {
       <ProjectWrapper>
         {posts &&
          posts.map(post => (
-          <ProjectDetail 
+          <Link 
+            to={'/devoard/detail/' + post.id} 
             key={post.id}
-            projectTitle={post.title}
-            projectText={post.body}
-            tags={post.tags}
-            recruitState={post.recruit_state}
-          />
+            style={{ color: '#333333' }}
+          >
+            <ProjectDetail 
+              key={post.id}
+              projectTitle={post.title}
+              projectText={post.body}
+              tags={post.tags}
+              recruitState={post.recruit_state}
+            />
+          </Link>
         ))}
       </ProjectWrapper>
       <Link to='/write' style={{ color: '#333333' }}>
         <WriteBtn />
       </Link>
-    </DevoardWrapper>
+    </PageWrapper>
   )
 }
 

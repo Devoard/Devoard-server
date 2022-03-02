@@ -8,6 +8,7 @@ const RecruitStateWrapper = styled.div`
   color: var(--color-orange);
   border: 2px solid var(--color-orange);
   font-weight: bold;
+  text-align: center;
 
   ${props =>
     !props.isRecruit &&
