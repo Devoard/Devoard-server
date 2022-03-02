@@ -26,9 +26,9 @@ const WriteBtnWrapper = styled.div`
 
 
 
-const WriteBtn = () => {
+const WriteBtn = ({onClick}) => {
   return (
-    <WriteBtnWrapper>
+    <WriteBtnWrapper onClick={onClick}>
       <WriteIcon size='30'/>
     </WriteBtnWrapper>
   );
