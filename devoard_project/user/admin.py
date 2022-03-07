@@ -4,7 +4,8 @@ from django.contrib import admin
 
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import AbstractUser
-from .models import user_info
+from .models import user_info, user_skill
 
 
 admin.site.register(user_info)
+admin.site.register(user_skill)

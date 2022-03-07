@@ -14,12 +14,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+<<<<<<< HEAD
 from django.urls import path, include
 import rest_framework_jwt.views as rv
+=======
+from django.conf import settings
+from django.conf.urls.static import static
+from django.urls import path, include
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
+>>>>>>> f2c8502557c7a62e7e6ec29b8ba468c2c2c72260
 from django.views.generic import TemplateView
+from user import views
+from rest_framework.urlpatterns import format_suffix_patterns
+from devoard_app.views import devoardList, devoardDetail
 
 urlpatterns = [
+    path('user/',include('user.urls')),
+    path('survey/',include('survey_app.urls')),
     path('admin/', admin.site.urls),
+<<<<<<< HEAD
     path('login/', rv.obtain_jwt_token),
     
     path('verify/', rv.verify_jwt_token),
@@ -28,3 +41,17 @@ urlpatterns = [
     path('user/', include('user.urls')),
     path('', TemplateView.as_view(template_name='index.html'))
 ]
+=======
+    path('', TemplateView.as_view(template_name='index.html'), name='home'),
+    path('login/', obtain_jwt_token), #토큰 발행 = 됨
+    path('verify/', verify_jwt_token), #토큰 유효한지 검사 = 얘는 됨
+    path('refresh/', refresh_jwt_token), #토큰 갱신 = 얘도 됨
+    path('validate/', views.validate_jwt_token),
+    #게시판
+    path('devoard/', devoardList.as_view()),
+    path('devoard/<int:pk>/', devoardDetail.as_view()),
+
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+urlpatterns = format_suffix_patterns(urlpatterns)
+>>>>>>> f2c8502557c7a62e7e6ec29b8ba468c2c2c72260
