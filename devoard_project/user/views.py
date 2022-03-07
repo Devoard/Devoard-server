@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-=======
 from django.shortcuts import render, redirect
 from django.conf import settings
 from django.http import HttpResponseRedirect, QueryDict
->>>>>>> f2c8502557c7a62e7e6ec29b8ba468c2c2c72260
 from django.contrib.auth.models import User
 from rest_framework import permissions, status, generics
 from rest_framework.decorators import api_view
@@ -13,8 +8,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import UserSerializer, UserSerializerWithToken
 from rest_framework_jwt.serializers import VerifyJSONWebTokenSerializer
-<<<<<<< HEAD
-=======
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from .models import user_info
@@ -29,17 +22,13 @@ from django.http import JsonResponse
 from json import JSONDecodeError
 from django.urls import reverse
 from rest_framework.authtoken.models import Token
->>>>>>> f2c8502557c7a62e7e6ec29b8ba468c2c2c72260
 
 # from google.oauth2 import id_token
 # from google.auth.transport import requests
 
 # Create your views here.
-<<<<<<< HEAD
-=======
 @api_view(('GET',))
 @renderer_classes((TemplateHTMLRenderer, JSONRenderer))
->>>>>>> f2c8502557c7a62e7e6ec29b8ba468c2c2c72260
 def current_user(request):
 
     serializer = UserSerializer(request.user)
@@ -56,9 +45,6 @@ class UserList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-<<<<<<< HEAD
-
-=======
     
     def get(self, request, format=None):
         serializer = UserSerializer(data=request.data)
@@ -79,7 +65,6 @@ class UserList(APIView):
         
 @api_view(('GET',))
 @renderer_classes((TemplateHTMLRenderer, JSONRenderer))
->>>>>>> f2c8502557c7a62e7e6ec29b8ba468c2c2c72260
 def validate_jwt_token(request):
 
     try:
@@ -89,9 +74,6 @@ def validate_jwt_token(request):
     except Exception as e:
         return Response(e)
 
-<<<<<<< HEAD
-    return Response(status=status.HTTP_200_OK)
-=======
     return Response(status=status.HTTP_200_OK)
     
 
@@ -202,4 +184,3 @@ def complete_login(self, request, app, token, **kwargs):
     adapter_class = github_view.GitHubOAuth2Adapter
     callback_url = GITHUB_CALLBACK_URI
     client_class = OAuth2Client
->>>>>>> f2c8502557c7a62e7e6ec29b8ba468c2c2c72260
