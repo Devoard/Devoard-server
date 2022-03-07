@@ -11,5 +11,5 @@ urlpatterns = [
     path('github/login/', views.github_login, name='github_login'), #github 로그인
     path('github/callback/', views.github_callback, name='github_callback'), #github 콜백 url
     path('github/login/finish/', views.GithubLogin.as_view(), name='github_login_todjango'), #github 로그인 완료-> 바로 callback으로 넘어감
-
+ 
 ]
