@@ -6,5 +6,5 @@ from django.views.generic import TemplateView
 from user import views
 
 urlpatterns = [
-    path('collect/', survey.as_view()), #post: 설문 끝
+    path('collect', survey.as_view()), #post: 설문 끝
 ]
