@@ -3,12 +3,17 @@ from user.models import user_info
 
 # Create your models here.
 class devoard(models.Model):
-    title = models.CharField(max_length=50)
-    body = models.TextField(default=0)
-    field = models.IntegerField(default=0)
-    recruit_cnt = models.IntegerField(default=0)
-    situate = models.IntegerField(default=0)
-    done = models.IntegerField(default=0)
+    title = models.CharField(max_length=50) #프로젝트 명
+    frontend_cnt = models.IntegerField(default=0) #모집인원
+    backend_cnt = models.IntegerField(default=0) #모집인원
+    android_cnt = models.IntegerField(default=0) #모집인원
+    ios_cnt = models.IntegerField(default=0) #모집인원
+    data_cnt = models.IntegerField(default=0) #모집인원
+    devops_cnt = models.IntegerField(default=0) #모집인원
+    field = models.CharField(max_length=50) #기술 스택
+    body = models.TextField(default=0) #프로젝트 설명
+    period = models.TextField(default=0) #예상 개발기간
+    done = models.CharField(max_length=50) #현재 진행 상황
     user_id = models.ForeignKey('user.user_info',on_delete=models.CASCADE, default='',related_name='user_id')
     
     def __str__(self):
