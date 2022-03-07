@@ -19,8 +19,8 @@ class devoardList(APIView): #목록 보여줌
     authentication_classes = [TokenAuthentication]
     def get(self, request): # 리스트 보여줄 때
         devoards = devoard.objects.all()
-
         serializer = devoardSerializer(devoards, many=True)#여러개 객체 serialize하려면 many=True
+
         return Response(serializer.data)
 
     def post(self, request): #새 글 작성 시
