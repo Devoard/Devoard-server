@@ -6,7 +6,7 @@ import GoogleLogin from 'react-google-login';
 import githubIcon from '../assets/images/githubIcon.png';
 import googleIcon from '../assets/images/googleIcon.png';
 import PopUp from './PopUp';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setLoggedIn, setLoggedUser } from '../modules/user';
 
 const LoginText = styled.h1`

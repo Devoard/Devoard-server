@@ -1,30 +1,39 @@
 import { useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
-import qs from 'qs';
 
-const Callback = ({ location }) => {
-  const authUri = ``;
+function getCookie(key) {
+  let result = null;
+  let cookie = document.cookie.split(';');
 
-  useEffect(() => {
-    const getToken = async () => {
-      const { code } = qs.parse(location.search, {
-        ignoreQueryPrefix: true,
-      });
+  cookie.some((item) => {
+    item = item.replace(' ', '');
 
-      try {
-        const res = await fetch(`${authUri}?code=${code}`);
-        const data = await res.json();
+    let dic = item.split('=');
 
-        localStorage.setItem('token', data.jwt);
-        localStorage.setItem('ProfileURL', data.avatar_url);
-
-        return <Navigate to="/" replace={true} />
-      } catch (error) {}
-    };
-
-    getToken();
+    if (key === dic[0]) {
+      result = dic[1];
+      return true;
+    }
+    return false;
   });
 
+  return result;
+}
+
+const Callback = () => {
+  useEffect(() => {
+    try {
+      const jwt = getCookie('git_token');
+      const url = getCookie('git_userImg');
+
+      console.log(jwt, url);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  return (
+    <></>
+  )
 };
 
 export default Callback;
