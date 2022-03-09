@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const url = 'http://localhost:8000/posts';
+const url = 'http://localhost:8000/devoard';
 
 const PostAPI = {
   getPosts: async(state) => {  
