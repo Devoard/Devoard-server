@@ -13,9 +13,9 @@ class survey(APIView):
     authentication_classes = [TokenAuthentication]
     def post(self, request):
         serializer = SurveySerializer(data=request.data)
-        # username = 'dvlops87' # 사용자 아이디 (실험용)
+        username = 'dvlops87' # 사용자 아이디 (실험용)
         
-        username = serializer.initial_data['username'] # 사용자 아이디
+        # username = serializer.initial_data['username'] # 사용자 아이디
         user_field = serializer.initial_data['user_field'] # 하고 싶은 개발분야
         user_skill_name = serializer.initial_data['user_skill_name'] # 사용 가능한 기술 스택(리스트)
         user_period = serializer.initial_data['user_period'] # 프로그래밍 공부한 기간
@@ -44,9 +44,12 @@ class survey(APIView):
         user.user_plan = user_plan
         user.user_tmi = user_tmi
         user.user_git_id = user_git_id
-        user_skill_name = user_skill_name.split(',')
-        for skill in user_skill_name:
-            user_skill.objects.create(u_id = user, user_skill_name=skill, user_score = 0)
+        if len(user_skill_name) >1:
+            user_skill_name = user_skill_name.split(',')
+            for skill in user_skill_name:
+                user_skill.objects.create(u_id = user, user_skill_name=skill, user_score = 0)
+        else :
+            user_skill.objects.create(u_id = user, user_skill_name=user_skill_name, user_score = 0)
         user.save()
         return Response('설문이 완료되었습니다.',status=status.HTTP_201_CREATED)
         
