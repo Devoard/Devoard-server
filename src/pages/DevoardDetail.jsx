@@ -36,6 +36,7 @@ import {
   Situation,
   ButtonWrapper,
   CheckText,
+  SubText,
   PopUpBtnWrapper
 } from '../styles/DevoardDetail';
 
@@ -168,6 +169,7 @@ const DevoardDetail = () => {
         setIsPopUp={setIsCheckPopUp}
       >
         <CheckText>모집을 완료하시겠습니까?</CheckText>
+        <SubText>모집 완료 시 수정이 불가능합니다.</SubText>
         <PopUpBtnWrapper>
           <Button
             color="gray"
@@ -188,6 +190,7 @@ const DevoardDetail = () => {
         setIsPopUp={setIsRemovePopUp}
       >
         <CheckText>게시물을 삭제하시겠습니까?</CheckText>
+        <SubText>삭제된 게시물은 복구할 수 없습니다.</SubText>
         <PopUpBtnWrapper>
           <Button
             color="gray"
@@ -198,7 +201,6 @@ const DevoardDetail = () => {
             style={{marginLeft: '1rem'}}
             onClick={removePost}
           >확인</Button>
-
         </PopUpBtnWrapper>
       </PopUp>
     </PageWrapper>

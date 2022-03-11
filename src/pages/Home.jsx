@@ -1,5 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import PostAPI from '../api/PostAPI';
+import { useDispatch } from 'react-redux';
+import { setActivePage } from '../modules/user';
 import ProjectDetail from '../components/ProjectDetail';
 import {
   PageWrapper,
@@ -16,38 +19,43 @@ import {
   ProjectDetailWrapper,
   MoreProjectBtn
 } from '../styles/Home';
-import { useDispatch } from 'react-redux';
-import { setActivePage } from '../modules/user';
 
 
 
 const Home = () => {
-  const [recruitCnt, setRecruitCnt] = useState(123);
+  const [recruitCnt, setRecruitCnt] = useState(0);
   const dispatch = useDispatch();
   const project_wrapper = useRef(null);
   const text = "TextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextTextText";
 
   useEffect(() => {
     let timer = null;
-    
-    const recruitCntAnimation = () => {
+
+    const recruitCntAnimation = (totalCnt) => {
       let num = 0;
   
-      timer = setInterval(()=>{
-        if (num === recruitCnt) return null;
+      timer = setInterval(() => {
+        if (num === totalCnt) return null;
         setRecruitCnt(++num);
-      }, 1000/recruitCnt);
+      }, 1000/totalCnt);
     };
 
-    recruitCntAnimation();
+    const getPostCnt = async() => {
+      const posts = await PostAPI.getPosts('all');
+      const totalCnt = posts.length;
+      recruitCntAnimation(totalCnt);
+    };
+
+    getPostCnt();
+
     dispatch(setActivePage('home'));
     project_wrapper.current.addEventListener('mousewheel', handleHorizontalScroll);
   
-
     return () => {
       clearInterval(timer);
     }
   }, [setActivePage]);
+
 
   const handleHorizontalScroll = (e) => {
     e.preventDefault();

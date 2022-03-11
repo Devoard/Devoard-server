@@ -36,6 +36,25 @@ const LoginPopUp = ({ isVisible, setIsLoginPopUp }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const getCookie = (key) => {
+      let result = null;
+      let cookie = document.cookie.split(';');
+    
+      cookie.some((item) => {
+        item = item.replace(' ', '');
+    
+        let dic = item.split('=');
+    
+        if (key === dic[0]) {
+          result = dic[1];
+          return true;
+        }
+        return false;
+      });
+    
+      return result;
+    }
+    
     if (window.sessionStorage.getItem('name')) {
       dispatch(setLoggedIn());
 
@@ -48,6 +67,22 @@ const LoginPopUp = ({ isVisible, setIsLoginPopUp }) => {
         id: id,
         imageUrl: imageUrl
       }));
+    }
+    else if (getCookie('git_username')) {
+      dispatch(setLoggedIn());
+
+      try {
+        const username = getCookie('git_username');
+        const imageUrl = getCookie('git_userImg');
+        const token = getCookie('token');
+
+        dispatch(setLoggedUser({
+          username: username,
+          imageUrl: imageUrl
+        }))
+      } catch (err) {
+        console.log(err);
+      }
     }
 
   }, [setLoggedIn, setLoggedUser]);

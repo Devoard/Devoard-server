@@ -39,9 +39,16 @@ const ToggleMenu = ({ isVisible, setIsVisible }) => {
     if (!window.sessionStorage.getItem('name')) return null;
 
     navigate('/');
-    window.sessionStorage.removeItem('name');
-    window.sessionStorage.removeItem('email');
-    window.sessionStorage.removeItem('imageUrl');
+
+    if (window.sessionStorage.getItem('name')) {
+      window.sessionStorage.removeItem('name');
+      window.sessionStorage.removeItem('email');
+      window.sessionStorage.removeItem('imageUrl');
+    }
+    else {
+      
+    }
+
     dispatch(setLoggedIn());
     dispatch(setLoggedUser({
       username: '',

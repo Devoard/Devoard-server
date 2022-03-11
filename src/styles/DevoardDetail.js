@@ -147,12 +147,19 @@ export const ButtonWrapper = styled.div`
 export const CheckText = styled.div`
   font-size: 1.4rem;
   font-family: var(--font-title);
-  margin-top: 3rem;
+  margin-top: 2rem;
+`;
+
+export const SubText = styled.div`
+  color: gray;
+  font-size: 1.1rem;
+  font-family: var(--font-title);
+  margin-top: 0.7rem;
 `;
 
 export const PopUpBtnWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  margin-top: 4rem;
+  margin-top: 3rem;
 `;
