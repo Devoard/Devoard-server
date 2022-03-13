@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'user.apps.UserConfig',
     'devoard_app.apps.DevoardAppConfig',
     'survey_app.apps.SurveyAppConfig',
+    'chat_app.apps.ChatAppConfig',
     'rest_framework',
     'knox',
     'corsheaders',
