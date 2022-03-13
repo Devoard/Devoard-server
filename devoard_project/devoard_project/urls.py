@@ -26,6 +26,7 @@ from devoard_app.views import devoardList, devoardDetail
 urlpatterns = [
     path('user/',include('user.urls')),
     path('survey/',include('survey_app.urls')),
+    path('chat/',include('chat_app.urls')),
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='index.html'), name='home'),
     path('login/', obtain_jwt_token), #토큰 발행 = 됨
