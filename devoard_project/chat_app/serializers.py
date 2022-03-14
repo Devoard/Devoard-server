@@ -15,7 +15,7 @@ class ChatListSerializer(serializers.ModelSerializer):
     # chat_list = serializers.SerializerMethodField()
     class Meta:
         model = chat
-        fields = ['sender', 'receiver', 'chat_body', 'time_stamp']
+        fields = ['sender', 'receiver', 'chat_body', 'time_stamp', 'read']
         ordering = ('time_stamp',)
     
     # def get_chat_list(self, instance):

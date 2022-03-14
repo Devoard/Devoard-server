@@ -8,6 +8,7 @@ class chat(models.Model):
     receiver = models.ForeignKey("user.user_info", related_name="user_chat_to", on_delete=models.CASCADE,null=True)
     chat_body = models.TextField(default='')
     time_stamp = models.DateTimeField(blank=True)
+    read = models.BooleanField(default=False)
 
     def __str__(self):
         return self.chat_body[0:10]

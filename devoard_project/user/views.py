@@ -141,8 +141,11 @@ def github_callback(request):
         response.set_cookie('git_token',accept_json['token'])
         response.set_cookie('git_userImg',avatar_url)
         response.set_cookie('git_username',login)
-        token = Token.objects.get_or_create(user=user)
-        print(token)
+        token = str(Token.objects.get_or_create(user=user))
+
+        if len(token)>45:
+            token = token[10:49]
+            
         response.set_cookie('token',token)
         response.set_cookie('signin','signin')
         return response
