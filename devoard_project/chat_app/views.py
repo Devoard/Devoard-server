@@ -32,6 +32,25 @@ class chat_api(APIView):
     def get(self, request):
         serializer = ChatSerializer(data=request.data)
         sender = serializer.initial_data['from_user'] # 보내는 사람
+
+        try :
+            sender_user = user_info.objects.get(username=sender)
+        except :
+            return Response('등록되지 않은 사용자입니다.',status=status.HTTP_400_BAD_REQUEST)
+
+
+        chats = chat.objects.filter(Q(sender=sender_user.id))
+        if len(chats) == 0:
+            return Response('나눈 대화가 없습니다.',status=status.HTTP_400_BAD_REQUEST)
+        else :
+            chat_list = ChatListSerializer(chats, many=True, context={'request': request})
+            return JsonResponse(chat_list.data, safe=False)
+
+class chat_detail(APIView):
+    authentication_classes = [TokenAuthentication]
+    def get(self, request):
+        serializer = ChatSerializer(data=request.data)
+        sender = serializer.initial_data['from_user'] # 보내는 사람
         receiver = serializer.initial_data['to_user'] # 받는 사람
 
         try :
@@ -42,13 +61,18 @@ class chat_api(APIView):
 
 
         chats = chat.objects.filter(Q(receiver=receiver_user.id)& Q(sender=sender_user.id))
+        # chats[len(chats)-1].read = True
+        # chats.save()
+        # chats.last().update(read=True)
+        # for object in len(chats):
+        #     if object == 
+        #     object.save()
         if len(chats) == 0:
             return Response('나눈 대화가 없습니다.',status=status.HTTP_400_BAD_REQUEST)
         else :
             chat_list = ChatListSerializer(chats, many=True, context={'request': request})
             return JsonResponse(chat_list.data, safe=False)
 
-    
 
         
 
