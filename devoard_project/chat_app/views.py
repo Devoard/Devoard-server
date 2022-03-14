@@ -31,7 +31,7 @@ class chat_api(APIView):
     
     def get(self, request):
         serializer = ChatSerializer(data=request.data)
-        sender = serializer.initial_data['from_user'] # 보내는 사람
+        sender = serializer.initial_data['user'] # 보내는 사람
 
         try :
             sender_user = user_info.objects.get(username=sender)
@@ -59,14 +59,14 @@ class chat_detail(APIView):
         except :
             return Response('등록되지 않은 사용자입니다.',status=status.HTTP_400_BAD_REQUEST)
 
-
         chats = chat.objects.filter(Q(receiver=receiver_user.id)& Q(sender=sender_user.id))
-        # chats[len(chats)-1].read = True
-        # chats.save()
-        # chats.last().update(read=True)
-        # for object in len(chats):
-        #     if object == 
-        #     object.save()
+        for last_chat in chats :
+            if last_chat.read == False:
+                last_chat.read = True
+                last_chat.save()
+            else:
+                continue
+
         if len(chats) == 0:
             return Response('나눈 대화가 없습니다.',status=status.HTTP_400_BAD_REQUEST)
         else :

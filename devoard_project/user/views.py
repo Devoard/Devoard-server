@@ -144,8 +144,8 @@ def github_callback(request):
         token = str(Token.objects.get_or_create(user=user))
 
         if len(token)>45:
-            token = token[10:49]
-            
+            token = token[9:49]
+
         response.set_cookie('token',token)
         response.set_cookie('signin','signin')
         return response

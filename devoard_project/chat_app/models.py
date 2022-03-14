@@ -11,4 +11,4 @@ class chat(models.Model):
     read = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.chat_body[0:10]
+        return self.chat_body[0:20]
