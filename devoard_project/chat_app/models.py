@@ -12,3 +12,5 @@ class chat(models.Model):
 
     def __str__(self):
         return self.chat_body[0:20]
+    class Meta:
+        ordering = ('time_stamp',)
