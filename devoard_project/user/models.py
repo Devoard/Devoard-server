@@ -21,6 +21,7 @@ class user_info(AbstractUser):
     user_connect = models.CharField(max_length=50,blank=True)
     user_plan = models.CharField(max_length=50,blank=True)
     user_git_id = models.CharField(max_length=50,blank=True)
+    u_skill = models.ManyToManyField("user_skill", related_name="user") 
     def __str__(self):
         return self.username
 
