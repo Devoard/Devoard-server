@@ -1,4 +1,3 @@
-from attr import field
 from django.db import models
 
 # Create your models here.
