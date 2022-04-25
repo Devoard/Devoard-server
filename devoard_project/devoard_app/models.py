@@ -1,5 +1,5 @@
+from attr import field
 from django.db import models
-from user.models import user_info
 
 # Create your models here.
 class devoard(models.Model):
@@ -15,6 +15,8 @@ class devoard(models.Model):
     done = models.CharField(max_length=50) #현재 진행 상황
     recruit_state = models.BooleanField(default=True) 
     date = models.CharField(max_length=50, null=True)
+    field = models.CharField(max_length=50, null=True)
+    writer = models.ForeignKey('user.user_info', on_delete=models.CASCADE, db_column="user_name")
     
     def __str__(self):
         return self.title
