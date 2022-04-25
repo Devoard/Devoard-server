@@ -80,7 +80,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_jwt',
     'allauth',
-    'allauth.account',
+    # 'allauth.account',
     'rest_auth.registration',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
