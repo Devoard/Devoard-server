@@ -18,15 +18,3 @@ class devoard(models.Model):
     
     def __str__(self):
         return self.title
-
-class project(models.Model):
-    openner = models.TextField(default=0)
-    joinner = models.TextField(default=0)
-    awaiter = models.TextField(default=0)
-    def __str__(self):
-        return self.openner
-
-class chat(models.Model):
-    user_one = models.ForeignKey('user.user_info',on_delete=models.CASCADE, default='',related_name='user_one')
-    user_two = models.ForeignKey('user.user_info',on_delete=models.CASCADE, default='',related_name='user_two')
-    chat = models.TextField(default=0)
