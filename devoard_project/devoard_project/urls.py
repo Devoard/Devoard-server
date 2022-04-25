@@ -36,7 +36,7 @@ urlpatterns = [
     path('validate/', views.validate_jwt_token),
     #게시판
     path('devoard/', devoardList.as_view()),
-    path('devoard/<int:pk>', devoardDetail.as_view()),
+    path('devoard/<int:pk>/', devoardDetail.as_view()),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
