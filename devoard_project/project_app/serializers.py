@@ -8,10 +8,10 @@ from devoard_app.serializers import devoardSerializer
 
 
 class MyDevoardSerializer(serializers.ModelSerializer):
-    user_id = serializers.SlugRelatedField(many=False, slug_field='username', queryset=user_info.objects.all())
+    writer = serializers.SlugRelatedField(many=False, slug_field='username', queryset=user_info.objects.all())
     class Meta:
         model = devoard
-        fields = ('title', 'field', 'body', 'done', 'user_id', 'id')
+        fields = ('title', 'field', 'body', 'done', 'writer', 'id')
 
 
 class ProjectSerializer(serializers.ModelSerializer):

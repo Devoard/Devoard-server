@@ -39,7 +39,7 @@ class my_project_list(APIView):
         except :
             return Response('등록되지 않은 사용자입니다.',status=status.HTTP_400_BAD_REQUEST)
 
-        project_list = devoard.objects.filter(user_id=user)
+        project_list = devoard.objects.filter(writer=user)
         if len(project_list) == 0:
             return Response('아직 만든 프로젝트가 없습니다.',status=status.HTTP_400_BAD_REQUEST)
         else :
