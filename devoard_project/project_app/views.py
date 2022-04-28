@@ -8,6 +8,7 @@ from devoard_app.serializers import devoardSerializer
 from user.models import user_info
 from devoard_app.models import devoard
 from rest_framework.authentication import TokenAuthentication
+from django.db.models import Q
 
 # Create your views here.
 class join_project_list(APIView):
@@ -56,9 +57,9 @@ class apply_project_list(APIView):
         except :
             return Response('등록되지 않은 사용자입니다.',status=status.HTTP_400_BAD_REQUEST)
 
-        project_list = project.objects.filter(awaiter=user.id)
+        project_list = project.objects.filter(team_master=user.id)
         if len(project_list) == 0:
-            return Response('아직 지원한 프로젝트가 없습니다.',status=status.HTTP_400_BAD_REQUEST)
+            return Response('아직 만든 프로젝트가 없습니다.',status=status.HTTP_400_BAD_REQUEST)
         else :
             join_project = ApplyDevoardSerializer(project_list, many=True, context={'request': request})
             return JsonResponse(join_project.data, safe=False)
@@ -76,6 +77,31 @@ class project_detail(APIView):
 
         join_project = devoardSerializer(detail)
         return JsonResponse(join_project.data, safe=False)
+        
+class access_awaiter(APIView):
+    authentication_classes = [TokenAuthentication]
+    def post(self, request):
+        serializer = ProjectSerializer(data=request.data)
+        username = serializer.initial_data['username']              # 사용자 이름
+        select_awaiter = serializer.initial_data['select_awaiter']  # 선택한 지원자 이름
+        p_id = serializer.initial_data['p_id']                      # 프로젝트 고유 식별자 p_id
+        print("username :",username)
+        print("p_id :",p_id)
+        print("select_awaiter :",select_awaiter)
+        
+        try :
+            user = user_info.objects.get(username=username)
+            select_awaiter = user_info.objects.get(username=select_awaiter)
+        except :
+            return Response('등록되지 않은 사용자입니다.',status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            now_project = project.objects.get(id = p_id ,team_master = user.id)
+        except:
+            return Response('존재하지 않는 프로젝트입니다.',status=status.HTTP_400_BAD_REQUEST)
+        
+        
+        return Response('수락했습니다.',status=status.HTTP_400_BAD_REQUEST)
         
 
 
