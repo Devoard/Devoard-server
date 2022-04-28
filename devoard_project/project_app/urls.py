@@ -9,4 +9,5 @@ urlpatterns = [
     path('apply_project/', views.apply_project_list.as_view()),
     path('detail/', views.project_detail.as_view()),
     path('access_awaiter/', views.access_awaiter.as_view()),
+    path('reject_awaiter/', views.reject_awaiter.as_view()),
 ]

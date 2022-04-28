@@ -100,8 +100,41 @@ class access_awaiter(APIView):
         except:
             return Response('존재하지 않는 프로젝트입니다.',status=status.HTTP_400_BAD_REQUEST)
         
+        print("수락 전 참가자 :",now_project.joiner.all())
+        now_project.joiner.add(select_awaiter)
+        now_project.awaiter.remove(select_awaiter)
+        print("수락 후 참가자 :",now_project.joiner.all())
         
-        return Response('수락했습니다.',status=status.HTTP_400_BAD_REQUEST)
+        return Response('수락했습니다.',status=status.HTTP_200_OK)
+
+        
+class reject_awaiter(APIView):
+    authentication_classes = [TokenAuthentication]
+    def post(self, request):
+        serializer = ProjectSerializer(data=request.data)
+        username = serializer.initial_data['username']              # 사용자 이름
+        select_awaiter = serializer.initial_data['select_awaiter']  # 선택한 지원자 이름
+        p_id = serializer.initial_data['p_id']                      # 프로젝트 고유 식별자 p_id
+        print("username :",username)
+        print("p_id :",p_id)
+        print("select_awaiter :",select_awaiter)
+        
+        try :
+            user = user_info.objects.get(username=username)
+            select_awaiter = user_info.objects.get(username=select_awaiter)
+        except :
+            return Response('등록되지 않은 사용자입니다.',status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            now_project = project.objects.get(id = p_id ,team_master = user.id)
+        except:
+            return Response('존재하지 않는 프로젝트입니다.',status=status.HTTP_400_BAD_REQUEST)
+        
+        print("거절 전 지원자 :",now_project.awaiter.all())
+        now_project.awaiter.remove(select_awaiter)
+        print("거절 후 지원자 :",now_project.awaiter.all())
+        
+        return Response('거절했습니다.',status=status.HTTP_200_OK)
         
 
 
