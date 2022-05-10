@@ -6,11 +6,13 @@ from rest_framework import permissions, status, generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .serializers import UserSerializer, UserSerializerWithToken
+from yaml import serialize
+from .serializers import UserSerializer, UserSerializerWithToken, MypageSerializer
 from rest_framework_jwt.serializers import VerifyJSONWebTokenSerializer
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from .models import user_info
+from django.http import Http404
 
 from allauth.socialaccount.providers import github
 from rest_auth.registration.views import SocialLoginView
@@ -22,6 +24,7 @@ from django.http import JsonResponse
 from json import JSONDecodeError
 from django.urls import reverse
 from rest_framework.authtoken.models import Token
+from rest_framework.authentication import TokenAuthentication
 
 # from google.oauth2 import id_token
 # from google.auth.transport import requests
@@ -191,3 +194,18 @@ def complete_login(self, request, app, token, **kwargs):
     adapter_class = github_view.GitHubOAuth2Adapter
     callback_url = GITHUB_CALLBACK_URI
     client_class = OAuth2Client
+
+class mypage(APIView):
+    authentication_classes = [TokenAuthentication]
+
+    def get_object(self, pk):
+        try:
+            return user_info.objects.get(pk=pk)
+        except user_info.DoesNotExist:
+            raise Http404
+
+    def get(self, reuqest, pk):
+        info = self.get_object(pk)
+        serializer = MypageSerializer(info)
+        return Response(serializer.data)
+
