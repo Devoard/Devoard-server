@@ -6,6 +6,7 @@ from .serializers import ProjectSerializer ,MyDevoardSerializer, ApplyDevoardSer
 from .models import project
 from devoard_app.serializers import devoardSerializer
 from user.models import user_info
+from alter_app.models import alter
 from devoard_app.models import devoard
 from rest_framework.authentication import TokenAuthentication
 from django.db.models import Q
@@ -100,6 +101,11 @@ class access_awaiter(APIView):
         except:
             return Response('존재하지 않는 프로젝트입니다.',status=status.HTTP_400_BAD_REQUEST)
         
+        alter_list = alter.objects.create(user = select_awaiter, devoard_data = now_project.project_detail, project_data=now_project, team_master =now_project.team_master)
+        alter_list.title = '프로젝트 지원 결과 안내입니다.'
+        alter_list.data = '저희 프로젝트에 초대합니다! 아래의 연락처로 연락주시길 바라겠습니다.'
+        alter_list.save()
+
         print("수락 전 참가자 :",now_project.joiner.all())
         now_project.joiner.add(select_awaiter)
         now_project.awaiter.remove(select_awaiter)
@@ -129,6 +135,11 @@ class reject_awaiter(APIView):
             now_project = project.objects.get(id = p_id ,team_master = user.id)
         except:
             return Response('존재하지 않는 프로젝트입니다.',status=status.HTTP_400_BAD_REQUEST)
+        
+        alter_list =alter.objects.create(user = select_awaiter, devoard_data = now_project.project_detail, project_data=now_project, team_master =now_project.team_master)
+        alter_list.title = '프로젝트 지원 결과 안내입니다.'
+        alter_list.data = '저희 프로젝트에 아쉽게도 같이 하실 수 없습니다.'
+        alter_list.save()
         
         print("거절 전 지원자 :",now_project.awaiter.all())
         now_project.awaiter.remove(select_awaiter)
