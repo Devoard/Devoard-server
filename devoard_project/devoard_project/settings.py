@@ -75,6 +75,7 @@ INSTALLED_APPS = [
     'survey_app.apps.SurveyAppConfig',
     'chat_app.apps.ChatAppConfig',
     'project_app.apps.ProjectAppConfig',
+    'alter_app.apps.AlterAppConfig',
     'rest_framework',
     'knox',
     'corsheaders',
