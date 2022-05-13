@@ -8,6 +8,7 @@ class ChatSerializer(serializers.ModelSerializer):
     class Meta:
         model = chat
         fields = ['sender', 'receiver', 'chat_body', 'time_stamp', 'read']
+        ordering = ['-time_stamp']
 
 class ChatListSerializer(serializers.ModelSerializer):
     sender = serializers.SlugRelatedField(many=False, slug_field='username', queryset=user_info.objects.all())
@@ -15,3 +16,4 @@ class ChatListSerializer(serializers.ModelSerializer):
     class Meta:
         model = chat
         fields = ['sender', 'receiver', 'chat_body', 'time_stamp', 'read']
+        ordering = ['-time_stamp']
