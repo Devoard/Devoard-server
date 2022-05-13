@@ -37,18 +37,7 @@ class devoardList(APIView): #목록 보여줌
         field = serializer.initial_data['field']
         writer = serializer.initial_data['username']
         date = serializer.initial_data['date']
-        #title= request.query_params.get('title')
-        #body= request.query_params.get('body')
-        #frontend_cnt= request.query_params.get('frontend_cnt')
-        #backend_cnt= request.query_params.get('backend_cnt')
-        #android_cnt= request.query_params.get('android_cnt')
-        #ios_cnt= request.query_params.get('ios_cnt')
-        #data_cnt= request.query_params.get('data_cnt')
-        #devops_cnt= request.query_params.get('devops_cnt')
-        #period= request.query_params.get('period')
-        #done= request.query_params.get('done')
-        #recruit_state= request.query_params.get('recruit_state')
-        #field = request.query_params.get('field')
+
         try :
             writer_name = user_info.objects.get(username=writer)
         except :
