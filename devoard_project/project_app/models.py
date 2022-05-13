@@ -8,4 +8,4 @@ class project(models.Model):
     joiner = models.ManyToManyField(user_info, related_name="project_joiner") # 프로젝트 참가자
     awaiter = models.ManyToManyField(user_info, related_name="project_awaiter") # 프로젝트 참가 대기자
     def __str__(self) -> str:
-        return self.team_master.username
+        return self.project_detail.title

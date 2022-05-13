@@ -32,7 +32,7 @@ class chat_api(APIView):
         except :
             return Response('등록되지 않은 사용자입니다.',status=status.HTTP_400_BAD_REQUEST)
 
-        chat.objects.create(sender=sender_user, receiver=receiver_user, chat_body=chat_body,time_stamp=dt_datetime)
+        chat.objects.create(sender=sender_user, receiver=receiver_user, chat_body=chat_body,time_stamp=dt_datetime, read=True)
 
         return Response('쪽지 전송 성공.',status=status.HTTP_201_CREATED)
     

@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from user.models import user_info
 from .serializers import devoardSerializer
 from .models import devoard
+from project_app.models import project
 from rest_framework.authentication import TokenAuthentication
 
 # Create your views here.
@@ -42,8 +43,12 @@ class devoardList(APIView): #목록 보여줌
         except :
             return Response('등록되지 않은 사용자입니다.',status=status.HTTP_400_BAD_REQUEST)
 
-        devoard.objects.create(title=title, body= body, frontend_cnt = frontend_cnt, backend_cnt=backend_cnt, android_cnt= android_cnt,
+        new_devoard = devoard.objects.create(title=title, body= body, frontend_cnt = frontend_cnt, backend_cnt=backend_cnt, android_cnt= android_cnt,
         ios_cnt = ios_cnt, data_cnt=data_cnt, devops_cnt = devops_cnt, period = period, done=done, recruit_state= recruit_state, field = field, writer = writer_name, date=date) #저장
+        
+        new_project = project.objects.create(project_detail=new_devoard, team_master = writer_name)
+        new_project.joiner.add(writer_name)
+
         return Response(status=status.HTTP_201_CREATED)
     
     def get(self, request): # 리스트 보여줄 때
