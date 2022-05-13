@@ -6,7 +6,6 @@ from rest_framework import permissions, status, generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from yaml import serialize
 from .serializers import UserSerializer, UserSerializerWithToken, MypageSerializer
 from rest_framework_jwt.serializers import VerifyJSONWebTokenSerializer
 from rest_framework.decorators import api_view, renderer_classes
