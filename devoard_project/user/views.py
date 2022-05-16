@@ -208,9 +208,17 @@ class mypage(APIView):
         serializer = MypageSerializer(info)
         return Response(serializer.data)
 
+    def put(self, request, pk, format=None):
+        info_update = self.get_object(pk)
+        serializer = UserSerializer(info_update, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class logout(APIView):
     authentication_classes = [TokenAuthentication]
     def get(self, request, format=None):
-        # simply delete the token to force a login
         request.user.auth_token.delete()
         return Response(status=status.HTTP_200_OK)
