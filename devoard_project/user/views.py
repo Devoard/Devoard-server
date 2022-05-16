@@ -207,3 +207,10 @@ class mypage(APIView):
         info = self.get_object(pk)
         serializer = MypageSerializer(info)
         return Response(serializer.data)
+
+class logout(APIView):
+    authentication_classes = [TokenAuthentication]
+    def get(self, request, format=None):
+        # simply delete the token to force a login
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)
