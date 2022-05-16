@@ -203,8 +203,7 @@ class mypage(APIView):
         except user_info.DoesNotExist:
             raise Http404
 
-    def get(self, reuqest, pk):
+    def get(self, request, pk):
         info = self.get_object(pk)
         serializer = MypageSerializer(info)
         return Response(serializer.data)
-
