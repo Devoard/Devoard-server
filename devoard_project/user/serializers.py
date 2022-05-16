@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
 # from django.contrib.auth.models import User
 from .models import user_info, user_skill
+from project_app.serializers import UserskillSerializer
 
 class UserSerializer(serializers.ModelSerializer):
     
@@ -36,7 +37,7 @@ class UserSerializerWithToken(serializers.ModelSerializer):
         fields = ('token', 'username','password')
 
 class MypageSerializer(serializers.ModelSerializer):
-
+    u_skill = UserskillSerializer(many = True)
     class Meta:
         model = user_info
         fields = ('username', 'id', 'user_import', 'user_exp', 'user_how', 'user_intro', 'user_pf_addr', 'user_join_project','user_git_id', 'u_skill')
