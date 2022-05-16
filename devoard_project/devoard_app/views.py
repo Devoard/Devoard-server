@@ -38,13 +38,21 @@ class devoardList(APIView): #목록 보여줌
         writer = serializer.initial_data['username']
         date = serializer.initial_data['date']
 
+        field_data = ''
+        if len(field) >1:
+            for data in field:
+                field_data = data + ',' + field_data
+            field_data = field_data[0:-1]
+        else:
+            field_data = field
+
         try :
             writer_name = user_info.objects.get(username=writer)
         except :
             return Response('등록되지 않은 사용자입니다.',status=status.HTTP_400_BAD_REQUEST)
 
         new_devoard = devoard.objects.create(title=title, body= body, frontend_cnt = frontend_cnt, backend_cnt=backend_cnt, android_cnt= android_cnt,
-        ios_cnt = ios_cnt, data_cnt=data_cnt, devops_cnt = devops_cnt, period = period, done=done, recruit_state= recruit_state, field = field, writer = writer_name, date=date) #저장
+        ios_cnt = ios_cnt, data_cnt=data_cnt, devops_cnt = devops_cnt, period = period, done=done, recruit_state= recruit_state, field = field_data, writer = writer_name, date=date) #저장
         
         new_project = project.objects.create(project_detail=new_devoard, team_master = writer_name)
         new_project.joiner.add(writer_name)
@@ -67,9 +75,11 @@ class devoardDetail(APIView):
         except devoard.DoesNotExist:
             raise Http404
 
-    def get(self, reuqest, pk):
+    def get(self, request, pk):
         devoard = self.get_object(pk)
         serializer = devoardSerializer(devoard)
+        dd = serializer.data['field']
+        print(dd)
         return Response(serializer.data)
     
     # def put(self, request, pk, format=None):
