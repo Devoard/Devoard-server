@@ -98,13 +98,6 @@ class devoardDetail(APIView):
 class devoardNow(APIView):
     authentication_classes = [TokenAuthentication]
     def get(self, request):
-        username = request.query_params.get('username')
-
-        try :
-            user = user_info.objects.get(username=username)
-        except :
-            return Response('등록되지 않은 사용자입니다.',status=status.HTTP_400_BAD_REQUEST)
-
         devoard_list = devoard.objects.order_by('-pk')[0:5]
         if len(devoard_list) == 0:
             return Response('아직 만들어진 프로젝트가 없습니다.',status=status.HTTP_400_BAD_REQUEST)
