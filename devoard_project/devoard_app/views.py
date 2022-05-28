@@ -39,7 +39,7 @@ class devoardList(APIView): #목록 보여줌
         date = serializer.initial_data['date']
 
         field_data = ''
-        if len(field) >1:
+        if len(field) > 0:
             for data in field:
                 field_data = data + ',' + field_data
             field_data = field_data[0:-1]
