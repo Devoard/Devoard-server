@@ -120,6 +120,8 @@ def github_callback(request):
     """
     try:
         user = user_info.objects.get(username=login)
+        user.git_userImg = avatar_url
+        user.save()
         # 기존에 가입된 유저의 Provider가 github가 아니면 에러 발생, 맞으면 로그인
         # 다른 SNS로 가입된 유저
         social_user = SocialAccount.objects.get(user=user)
@@ -170,6 +172,8 @@ def github_callback(request):
         response.set_cookie('git_userImg',avatar_url)
         response.set_cookie('git_username',login)
         new_user = user_info.objects.get(username=login)
+        new_user.git_userImg = avatar_url
+        new_user.save()
         token = Token.objects.create(user=new_user)
         print(token)
         response.set_cookie('token',token)
