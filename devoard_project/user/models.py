@@ -7,7 +7,7 @@ class user_info(AbstractUser):
     search_fields = ["user_name",]
     user_name = models.CharField(max_length=30)
     user_field = models.CharField(max_length=30,null=True)
-    user_job = models.CharField(max_length=20, blank=True)
+    user_job = models.IntegerField(default=0)
     user_period = models.CharField(max_length=20, blank=True)
     user_active = models.CharField(max_length=20, blank=True)
     user_import = models.CharField(max_length=40,blank=True)
@@ -21,6 +21,7 @@ class user_info(AbstractUser):
     user_connect = models.CharField(max_length=50,blank=True)
     user_plan = models.CharField(max_length=50,blank=True)
     user_git_id = models.CharField(max_length=50,blank=True)
+    git_userImg = models.TextField(default=0)
     u_skill = models.ManyToManyField("user_skill", related_name="user_skill_list") 
     def __str__(self):
         return self.username

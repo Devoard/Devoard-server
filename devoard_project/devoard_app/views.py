@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from user.models import user_info
-from .serializers import devoardSerializer
+from .serializers import devoardSerializer, devoardNowSerializer
 from .models import devoard
 from project_app.models import project
 from rest_framework.authentication import TokenAuthentication
@@ -94,3 +94,20 @@ class devoardDetail(APIView):
         devoard = self.get_object(pk)
         devoard.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class devoardNow(APIView):
+    authentication_classes = [TokenAuthentication]
+    def get(self, request):
+        username = request.query_params.get('username')
+
+        try :
+            user = user_info.objects.get(username=username)
+        except :
+            return Response('등록되지 않은 사용자입니다.',status=status.HTTP_400_BAD_REQUEST)
+
+        devoard_list = devoard.objects.order_by('-pk')[0:5]
+        if len(devoard_list) == 0:
+            return Response('아직 만들어진 프로젝트가 없습니다.',status=status.HTTP_400_BAD_REQUEST)
+        else :
+            list_project = devoardNowSerializer(devoard_list, many=True)
+            return Response(list_project.data)
