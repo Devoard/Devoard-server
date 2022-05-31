@@ -60,11 +60,15 @@ class devoardList(APIView): #목록 보여줌
         return Response(status=status.HTTP_201_CREATED)
     
     def get(self, request): # 리스트 보여줄 때
-        devoards = devoard.objects.all()
-        serializer = devoardSerializer(devoards, many=True)#여러개 객체 serialize하려면 many=True
-
-        return Response(serializer.data)
-
+        recruit_state = request.query_params.get('recruit_state')
+        if recruit_state:
+            devoard_recruit = devoard.objects.filter(recruit_state=recruit_state)
+            serializer = devoardSerializer(devoard_recruit, many=True)#여러개 객체 serialize하려면 many=True
+            return Response(serializer.data)
+        else: 
+            devoards = devoard.objects.all()
+            serializer = devoardSerializer(devoards, many=True)#여러개 객체 serialize하려면 many=True
+            return Response(serializer.data)
 
 class devoardDetail(APIView):
     authentication_classes = [TokenAuthentication]

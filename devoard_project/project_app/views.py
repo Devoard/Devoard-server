@@ -1,3 +1,4 @@
+from ntpath import join
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.views import APIView
@@ -72,11 +73,11 @@ class project_detail(APIView):
         project_id = request.query_params.get('project_id') # project_id
 
         try :
-            detail = devoard.objects.get(id=project_id)
+            detail = project.objects.get(id=project_id)
         except :
             return Response('등록되지 않은 사용자입니다.',status=status.HTTP_400_BAD_REQUEST)
 
-        join_project = devoardSerializer(detail)
+        join_project = ProjectSerializer(detail)
         return JsonResponse(join_project.data, safe=False)
         
 class access_awaiter(APIView):
