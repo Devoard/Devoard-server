@@ -3,15 +3,15 @@ from rest_framework import serializers
 from user.models import user_info, user_skill
 from .models import project
 from devoard_app.models import devoard
-from devoard_app.serializers import devoardSerializer
+from devoard_app.serializers import devoardSerializer,UserInfoSerializer
 
 
 
 class MyDevoardSerializer(serializers.ModelSerializer):
-    writer = serializers.SlugRelatedField(many=False, slug_field='username', queryset=user_info.objects.all())
+    writer =  UserInfoSerializer(many = False)
     class Meta:
         model = devoard
-        fields = ('title', 'field', 'body', 'done', 'writer', 'id')
+        fields = ('title', 'field', 'frontend_cnt','backend_cnt','android_cnt','ios_cnt','data_cnt','devops_cnt','body', 'period','done','date', 'writer', 'id')
 
 
 class ProjectSerializer(serializers.ModelSerializer):
