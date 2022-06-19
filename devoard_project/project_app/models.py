@@ -7,5 +7,6 @@ class project(models.Model):
     team_master = models.ForeignKey("user.user_info", related_name="proejct_manager", on_delete=models.CASCADE,null=True) # 프로젝트 담당자
     joiner = models.ManyToManyField(user_info, related_name="project_joiner") # 프로젝트 참가자
     awaiter = models.ManyToManyField(user_info, related_name="project_awaiter") # 프로젝트 참가 대기자
+    belong = models.BooleanField(default=False, null=True)
     def __str__(self) -> str:
         return self.project_detail.title

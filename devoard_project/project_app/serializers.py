@@ -11,16 +11,18 @@ class MyDevoardSerializer(serializers.ModelSerializer):
     writer =  UserInfoSerializer(many = False)
     class Meta:
         model = devoard
-        fields = ('title', 'field', 'frontend_cnt','backend_cnt','android_cnt','ios_cnt','data_cnt','devops_cnt','body', 'period','done','date', 'writer', 'id')
+        fields = ('title', 'recruit_state','field', 'frontend_cnt','backend_cnt','android_cnt','ios_cnt','data_cnt','devops_cnt','body', 'period','done','date', 'writer', 'id')
 
 
 class ProjectSerializer(serializers.ModelSerializer):
     team_master = serializers.SlugRelatedField(many=False, slug_field='username', queryset=user_info.objects.all())
     joiner = serializers.SlugRelatedField(many=True, slug_field='username', queryset=user_info.objects.all())
-    project_detail = MyDevoardSerializer(many = False)    
+    project_detail = MyDevoardSerializer(many = False)  
     class Meta:
         model = project
-        fields = ['project_detail','team_master', 'joiner', 'id']
+        fields = ['project_detail','team_master', 'joiner', 'id', 'belong']
+    
+
 
 class UserskillSerializer(serializers.ModelSerializer):
     class Meta:

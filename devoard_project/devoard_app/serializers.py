@@ -12,7 +12,7 @@ class devoardSerializer(serializers.ModelSerializer):
     writer =  UserInfoSerializer(many = False)
     class Meta:
         model = devoard
-        fields = ('id','title', 'frontend_cnt', 'backend_cnt', 'android_cnt', 'ios_cnt', 'data_cnt', 'devops_cnt', 'body', 'period', 'done', 'recruit_state','field', 'writer')
+        fields = ('id','title', 'frontend_cnt', 'backend_cnt', 'android_cnt', 'ios_cnt', 'data_cnt', 'devops_cnt', 'body', 'period', 'done', 'recruit_state','field', 'writer','belong')
 
 class devoardNowSerializer(serializers.ModelSerializer):
     writer =  UserInfoSerializer(many = False)

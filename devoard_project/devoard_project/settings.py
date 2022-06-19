@@ -45,8 +45,9 @@ REST_FRAMEWORK = { # 추가
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [ #api가 실행됬을 때 인증할 클래스를 정의해주는데 우리는 JWT를 쓰기로 했으니
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication', #이와 같이 추가해준 모습이다.
-
     ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 2, 
 }
 REST_USE_JWT = True
 JWT_AUTH = { # 추가
