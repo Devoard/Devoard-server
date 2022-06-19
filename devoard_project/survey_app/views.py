@@ -28,14 +28,6 @@ class survey(APIView):
         user_how = serializer.initial_data['user_how'] # 선호하는 진행 방식
 
 
-        
-        # user_active = serializer.initial_data['user_active'] # 예상 활동 기간
-        # user_field = serializer.initial_data['user_field'] # 하고 싶은 개발분야
-        # user_period = serializer.initial_data['user_period'] # 프로그래밍 공부한 기간
-        # user_plan = serializer.initial_data['user_plan'] # 계획하는 프로젝트
-        # user_tmi = serializer.initial_data['user_tmi'] # 하고 싶은 말
-        # user_git_id = serializer.initial_data['user_git_id'] # 깃헙 아이디
-
         try :
             user = user_info.objects.get(username=username)
         except :
@@ -53,14 +45,14 @@ class survey(APIView):
                 user.user_import = imports + ',' + user.user_import
             user.user_import = user.user_import[0:-1]
         else :
-            user.user_import = user_import
+            user.user_import = user_import[0]
         user.save()
         if len(user_skill_name) >1:
             for skill in user_skill_name:
                 u_skills = user_skill.objects.create(u_id = user, user_skill_name=skill, user_score = 0)
                 user.u_skill.add(u_skills)
         else :
-            u_skills = user_skill.objects.create(u_id = user, user_skill_name=user_skill_name, user_score = 0)
+            u_skills = user_skill.objects.create(u_id = user, user_skill_name=user_skill_name[0], user_score = 0)
             user.u_skill.add(u_skills)
         return Response('설문이 완료되었습니다.',status=status.HTTP_201_CREATED)
         

@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import ProjectSerializer ,MyDevoardSerializer, ApplyDevoardSerializer
+from .serializers import ProjectSerializer ,ApplyDevoardSerializer
 from .models import project
 from devoard_app.serializers import devoardSerializer
 from user.models import user_info
@@ -40,14 +40,13 @@ class my_project_list(APIView):
             user = user_info.objects.get(username=username)
         except :
             return Response('등록되지 않은 사용자입니다.',status=status.HTTP_400_BAD_REQUEST)
-
-        project_list = devoard.objects.filter(writer=user)
+        
+        project_list = project.objects.filter(team_master=user.id)
         if len(project_list) == 0:
-            return Response('아직 만든 프로젝트가 없습니다.',status=status.HTTP_400_BAD_REQUEST)
+            return Response('아직 소속된 프로젝트가 없습니다.',status=status.HTTP_400_BAD_REQUEST)
         else :
-            join_project = MyDevoardSerializer(project_list, many=True, context={'request': request})
+            join_project = ProjectSerializer(project_list, many=True)
             return JsonResponse(join_project.data, safe=False)
-
 
 class apply_project_list(APIView):
     authentication_classes = [TokenAuthentication]
@@ -71,11 +70,20 @@ class project_detail(APIView):
     authentication_classes = [TokenAuthentication]
     def get(self, request):
         project_id = request.query_params.get('project_id') # project_id
+        username = request.query_params.get('username') # username
 
         try :
             detail = project.objects.get(id=project_id)
+            user = user_info.objects.get(username=username)
         except :
             return Response('등록되지 않은 사용자입니다.',status=status.HTTP_400_BAD_REQUEST)
+        
+        if user in detail.joiner.all() :
+            detail.belong = True
+            detail.save()
+        else:
+            detail.belong = False
+            detail.save()
 
         join_project = ProjectSerializer(detail)
         return JsonResponse(join_project.data, safe=False)

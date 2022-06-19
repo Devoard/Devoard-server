@@ -13,6 +13,9 @@ from .serializers import devoardSerializer, devoardNowSerializer
 from .models import devoard
 from project_app.models import project
 from rest_framework.authentication import TokenAuthentication
+from .pagination import SetPagination
+from rest_framework.pagination import PageNumberPagination
+
 
 # Create your views here.
 class AboutView(TemplateView):
@@ -20,6 +23,7 @@ class AboutView(TemplateView):
 
 class devoardList(APIView): #목록 보여줌
     authentication_classes = [TokenAuthentication]
+
 
     def post(self, request): #새 글 작성 시
         serializer = devoardSerializer(data=request.data)
@@ -60,15 +64,19 @@ class devoardList(APIView): #목록 보여줌
         return Response(status=status.HTTP_201_CREATED)
     
     def get(self, request): # 리스트 보여줄 때
+        paginator = PageNumberPagination()
+        paginator.page_size = 6
         recruit_state = request.query_params.get('recruit_state')
         if recruit_state:
             devoard_recruit = devoard.objects.filter(recruit_state=recruit_state)
-            serializer = devoardSerializer(devoard_recruit, many=True)#여러개 객체 serialize하려면 many=True
-            return Response(serializer.data)
-        else: 
+            result_page = paginator.paginate_queryset(devoard_recruit, request)
+            serializer = devoardSerializer(result_page, many=True)#여러개 객체 serialize하려면 many=True
+            return paginator.get_paginated_response(serializer.data)
+        else:  
             devoards = devoard.objects.all()
-            serializer = devoardSerializer(devoards, many=True)#여러개 객체 serialize하려면 many=True
-            return Response(serializer.data)
+            result_page = paginator.paginate_queryset(devoards, request)
+            serializer = devoardSerializer(result_page, many=True)#여러개 객체 serialize하려면 many=True
+            return paginator.get_paginated_response(serializer.data)
 
 class devoardDetail(APIView):
     authentication_classes = [TokenAuthentication]
@@ -81,6 +89,13 @@ class devoardDetail(APIView):
 
     def get(self, request, pk):
         devoard = self.get_object(pk)
+        detail = project.objects.get(project_detail = pk)
+        if request.user in detail.joiner.all():
+            devoard.belong = True
+            devoard.save()
+        else :
+            devoard.belong = False
+            devoard.save()
         serializer = devoardSerializer(devoard)
         dd = serializer.data['field']
         print(dd)
