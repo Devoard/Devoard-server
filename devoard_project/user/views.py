@@ -208,13 +208,11 @@ class mypage(APIView):
             raise Http404
 
     def get(self, request, pk):
-        info = self.get_object(pk)
-        serializer = MypageSerializer(info)
+        serializer = MypageSerializer(request.user)
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
-        info_update = self.get_object(pk)
-        serializer = UserSerializer(info_update, data=request.data)
+        serializer = UserSerializer(request.user, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
