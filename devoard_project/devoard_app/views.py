@@ -100,24 +100,53 @@ class devoardDetail(APIView):
         dd = serializer.data['field']
         print(dd)
         return Response(serializer.data)
-    
-    def put(self, request, pk, format=None):
-        devoard = self.get_object(pk)
-        serializer = devoardSerializer(devoard, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, pk):
+        d = self.get_object(pk)
+        serializer = devoardSerializer(d, data=request.data)
+
+        title = serializer.initial_data['title']
+        body = serializer.initial_data['body']
+        frontend_cnt = serializer.initial_data['frontend_cnt']
+        backend_cnt = serializer.initial_data['backend_cnt']
+        android_cnt = serializer.initial_data['android_cnt']
+        ios_cnt = serializer.initial_data['ios_cnt']
+        data_cnt = serializer.initial_data['data_cnt']
+        devops_cnt = serializer.initial_data['devops_cnt']
+        period = serializer.initial_data['period']
+        done = serializer.initial_data['done']
+        recruit_state = serializer.initial_data['recruit_state']
+        field = serializer.initial_data['field']
+       
+        field_data = ''
+        if len(field) > 0:
+            for data in field:
+                field_data = data + ',' + field_data
+            field_data = field_data[0:-1]
+        else:
+            field_data = field
+        
+        if done == '진행 완료':
+            recruit_state = 0
+
+        devoard.objects.update(title=title, body= body, frontend_cnt = frontend_cnt, backend_cnt=backend_cnt, android_cnt= android_cnt,
+        ios_cnt = ios_cnt, data_cnt=data_cnt, devops_cnt = devops_cnt, period = period, done=done, recruit_state= recruit_state, field = field_data) #저장
+        
+        return Response(status=status.HTTP_201_CREATED)
+
 
     def delete(self, request, pk, format=None):
         devoard = self.get_object(pk)
         devoard.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+        
+
 class devoardNow(APIView):
     authentication_classes = [TokenAuthentication]
     def get(self, request):
-        devoard_list = devoard.objects.order_by('-pk')[0:5]
+        devoard_list = devoard.objects.order_by('-id')[0:5]
         if len(devoard_list) == 0:
             return Response('아직 만들어진 프로젝트가 없습니다.',status=status.HTTP_400_BAD_REQUEST)
         else :

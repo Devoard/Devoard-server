@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = user_info
-        fields = ('username','user_name', 'id', 'user_job', 'user_import', 'user_exp', 'user_how', 'user_intro', 'user_pf_addr', 'user_join_project','user_connect')
+        fields = ('username','user_name', 'id', 'user_job', 'user_import', 'user_exp', 'user_how', 'user_intro', 'user_pf_addr', 'user_join_project','user_connect','user_time')
 
 
 class UserSerializerWithToken(serializers.ModelSerializer):
@@ -40,4 +40,4 @@ class MypageSerializer(serializers.ModelSerializer):
     u_skill = UserskillSerializer(many = True)
     class Meta:
         model = user_info
-        fields = ('username','user_name', 'id', 'user_job', 'user_import', 'user_exp', 'user_how', 'user_intro', 'user_pf_addr', 'user_join_project','user_connect','user_git_id', 'u_skill')
+        fields = ('username', 'id', 'user_job', 'user_import', 'user_exp', 'user_how', 'user_intro', 'user_pf_addr','user_connect', 'u_skill','user_time')
