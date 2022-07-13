@@ -21,7 +21,7 @@ from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify
 from django.views.generic import TemplateView
 from user import views
 from rest_framework.urlpatterns import format_suffix_patterns
-from devoard_app.views import devoardList, devoardDetail, devoardNow
+from devoard_app.views import devoardList, devoardDetail, devoardNow,devoardBtn
 
 urlpatterns = [
     path('user/',include('user.urls')),
@@ -38,6 +38,7 @@ urlpatterns = [
     #게시판
     path('devoard/', devoardList.as_view()),
     path('devoard/<int:pk>/', devoardDetail.as_view()),
+    path('devoard/<int:pk>/btn', devoardBtn.as_view()),
     path('devoardNow/', devoardNow.as_view()),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
