@@ -7,6 +7,7 @@ from django.views.generic import TemplateView
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from sqlalchemy import false
 
 from user.models import user_info
 from .serializers import devoardSerializer, devoardNowSerializer
@@ -23,7 +24,6 @@ class AboutView(TemplateView):
 
 class devoardList(APIView): #목록 보여줌
     authentication_classes = [TokenAuthentication]
-
 
     def post(self, request): #새 글 작성 시
         serializer = devoardSerializer(data=request.data)
@@ -101,7 +101,7 @@ class devoardDetail(APIView):
         print(dd)
         return Response(serializer.data)
 
-    def patch(self, request, pk):
+    def put(self, request, pk):
         d = self.get_object(pk)
         serializer = devoardSerializer(d, data=request.data)
 
@@ -126,29 +126,65 @@ class devoardDetail(APIView):
         else:
             field_data = field
         
-        if done == '진행 완료':
-            recruit_state = 0
-
         devoard.objects.update(title=title, body= body, frontend_cnt = frontend_cnt, backend_cnt=backend_cnt, android_cnt= android_cnt,
         ios_cnt = ios_cnt, data_cnt=data_cnt, devops_cnt = devops_cnt, period = period, done=done, recruit_state= recruit_state, field = field_data) #저장
         
         return Response(status=status.HTTP_201_CREATED)
 
+class devoardBtn(APIView):
+    authentication_classes = [TokenAuthentication]
 
-    def delete(self, request, pk, format=None):
-        devoard = self.get_object(pk)
-        devoard.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def get_object(self, pk):
+        try:
+            return devoard.objects.get(pk=pk)
+        except devoard.DoesNotExist:
+            raise Http404
 
+    def put(self, request, pk):
+        d = self.get_object(pk)
+        serializer = devoardSerializer(d, data=request.data)
 
+        title = serializer.initial_data['title']
+        body = serializer.initial_data['body']
+        frontend_cnt = serializer.initial_data['frontend_cnt']
+        backend_cnt = serializer.initial_data['backend_cnt']
+        android_cnt = serializer.initial_data['android_cnt']
+        ios_cnt = serializer.initial_data['ios_cnt']
+        data_cnt = serializer.initial_data['data_cnt']
+        devops_cnt = serializer.initial_data['devops_cnt']
+        period = serializer.initial_data['period']
+        done = serializer.initial_data['done']
+        recruit_state = serializer.initial_data['recruit_state']
+        field = serializer.initial_data['field']
+       
+        if recruit_state == false:
+            done = "모집 완료"
+
+        devoard.objects.update(title=title, body= body, frontend_cnt = frontend_cnt, backend_cnt=backend_cnt, android_cnt= android_cnt,
+        ios_cnt = ios_cnt, data_cnt=data_cnt, devops_cnt = devops_cnt, period = period, done=done, recruit_state= recruit_state, field = field) #저장
         
+        return Response(status=status.HTTP_201_CREATED)
+
 
 class devoardNow(APIView):
     authentication_classes = [TokenAuthentication]
-    def get(self, request):
-        devoard_list = devoard.objects.order_by('-id')[0:5]
-        if len(devoard_list) == 0:
-            return Response('아직 만들어진 프로젝트가 없습니다.',status=status.HTTP_400_BAD_REQUEST)
+
+    def get_object(self, pk):
+            try:
+                return devoard.objects.get(pk=pk)
+            except devoard.DoesNotExist:
+                raise Http404
+
+    def get(self, request, pk):
+        devoard = self.get_object(pk)
+        detail = project.objects.get(project_detail = pk)
+        if request.user in detail.joiner.all():
+            devoard.belong = True
+            devoard.save()
         else :
-            list_project = devoardNowSerializer(devoard_list, many=True)
-            return Response(list_project.data)
+            devoard.belong = False
+            devoard.save()
+        serializer = devoardSerializer(devoard)
+        dd = serializer.data['field']
+        print(dd)
+        return Response(serializer.data)
