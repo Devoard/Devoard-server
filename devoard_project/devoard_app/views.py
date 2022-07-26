@@ -7,7 +7,6 @@ from django.views.generic import TemplateView
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from sqlalchemy import false
 
 from user.models import user_info
 from .serializers import devoardSerializer, devoardNowSerializer
@@ -157,7 +156,7 @@ class devoardBtn(APIView):
         recruit_state = serializer.initial_data['recruit_state']
         field = serializer.initial_data['field']
        
-        if recruit_state == false:
+        if recruit_state == False:
             done = "모집 완료"
 
         devoard.objects.update(title=title, body= body, frontend_cnt = frontend_cnt, backend_cnt=backend_cnt, android_cnt= android_cnt,
@@ -175,16 +174,10 @@ class devoardNow(APIView):
             except devoard.DoesNotExist:
                 raise Http404
 
-    def get(self, request, pk):
-        devoard = self.get_object(pk)
-        detail = project.objects.get(project_detail = pk)
-        if request.user in detail.joiner.all():
-            devoard.belong = True
-            devoard.save()
+    def get(self, request):
+        devoard_list = devoard.objects.order_by('-pk')[0:5]
+        if len(devoard_list) == 0:
+            return Response('아직 만들어진 프로젝트가 없습니다.',status=status.HTTP_400_BAD_REQUEST)
         else :
-            devoard.belong = False
-            devoard.save()
-        serializer = devoardSerializer(devoard)
-        dd = serializer.data['field']
-        print(dd)
-        return Response(serializer.data)
+            list_project = devoardNowSerializer(devoard_list, many=True)
+            return Response(list_project.data)
