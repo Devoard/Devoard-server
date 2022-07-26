@@ -201,17 +201,11 @@ def complete_login(self, request, app, token, **kwargs):
 class mypage(APIView):
     authentication_classes = [TokenAuthentication]
 
-    def get_object(self, pk):
-        try:
-            return user_info.objects.get(pk=pk)
-        except user_info.DoesNotExist:
-            raise Http404
-
-    def get(self, request, pk):
+    def get(self, request):
         serializer = MypageSerializer(request.user)
         return Response(serializer.data)
 
-    def put(self, request, pk, format=None):
+    def put(self, request):
         serializer = UserSerializer(request.user, data=request.data)
         if serializer.is_valid():
             serializer.save()

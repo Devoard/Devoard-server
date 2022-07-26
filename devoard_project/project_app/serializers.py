@@ -27,7 +27,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 class UserskillSerializer(serializers.ModelSerializer):
     class Meta:
         model = user_skill
-        fields = ('user_skill_name', 'user_score')
+        fields = ['u_id','user_skill_name']
 
 class UserSerializer(serializers.ModelSerializer):
     u_skill = UserskillSerializer(many = True)

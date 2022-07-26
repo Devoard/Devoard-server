@@ -32,6 +32,5 @@ class user_info(AbstractUser):
 class user_skill(models.Model):
     u_id = models.ForeignKey("user_info", related_name="user", on_delete=models.CASCADE, db_column="user_id")
     user_skill_name = models.CharField(max_length=50)
-    user_score = models.IntegerField(default=0)
     def __str__(self):
         return self.user_skill_name
