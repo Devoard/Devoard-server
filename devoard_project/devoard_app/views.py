@@ -104,19 +104,19 @@ class devoardDetail(APIView):
         d = self.get_object(pk)
         serializer = devoardSerializer(d, data=request.data)
 
-        title = serializer.initial_data['title']
-        body = serializer.initial_data['body']
-        frontend_cnt = serializer.initial_data['frontend_cnt']
-        backend_cnt = serializer.initial_data['backend_cnt']
-        android_cnt = serializer.initial_data['android_cnt']
-        ios_cnt = serializer.initial_data['ios_cnt']
-        data_cnt = serializer.initial_data['data_cnt']
-        devops_cnt = serializer.initial_data['devops_cnt']
-        period = serializer.initial_data['period']
-        done = serializer.initial_data['done']
-        recruit_state = serializer.initial_data['recruit_state']
+        d.title = serializer.initial_data['title']
+        d.body = serializer.initial_data['body']
+        d.frontend_cnt = serializer.initial_data['frontend_cnt']
+        d.backend_cnt = serializer.initial_data['backend_cnt']
+        d.android_cnt = serializer.initial_data['android_cnt']
+        d.ios_cnt = serializer.initial_data['ios_cnt']
+        d.data_cnt = serializer.initial_data['data_cnt']
+        d.devops_cnt = serializer.initial_data['devops_cnt']
+        d.period = serializer.initial_data['period']
+        d.done = serializer.initial_data['done']
+        d.recruit_state = serializer.initial_data['recruit_state']
+        
         field = serializer.initial_data['field']
-       
         field_data = ''
         if len(field) > 0:
             for data in field:
@@ -124,11 +124,18 @@ class devoardDetail(APIView):
             field_data = field_data[0:-1]
         else:
             field_data = field
+        d.field = field_data
+        d.save()
         
-        devoard.objects.update(title=title, body= body, frontend_cnt = frontend_cnt, backend_cnt=backend_cnt, android_cnt= android_cnt,
-        ios_cnt = ios_cnt, data_cnt=data_cnt, devops_cnt = devops_cnt, period = period, done=done, recruit_state= recruit_state, field = field_data) #저장
+        # devoard.objects.update(title=title, body= body, frontend_cnt = frontend_cnt, backend_cnt=backend_cnt, android_cnt= android_cnt,
+        # ios_cnt = ios_cnt, data_cnt=data_cnt, devops_cnt = devops_cnt, period = period, done=done, recruit_state= recruit_state, field = field_data) #저장
         
         return Response(status=status.HTTP_201_CREATED)
+
+    def delete(self, request, pk, format=None):
+        devoard = self.get_object(pk)
+        devoard.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 class devoardBtn(APIView):
     authentication_classes = [TokenAuthentication]
