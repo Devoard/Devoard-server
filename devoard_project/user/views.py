@@ -216,5 +216,11 @@ class mypage(APIView):
 class logout(APIView):
     authentication_classes = [TokenAuthentication]
     def get(self, request, format=None):
+        response = Response(status=status.HTTP_200_OK)
+        response.delete_cookie('token')
+        response.delete_cookie('git_token')
+        response.delete_cookie('signin')
+        response.delete_cookie('git_username')
+        response.delete_cookie('git_userImg')
         request.user.auth_token.delete()
-        return Response(status=status.HTTP_200_OK)
+        return response
