@@ -42,6 +42,8 @@ class survey(APIView):
         if len(user_import) >1:
             user.user_import = ''
             for imports in user_import:
+                if imports == 'UI UX':
+                    imports = 'UI/UX'
                 user.user_import = imports + ',' + user.user_import
             user.user_import = user.user_import[0:-1]
         else :
@@ -49,10 +51,10 @@ class survey(APIView):
         user.save()
         if len(user_skill_name) >1:
             for skill in user_skill_name:
-                u_skills = user_skill.objects.create(u_id = user, user_skill_name=skill, user_score = 0)
+                u_skills = user_skill.objects.create(u_id = user, user_skill_name=skill)
                 user.u_skill.add(u_skills)
         else :
-            u_skills = user_skill.objects.create(u_id = user, user_skill_name=user_skill_name[0], user_score = 0)
+            u_skills = user_skill.objects.create(u_id = user, user_skill_name=user_skill_name[0])
             user.u_skill.add(u_skills)
         return Response('설문이 완료되었습니다.',status=status.HTTP_201_CREATED)
         
